@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game - MTU Chapitre 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e67e22;
+            --wrong: #e74c3c;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .game-container {
+            background: var(--card);
+            width: 100%;
+            max-width: 800px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header { margin-bottom: 20px; }
+        h1 { color: var(--primary); margin: 0; font-size: 1.8rem; }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            color: #777;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .question-box { margin: 30px 0; }
+        
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--primary);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: #e9ecef;
+            border-color: #dbe4eb;
+        }
+
+        .correct {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724;
+        }
+
+        .incorrect {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24;
+        }
+
+        .result-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
+        }
+
+        .btn-action {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .badge-type {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .badge-qcm { background-color: #3498db; }
+        .badge-vf { background-color: #9b59b6; }
+        .badge-sit { background-color: #e67e22; }
+
+        #error-display {
+            color: red;
+            background: #fee;
+            border: 1px solid red;
+            padding: 10px;
+            margin: 10px;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <div id="error-display"></div>
+
+    <div id="game-interface">
+        <header>
+            <h1>Quiz : Techniques de Recherche</h1>
+            <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+            <div class="stats">
+                <span id="q-counter">Question 1/45</span>
+                <span id="score-display">Score: 0</span>
+            </div>
+        </header>
+
+        <div class="question-box">
+            <span id="q-type-badge" class="badge-type badge-qcm">QCM</span>
+            <div class="question-text" id="question">Chargement en cours...</div>
+            <div class="options-grid" id="options">
+                </div>
+        </div>
+    </div>
+
+    <div id="result-interface" class="result-screen">
+        <h2>Quiz Terminé ! (ساليتي)</h2>
+        <div class="score-circle" id="final-score">0/45</div>
+        <p id="feedback-text">Analyse en cours...</p>
+        
+        <a href="MTU CHAP 3.html" class="btn-action">GO BACK TO LESSON</a>
+        <button onclick="location.reload()" class="btn-action" style="background-color: #7f8c8d; margin-top: 10px;">REJOUER</button>
+    </div>
+</div>
+
+<script>
+try {
+    // --- DATABASE DES QUESTIONS CHAPITRE 3 (45 Questions) ---
+    const quizData = [
+        // --- 30 QCM ---
+        { t: "QCM", q: "La recherche d'information à l'université est stimulée par :", o: ["La peur des examens", "La curiosité scientifique", "L'obligation administrative", "Le hasard"], a: 1 },
+        { t: "QCM", q: "Un moteur de recherche utilise des algorithmes pour :", o: ["Créer des virus", "Trier les résultats selon la pertinence", "Effacer des sites web", "Ralentir la connexion"], a: 1 },
+        { t: "QCM", q: "Quelle catégorie de moteurs permet de tout chercher (Web, PDF, Images) ?", o: ["Moteurs Restrictifs", "Moteurs Ouverts", "Moteurs Fermés", "Moteurs Payants"], a: 1 },
+        { t: "QCM", q: "Google, Yahoo et Bing sont des exemples de :", o: ["Moteurs Restrictifs", "Moteurs Ouverts", "Bibliothèques", "Réseaux sociaux"], a: 1 },
+        { t: "QCM", q: "Un moteur 'Restrictif' impose :", o: ["Des limites (type de contenu ou communauté)", "Des frais d'inscription", "Une limite de temps", "Aucune limite"], a: 0 },
+        { t: "QCM", q: "LinkedIn et WolframAlpha sont des exemples de :", o: ["Moteurs Ouverts", "Moteurs Restrictifs", "Jeux vidéo", "Antivirus"], a: 1 },
+
+        // Types de Recherche
+        { t: "QCM", q: "La 'Recherche Simple' donne souvent :", o: ["Trop peu de résultats", "Beaucoup de résultats inutiles", "Uniquement des PDF", "Des résultats payants"], a: 1 },
+        { t: "QCM", q: "La 'Recherche Avancée' permet de filtrer par :", o: ["Humeur du chercheur", "Date, format de fichier, langue", "Météo", "Couleur du site"], a: 1 },
+        { t: "QCM", q: "La Recherche Booléenne utilise des opérateurs comme :", o: ["ET, OU, NON", "PLUS, MOINS, FOIS", "SI, ALORS, SINON", "VRAI, FAUX"], a: 0 },
+        { t: "QCM", q: "L'opérateur 'ET' permet de trouver des documents contenant :", o: ["L'un des deux termes", "Aucun des termes", "Les deux termes ensemble", "Le premier terme seulement"], a: 2 },
+        { t: "QCM", q: "L'opérateur 'OU' permet de trouver des documents contenant :", o: ["Les deux termes obligatoirement", "Au moins un des termes", "Aucun terme", "Le contraire du terme"], a: 1 },
+        { t: "QCM", q: "L'opérateur 'NON' sert à :", o: ["Inclure un terme", "Exclure un terme spécifique", "Souligner un terme", "Traduire un terme"], a: 1 },
+
+        // Bibliothèques et Sélection
+        { t: "QCM", q: "Les bibliothèques universitaires (domiciliées) offrent :", o: ["Seulement des chaises", "Des ressources fiables (livres, bases de données)", "Des jeux vidéo", "Des films Netflix"], a: 1 },
+        { t: "QCM", q: "La sélection de l'information vise à éviter :", o: ["La surcharge d'information", "La lecture", "La compréhension", "La réussite"], a: 0 },
+        { t: "QCM", q: "Qu'est-ce qu'une bibliothèque domiciliée ?", o: ["Une bibliothèque à la maison", "Une bibliothèque universitaire", "Une librairie", "Un cybercafé"], a: 1 },
+
+        // Les 5 Critères de Qualité
+        { t: "QCM", q: "Le critère de 'Pertinence' signifie :", o: ["L'info est récente", "L'info est liée au sujet de recherche", "L'info est gratuite", "L'info est courte"], a: 1 },
+        { t: "QCM", q: "Le critère de 'Validité' vérifie si l'info est :", o: ["Fiable et conforme à la réalité", "Amusante", "Colorée", "Facile à lire"], a: 0 },
+        { t: "QCM", q: "Le critère d'Exactitude signifie que les données sont :", o: ["Correctes et non altérées", "À peu près justes", "Fausses", "Anciennes"], a: 0 },
+        { t: "QCM", q: "Le critère d'Intégralité signifie :", o: ["L'info est partielle", "Toutes les infos nécessaires sont collectées", "L'info est en anglais", "L'info est payante"], a: 1 },
+        { t: "QCM", q: "Le critère de 'Récence' concerne :", o: ["L'auteur", "L'actualité de l'information (mise à jour)", "Le prix", "Le format"], a: 1 },
+        { t: "QCM", q: "Combien y a-t-il de critères principaux de qualité ?", o: ["3 critères", "5 critères", "10 critères", "2 critères"], a: 1 },
+
+        // Techniques de Lecture & Mind Map
+        { t: "QCM", q: "Un lecteur rapide lit à un rythme supérieur à :", o: ["100 mots/min", "300 mots/min", "1000 mots/min", "50 mots/min"], a: 1 },
+        { t: "QCM", q: "Le 'Survol' consiste à :", o: ["Lire chaque mot", "Examiner rapidement les éléments clés", "Sauter des pages au hasard", "Lire la conclusion seulement"], a: 1 },
+        { t: "QCM", q: "L'Écrémage permet de :", o: ["Cerner les idées pertinentes", "Faire un gâteau", "Lire lentement", "Tout oublier"], a: 0 },
+        { t: "QCM", q: "La 'Carte Mentale' (Mind Map) a été inventée par :", o: ["Albert Einstein", "Tony Buzan", "Elon Musk", "Victor Hugo"], a: 1 },
+        { t: "QCM", q: "Tony Buzan appelle la Carte Mentale :", o: ["Le couteau suisse de l'intelligence", "La clé du succès", "Le plan de la ville", "L'arbre à idées"], a: 0 },
+        { t: "QCM", q: "Une Carte Mentale organise l'info avec :", o: ["Des paragraphes longs", "Des mots-clés, symboles et images", "Des tableaux Excel", "Des codes binaires"], a: 1 },
+        { t: "QCM", q: "La Carte Mentale offre une vision :", o: ["Limitée", "Globale du sujet", "Floue", "En noir et blanc"], a: 1 },
+        { t: "QCM", q: "Quel est l'impact de la Carte Mentale sur le cerveau ?", o: ["Elle le fatigue", "Elle stimule l'activité cérébrale et la créativité", "Elle le ralentit", "Aucun impact"], a: 1 },
+        { t: "QCM", q: "La recherche peut avoir un impact :", o: ["Économique et social", "Seulement scolaire", "Aucun impact", "Sportif"], a: 0 },
+        { t: "QCM", q: "Quelle technique aide à la 'Restitution' de l'info ?", o: ["L'oubli", "La Carte Mentale", "La télévision", "Le sommeil"], a: 1 },
+
+        // --- 10 Vrai/Faux ---
+        { t: "V/F", q: "Vrai ou Faux : Google est un moteur de recherche restrictif.", o: ["Vrai", "Faux"], a: 1 },
+        { t: "V/F", q: "Vrai ou Faux : L'opérateur 'ET' élargit la recherche (plus de résultats).", o: ["Vrai", "Faux"], a: 1 },
+        { t: "V/F", q: "Vrai ou Faux : Une vitesse de 150 mots/minute est considérée comme 'Lecture Rapide'.", o: ["Vrai", "Faux"], a: 1 },
+        { t: "V/F", q: "Vrai ou Faux : La Carte Mentale utilise une structure linéaire (lignes droites).", o: ["Vrai", "Faux"], a: 1 },
+        { t: "V/F", q: "Vrai ou Faux : Le critère de 'Validité' vérifie si l'info est à jour.", o: ["Vrai", "Faux"], a: 1 },
+        { t: "V/F", q: "Vrai ou Faux : Les bibliothèques universitaires proposent aussi des livres électroniques.", o: ["Vrai", "Faux"], a: 0 },
+        { t: "V/F", q: "Vrai ou Faux : L'opérateur 'NON' permet d'exclure un mot des résultats.", o: ["Vrai", "Faux"], a: 0 },
+        { t: "V/F", q: "Vrai ou Faux : La sélection d'information n'est pas nécessaire sur Internet.", o: ["Vrai", "Faux"], a: 1 },
+        { t: "V/F", q: "Vrai ou Faux : Tony Buzan est l'inventeur de la méthode Pomodoro.", o: ["Vrai", "Faux"], a: 1 },
+        { t: "V/F", q: "Vrai ou Faux : L'exactitude signifie que l'information n'a pas été modifiée.", o: ["Vrai", "Faux"], a: 0 },
+
+        // --- 5 Situations ---
+        { t: "SITUATION", q: "Mise en situation : Vous cherchez des documents sur la 'Motivation' mais PAS 'Sport'. Quel opérateur ?", o: ["Motivation ET Sport", "Motivation OU Sport", "Motivation NON Sport", "Motivation AVEC Sport"], a: 2 },
+        { t: "SITUATION", q: "Mise en situation : Vous voulez 'Climat' ET 'Maroc'.", o: ["Climat OU Maroc", "Climat ET Maroc", "Climat NON Maroc", "Climat SANS Maroc"], a: 1 },
+        { t: "SITUATION", q: "Mise en situation : Vous vérifiez la date de publication.", o: ["Pertinence", "Validité", "Récence", "Intégralité"], a: 2 },
+        { t: "SITUATION", q: "Mise en situation : Vous vérifiez l'expertise de l'auteur.", o: ["Exactitude", "Validité/Fiabilité", "Récence", "Pertinence"], a: 1 },
+        { t: "SITUATION", q: "Mise en situation : Ahmed dessine un schéma avec le sujet au centre.", o: ["La méthode Pomodoro", "La Carte Mentale", "La grille d'Eisenhower", "La lecture rapide"], a: 1 }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const ui = {
+        question: document.getElementById('question'),
+        options: document.getElementById('options'),
+        progress: document.getElementById('progress'),
+        counter: document.getElementById('q-counter'),
+        score: document.getElementById('score-display'),
+        gameInterface: document.getElementById('game-interface'),
+        resultInterface: document.getElementById('result-interface'),
+        finalScore: document.getElementById('final-score'),
+        feedbackText: document.getElementById('feedback-text'),
+        badge: document.getElementById('q-type-badge')
+    };
+
+    function loadQuestion() {
+        if(currentQuestionIndex >= quizData.length) {
+            endGame();
+            return;
+        }
+
+        const data = quizData[currentQuestionIndex];
+        
+        // Mise à jour de l'affichage
+        if(ui.question) ui.question.innerText = data.q;
+        if(ui.counter) ui.counter.innerText = `Question ${currentQuestionIndex + 1}/${quizData.length}`;
+        if(ui.score) ui.score.innerText = `Score: ${score}`;
+        
+        // Badge Type
+        if(ui.badge) {
+            ui.badge.innerText = data.t;
+            ui.badge.className = 'badge-type'; 
+            if(data.t === 'QCM') ui.badge.classList.add('badge-qcm');
+            else if(data.t === 'V/F') ui.badge.classList.add('badge-vf');
+            else ui.badge.classList.add('badge-sit');
+        }
+
+        // Barre de progression
+        if(ui.progress) {
+            const progressPercent = ((currentQuestionIndex) / quizData.length) * 100;
+            ui.progress.style.width = `${progressPercent}%`;
+        }
+
+        // Générer les boutons
+        if(ui.options) {
+            ui.options.innerHTML = '';
+            data.o.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = option;
+                btn.onclick = () => checkAnswer(index, btn);
+                ui.options.appendChild(btn);
+            });
+        }
+    }
+
+    // Fonction globale pour être accessible
+    window.checkAnswer = function(selectedIndex, btnElement) {
+        const allBtns = document.querySelectorAll('.option-btn');
+        allBtns.forEach(btn => btn.disabled = true);
+
+        const correctIndex = quizData[currentQuestionIndex].a;
+
+        if (selectedIndex === correctIndex) {
+            btnElement.classList.add('correct');
+            score++;
+            ui.score.innerText = `Score: ${score}`;
+        } else {
+            btnElement.classList.add('incorrect');
+            if(allBtns[correctIndex]) {
+                allBtns[correctIndex].classList.add('correct');
+            }
+        }
+
+        setTimeout(() => {
+            currentQuestionIndex++;
+            loadQuestion();
+        }, 1000);
+    };
+
+    function endGame() {
+        ui.gameInterface.style.display = 'none';
+        ui.resultInterface.style.display = 'flex';
+        ui.finalScore.innerText = `${score}/${quizData.length}`;
+
+        const percentage = (score / quizData.length) * 100;
+        let msg = "";
+        if (percentage === 100) msg = "Bravo ! Tu es un expert de la Recherche ! (تبارك الله عليك)";
+        else if (percentage >= 70) msg = "Très bien ! Tu maîtrises les techniques.";
+        else if (percentage >= 50) msg = "Pas mal, mais révise encore un peu les critères et opérateurs.";
+        else msg = "Attention, il faut relire le Chapitre 3. (خاصك تراجع الدرس مزيان)";
+        
+        ui.feedbackText.innerText = msg;
+    }
+
+    // Lancement du jeu
+    loadQuestion();
+
+} catch (error) {
+    document.getElementById('error-display').innerText = "Erreur : " + error.message;
+    document.getElementById('error-display').style.display = 'block';
+}
+</script>
+
+</body>
+</html>

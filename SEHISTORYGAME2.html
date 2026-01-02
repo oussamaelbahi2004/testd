@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة التاريخ الشاملة - ENS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8e44ad;
+            --secondary: #2c3e50;
+            --accent: #f39c12;
+            --success: #27ae60;
+            --error: #c0392b;
+            --bg: #f5eef8;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--secondary);
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card);
+            width: 100%;
+            max-width: 700px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            min-height: 680px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #d2b4de;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .badge {
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .back-button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-3px);
+        }
+
+        /* Progress */
+        .progress-bar {
+            height: 8px;
+            background: #eee;
+            width: 100%;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Screens */
+        .screen {
+            flex: 1;
+            padding: 30px;
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .screen.active { display: flex; }
+
+        h1 { margin: 0 0 10px 0; color: var(--primary); font-size: 2rem; }
+
+        /* Context Card */
+        .context-card {
+            background: #fafafa;
+            border-right: 6px solid var(--primary);
+            padding: 20px;
+            text-align: right;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .era-title {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .era-desc {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.6;
+            background: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            min-height: 40px;
+        }
+        
+        .era-desc.revealed {
+            background: transparent;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .step-label {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        /* Grid */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #ecf0f1;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Tajawal', sans-serif;
+            color: var(--secondary);
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--primary);
+            background: #f4ecf7;
+            transform: translateX(5px);
+        }
+
+        .option-btn.correct {
+            background: #d5f5e3;
+            border-color: var(--success);
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background: #fadbd8;
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        /* Controls */
+        .next-btn {
+            margin-top: 25px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-self: center;
+        }
+        .next-btn:hover { background: #7d3c98; }
+
+        .start-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 25px;
+            font-size: 1.1rem;
+        }
+
+        .final-score {
+            font-size: 4rem;
+            color: var(--primary);
+            font-weight: 800;
+            margin: 20px 0;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <button class="back-button" onclick="window.location.href='SEHISTORYCOURE.html'">
+            ← رجوع
+        </button>
+        <div id="section-title">السياق التاريخي</div>
+        <div class="badge">النقاط: <span id="score">0</span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+    <div class="screen active" id="screen-intro">
+        <h1>لعبة البناء التاريخي 🏛️</h1>
+        <p style="font-size:1.1rem; color:#555;">ابنِ معرفتك التاريخية: من العصر -> للفيلسوف -> للفكرة.</p>
+        <div style="background:#fff; padding:20px; border-radius:15px; margin:20px 0; border:1px solid #eee; text-align:right;">
+            <p>1️⃣ <strong>المرحلة 1 (السياق):</strong> اختر الوصف الصحيح لطبيعة التربية في ذلك العصر.</p>
+            <p>2️⃣ <strong>المرحلة 2 (الفلاسفة):</strong> اختر الفيلسوف الذي ينتمي لهذا السياق.</p>
+            <p>3️⃣ <strong>المرحلة 3 (الأفكار):</strong> اختر فكرته الجوهرية.</p>
+        </div>
+        <button class="start-btn" onclick="startGame()">ابدأ التحدي</button>
+    </div>
+
+    <div class="screen" id="screen-game">
+        <div class="context-card">
+            <div class="era-title">
+                <span style="font-size:1.5rem;">⏳</span>
+                <span id="g-era-name">...</span>
+            </div>
+            <div class="era-desc" id="g-era-desc">???</div>
+        </div>
+
+        <div class="step-label" id="g-step-label">...</div>
+        
+        <div class="options-grid" id="g-options"></div>
+        <div class="feedback" id="g-feedback"></div>
+        <button class="next-btn" id="g-next-btn" onclick="nextGameStep()">تابع</button>
+    </div>
+
+    <div class="screen" id="screen-qcm">
+        <div class="step-label" style="background:var(--secondary); color:white; border:none;" id="qcm-counter">سؤال 1</div>
+        <h2 id="qcm-text" style="line-height:1.5; margin-bottom:20px;">...</h2>
+        <div class="options-grid" id="qcm-options"></div>
+        <div class="feedback" id="qcm-feedback"></div>
+        <button class="next-btn" id="qcm-next-btn" onclick="nextQCMStep()">السؤال التالي</button>
+    </div>
+
+    <div class="screen" id="screen-result">
+        <h1>النتيجة النهائية</h1>
+        <div class="final-score" id="final-score">0</div>
+        <p id="final-msg" style="font-size:1.3rem;">...</p>
+        <button class="start-btn" style="background:var(--primary)" onclick="location.reload()">إعادة المحاولة</button>
+    </div>
+              </div>
+              <script>
+    /* ================= DATA ================= */
+    const erasData = [
+        {
+            era: "العصر اليوناني القديم",
+            context: "تميزت التربية بالاهتمام ببناء الجسم والعقل معاً، والبحث عن الفضيلة والحقيقة، مع تقسيم طبقي للمجتمع.",
+            philosophers: [
+                { name: "سقراط", idea: "منهج التهكم والتوليد (المايوطيو) لاستخراج الحقيقة من المتعلم." },
+                { name: "أفلاطون", idea: "التربية وسيلة لبناء الدولة المثالية (الجمهورية) وتقسيم العمل." }
+            ]
+        },
+        {
+            era: "العصر الإسلامي (القرن 14م)",
+            context: "ارتبط العلم بالقيم الدينية والأخلاقية، مع التركيز على التدرج في التعليم ومراعاة نفسية المتعلم.",
+            philosophers: [
+                { name: "ابن خلدون", idea: "التعليم صناعة وملكة تكتسب بالتدريج، ورفض الشدة والعقاب." }
+            ]
+        },
+        {
+            era: "عصر النهضة / التجريبية (ق 17)",
+            context: "بداية الثورة على الفكر الكنسي الجامد، والتوجه نحو العلم التجريبي والملاحظة الحسية كأساس للمعرفة.",
+            philosophers: [
+                { name: "فرانسيس بيكون", idea: "تطهير العقل من الأوهام واعتماد الملاحظة والاستقراء." },
+                { name: "جون لوك", idea: "الطفل يولد صفحة بيضاء (Tabula Rasa) والتجربة تخط عليها المعرفة." }
+            ]
+        },
+        {
+            era: "عصر التنوير / الطبيعية (ق 18)",
+            context: "الدعوة للعودة إلى الطبيعة واحترام حرية الطفل وخصوصيته بعيداً عن فساد المجتمع.",
+            philosophers: [
+                { name: "جان جاك روسو", idea: "التربية السلبية: حماية الطبيعة الخيرة للطفل وعدم استعجال النمو." },
+                { name: "بستالوتزي", idea: "التربية المتكاملة: التوفيق بين الرأس (العقل) والقلب (العاطفة) واليد (العمل)." }
+            ]
+        },
+        {
+            era: "المثالية الألمانية (ق 18/19)",
+            context: "التركيز على العقل والأخلاق والواجب، واعتبار التربية وسيلة لتحويل الإنسان من كائن بيولوجي لكائن أخلاقي.",
+            philosophers: [
+                { name: "إيمانويل كانط", idea: "الإنسان لا يصير إنساناً إلا بالتربية (الانضباط وتهذيب الأخلاق)." }
+            ]
+        },
+        {
+            era: "التربية الحديثة / المدرسة الجديدة (ق 20)",
+            context: "ثورة بيداغوجية جعلت الطفل مركز العملية التعليمية، مع التركيز على الفعل والنشاط والحرية.",
+            philosophers: [
+                { name: "جون ديوي", idea: "التربية هي الحياة وليست إعداداً لها (التعلم بالممارسة/المشروع)." },
+                { name: "ماريا مونتيسوري", idea: "حرية الطفل في بيئة معدة مسبقاً والتعلم الذاتي الحسي." },
+                { name: "فريدريك فروبل", idea: "التعلم باللعب وتأسيس أول 'حديقة أطفال' (Kindergarten)." }
+            ]
+        },
+        {
+            era: "علم الاجتماع التربوي",
+            context: "النظر للمدرسة كمؤسسة اجتماعية وظيفتها دمج الفرد في المجتمع ونقل القيم.",
+            philosophers: [
+                { name: "إميل دوركايم", idea: "التربية هي تنشئة اجتماعية (Socialisation) وقهر اجتماعي ناعم." }
+            ]
+        }
+    ];
+
+    /* ================= DATA: QCM ================= */
+    const qcmData = [
+        { q: "صاحب كتاب 'إميل' الذي يعتبر مرجعاً في التربية الطبيعية هو:", o: ["جون لوك", "جان جاك روسو", "كانط", "أفلاطون"], a: 1 },
+        { q: "الفيلسوف الذي شبه عقل الطفل بـ 'اللوح الفارغ' هو:", o: ["جون ديوي", "جون لوك", "روسو", "سقراط"], a: 1 },
+        { q: "يرتبط مفهوم 'المايوطيو' (التوليد) بـ:", o: ["سقراط", "أرسطو", "أفلاطون", "السفسطائيين"], a: 0 },
+        { q: "المدرسة التي أسسها جون ديوي تسمى:", o: ["المدرسة المثالية", "المدرسة النموذجية (النشطة)", "مدرسة المشاغبين", "الكتّاب"], a: 1 },
+        { q: "يرى ابن خلدون أن الشدة والعقاب في التعليم:", o: ["ضرورية للتقويم", "تفسد طباع المتعلم وتعلمه الكذب", "وسيلة ناجعة", "أساس التربية الإسلامية"], a: 1 },
+        { q: "مؤسس أول 'حديقة أطفال' (Kindergarten) هو:", o: ["بستالوتزي", "فروبل", "مونتيسوري", "هيربارت"], a: 1 },
+        { q: "صاحب كتاب 'الجمهورية' هو:", o: ["سقراط", "أرسطو", "أفلاطون", "ابن سينا"], a: 2 },
+        { q: "تعتبر 'ماريا مونتيسوري' رائدة في:", o: ["التربية الخاصة ورياض الأطفال", "التعليم الجامعي", "التعليم الثانوي", "محو الأمية"], a: 0 },
+        { q: "المقولة: 'الإنسان لا يصير إنساناً إلا بالتربية' تنسب لـ:", o: ["روسو", "كانط", "هيغل", "نيتشه"], a: 1 },
+        { q: "المنهج الذي دعا إليه فرانسيس بيكون هو:", o: ["القياس الأرسطي", "الاستقراء والتجريب", "التأمل الصوفي", "الجدل"], a: 1 },
+        { q: "التربية السلبية عند روسو تعني:", o: ["عدم تعليم الطفل شيئاً", "حماية الطفل من الرذائل قبل تعليمه الفضائل", "الضرب", "التربية الفاشلة"], a: 1 },
+        { q: "رائد البراغماتية في التربية هو:", o: ["وليم جيمس", "شارل بيرس", "جون ديوي", "جميع ما ذكر"], a: 2 },
+        { q: "كتاب 'المقدمة' الذي خصص فصلاً للتعليم هو لـ:", o: ["الغزالي", "ابن خلدون", "ابن رشد", "الفارابي"], a: 1 },
+        { q: "يرى دوركايم أن التربية وظيفتها الأساسية:", o: ["تنمية الفردية", "التنشئة الاجتماعية (Socialisation)", "اللعب", "الصحة الجسدية"], a: 1 },
+        { q: "شعار التربية عند بستالوتزي يجمع بين:", o: ["الرأس والقلب واليد", "العقل والنقل", "الدين والدنيا", "المدرسة والشارع"], a: 0 },
+        { q: "العصور الوسطى الأوروبية تميزت بـ:", o: ["التربية السكولائية (الدينية الجامدة)", "التربية التكنولوجية", "التربية الطبيعية", "الانفتاح العلمي"], a: 0 },
+        { q: "مفهوم 'الطفل' ككيان مستقل له خصائص مميزة ظهر بوضوح في:", o: ["عصر النهضة والتنوير", "العصور الوسطى", "العصر اليوناني", "الحضارة الفرعونية"], a: 0 },
+        { q: "يعتبر 'ألكسندر نيل' مؤسس مدرسة 'سمرهل' التي تتميز بـ:", o: ["الصرامة العسكرية", "الحرية المطلقة للأطفال", "تحفيظ القرآن", "تدريس اللغات"], a: 1 },
+        { q: "الفيلسوف الذي قسم النفس إلى (شهوانية، غضبية، عاقلة) هو:", o: ["أفلاطون", "سقراط", "جون لوك", "ديوي"], a: 0 },
+        { q: "التعلم عن طريق 'المشروع' هو تطبيق لنظرية:", o: ["سقراط", "جون ديوي", "أفلاطون", "ابن خلدون"], a: 1 },
+        { q: "انتقد 'بيكون' طرق التفكير القديمة وسماها:", o: ["الأوهام (الأصنام)", "الحقائق", "المثل العليا", "المنطق"], a: 0 },
+        { q: "نادت 'التربية الحديثة' بـ:", o: ["مركزية المتعلم ونشاطه", "سلطة المعلم", "الحفظ الببغائي", "العقاب البدني"], a: 0 },
+        { q: "يرى الغزالي أن هدف التربية هو:", o: ["السعادة الدنيوية فقط", "التقرب إلى الله والسعادة الأخروية", "جمع المال", "السلطة"], a: 1 },
+        { q: "أهم مبدأ في تربية مونتيسوري هو:", o: ["التلقين الجماعي", "استخدام الأدوات الحسية والتعلم الذاتي", "الكتب النظرية", "الامتحانات"], a: 1 },
+        { q: "مصطلح 'بيداغوجيا' في اليونان القديمة كان يعني:", o: ["العبد الذي يرافق الطفل", "الفيلسوف", "الحاكم", "المحارب"], a: 0 },
+        { q: "من رواد الاتجاه التجريبي في التربية:", o: ["ديكارت", "جون لوك", "أفلاطون", "هيغل"], a: 1 },
+        { q: "الغاية من التربية عند 'سبنسر' هي:", o: ["إعداد الفرد للحياة الكاملة", "خدمة الكنيسة", "التأمل", "الشعر"], a: 0 },
+        { q: "أول من دعا إلى إلزامية التعليم ومجانيته في العصر الحديث هم:", o: ["مصلحو عصر النهضة (لوثر وغيرهم)", "اليونان", "الرومان", "الفراعنة"], a: 0 },
+        { q: "النظرية التي ترى أن المعرفة تُبنى ولا تُنقل جاهزة هي:", o: ["البنائية", "السلوكية", "المثالية", "التلقينية"], a: 0 },
+        { q: "يعتبر 'بياجي' من رواد علم النفس:", o: ["النمائي (التكويني)", "التحليلي", "الاجتماعي", "السريري"], a: 0 }
+    ];
+
+    /* ================= LOGIC ================= */
+    let totalScore = 0;
+    
+    // State: 'context' (guess description) -> 'philo' (guess name) -> 'idea' (guess idea)
+    let eraIndex = 0;
+    let philoIndex = 0;
+    let phase = 'context'; 
+    
+    let qcmIndex = 0;
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function shuffleArray(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+    function updateScore() {
+        document.getElementById('score').innerText = totalScore;
+    }
+
+    function startGame() {
+        totalScore = 0;
+        eraIndex = 0;
+        philoIndex = 0;
+        phase = 'context';
+        qcmIndex = 0;
+        updateScore();
+        
+        // Randomize questions order
+        shuffleArray(qcmData);
+
+        // Start
+        loadEraRound();
+        showScreen('screen-game');
+    }
+
+    /* ------- Part 1: Context & Philo Game ------- */
+    function loadEraRound() {
+        const eraObj = erasData[eraIndex];
+        const currentPhilo = eraObj.philosophers[philoIndex];
+
+        // UI
+        const eraTitleEl = document.getElementById('g-era-name');
+        const eraDescEl = document.getElementById('g-era-desc');
+        const labelEl = document.getElementById('g-step-label');
+        const optionsDiv = document.getElementById('g-options');
+        const feedbackEl = document.getElementById('g-feedback');
+        const nextBtn = document.getElementById('g-next-btn');
+        const progressBar = document.getElementById('progress');
+
+        eraTitleEl.innerText = eraObj.era;
+        feedbackEl.innerText = "";
+        nextBtn.style.display = "none";
+        optionsDiv.innerHTML = "";
+
+        // Progress Calculation
+        // Approx: We can say each era is a chunk.
+        let progressPercent = (eraIndex / erasData.length) * 60; 
+        progressBar.style.width = `${progressPercent}%`;
+
+        let correctAns = "";
+        let distractors = [];
+
+        if (phase === 'context') {
+            // Step 1: Guess the description
+            eraDescEl.innerText = "؟؟؟";
+            eraDescEl.classList.remove('revealed');
+            labelEl.innerText = "📜 كيف كانت التربية في هذه المرحلة؟";
+            
+            correctAns = eraObj.context;
+            
+            // Distractors: Contexts from other eras
+            let allContexts = erasData.filter((_, i) => i !== eraIndex).map(e => e.context);
+            shuffleArray(allContexts);
+            distractors = allContexts.slice(0, 2);
+
+        } else if (phase === 'philo') {
+            // Step 2: Guess Philosopher
+            // Reveal Context now
+            eraDescEl.innerText = eraObj.context;
+            eraDescEl.classList.add('revealed');
+            
+            labelEl.innerText = `👤 من هو الفيلسوف رقم ${philoIndex + 1} في هذا العصر؟`;
+            correctAns = currentPhilo.name;
+            
+            // Distractors: Names from other eras
+            let allPhilos = [];
+            erasData.forEach((e, i) => {
+                if (i !== eraIndex) {
+                   e.philosophers.forEach(p => allPhilos.push(p.name));
+                }
+            });
+            shuffleArray(allPhilos);
+            distractors = allPhilos.slice(0, 2);
+
+        } else if (phase === 'idea') {
+            // Step 3: Guess Idea
+            eraDescEl.innerText = eraObj.context; // Ensure visible
+            eraDescEl.classList.add('revealed');
+
+            labelEl.innerText = `💡 ما هي الفكرة الجوهرية لـ ${currentPhilo.name}؟`;
+            correctAns = currentPhilo.idea;
+            
+            // Distractors: Ideas from other philosophers
+            let allIdeas = [];
+            erasData.forEach(e => e.philosophers.forEach(p => {
+                if (p.name !== currentPhilo.name) allIdeas.push(p.idea);
+            }));
+            shuffleArray(allIdeas);
+            distractors = allIdeas.slice(0, 2);
+        }
+
+        // Create Options
+        let options = [correctAns, ...distractors];
+        shuffleArray(options);
+        createButtons(optionsDiv, options, correctAns, 'game');
+    }
+
+    function nextGameStep() {
+        const eraObj = erasData[eraIndex];
+
+        if (phase === 'context') {
+            // Once context is guessed, move to first philosopher
+            phase = 'philo';
+        } else if (phase === 'philo') {
+            // Once name is guessed, move to idea
+            phase = 'idea';
+        } else if (phase === 'idea') {
+            // Idea guessed. Check if more philosophers in this era
+            philoIndex++;
+            if (philoIndex < eraObj.philosophers.length) {
+                // Next philosopher, same era -> Go to 'philo' phase
+                // We SKIP 'context' phase because context is already established for this era
+                phase = 'philo';
+            } else {
+                // No more philosophers -> Next Era
+                eraIndex++;
+                philoIndex = 0;
+                phase = 'context'; // Reset to ask for context of new era
+
+                if (eraIndex >= erasData.length) {
+                    startQCMPhase();
+                    return;
+                }
+            }
+        }
+        loadEraRound();
+    }
+
+    /* ------- Part 2: QCM ------- */
+    function startQCMPhase() {
+        showScreen('screen-qcm');
+        document.getElementById('section-title').innerText = "المرحلة 2: اختبار QCM";
+        loadQCMRound();
+    }
+
+    function loadQCMRound() {
+        const data = qcmData[qcmIndex];
+        const optionsDiv = document.getElementById('qcm-options');
+        const feedbackEl = document.getElementById('qcm-feedback');
+        const nextBtn = document.getElementById('qcm-next-btn');
+        const progressBar = document.getElementById('progress');
+
+        document.getElementById('qcm-counter').innerText = `سؤال ${qcmIndex + 1} / ${qcmData.length}`;
+        document.getElementById('qcm-text').innerText = data.q;
+        feedbackEl.innerText = "";
+        nextBtn.style.display = "none";
+        optionsDiv.innerHTML = "";
+
+        let progressPercent = 60 + ((qcmIndex / qcmData.length) * 40);
+        progressBar.style.width = `${progressPercent}%`;
+
+        let options = [...data.o];
+        let correctTxt = data.o[data.a];
+        createButtons(optionsDiv, options, correctTxt, 'qcm');
+    }
+
+    function nextQCMStep() {
+        qcmIndex++;
+        if (qcmIndex < qcmData.length) {
+            loadQCMRound();
+        } else {
+            finishExam();
+        }
+    }
+
+    /* ------- Helpers ------- */
+    function createButtons(container, optionsList, correctText, mode) {
+        optionsList.forEach(opt => {
+            if(!opt) return;
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = function() { checkAnswer(this, opt, correctText, container, mode); };
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(btn, selected, correct, container, mode) {
+        const allBtns = container.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.disabled = true);
+
+        const feedbackEl = document.getElementById(mode === 'game' ? 'g-feedback' : 'qcm-feedback');
+        const nextBtn = document.getElementById(mode === 'game' ? 'g-next-btn' : 'qcm-next-btn');
+
+        if (selected === correct) {
+            btn.classList.add('correct');
+            totalScore += 10;
+            updateScore();
+            feedbackEl.innerText = "✅ صحيح! أحسنت.";
+            feedbackEl.style.color = "#27ae60";
+            
+            // If in context phase, reveal the text immediately for visual feedback
+            if (phase === 'context' && mode === 'game') {
+                const eraDescEl = document.getElementById('g-era-desc');
+                eraDescEl.innerText = correct;
+                eraDescEl.classList.add('revealed');
+            }
+
+        } else {
+            btn.classList.add('wrong');
+            allBtns.forEach(b => {
+                if (b.innerText === correct) b.classList.add('correct');
+            });
+            feedbackEl.innerText = "❌ خطأ!";
+            feedbackEl.style.color = "#c0392b";
+        }
+        nextBtn.style.display = "block";
+    }
+
+    function finishExam() {
+        showScreen('screen-result');
+        document.getElementById('progress').style.width = "100%";
+        document.getElementById('final-score').innerText = totalScore;
+        
+        // Approximate max score calculation
+        let totalGameQuestions = erasData.length + erasData.reduce((acc, e) => acc + (e.philosophers.length * 2), 0);
+        let maxScore = (totalGameQuestions * 10) + (qcmData.length * 10);
+        
+        const percentage = (totalScore / maxScore) * 100;
+        const msgEl = document.getElementById('final-msg');
+
+        if (percentage >= 85) {
+            msgEl.innerText = "أداء ممتاز! فهمت السياق والتفاصيل 🎓";
+            msgEl.style.color = "#27ae60";
+        } else if (percentage >= 50) {
+            msgEl.innerText = "جيد، ولكن راجع الفروقات بين العصور 🧐";
+            msgEl.style.color = "#f39c12";
+        } else {
+            msgEl.innerText = "التاريخ يحتاج للتكرار، لا تيأس! 💪";
+            msgEl.style.color = "#c0392b";
+        }
+    }
+</script>
+
+</body>
+</html>

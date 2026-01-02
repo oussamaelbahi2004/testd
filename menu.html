@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - ORG VIV SYSTEM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- STYLE GENERAL --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+            list-style-type: none;
+            border: none;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+        }
+
+        body {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 50px 20px;
+            background-image: url("https://i.postimg.cc/RFqSM2rc/bg.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Titre Principal */
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.5);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* --- LE BOUTON QUIZ (MOMAYAZ) --- */
+        .quiz-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 280px;
+            padding: 15px;
+            margin-bottom: 40px; /* Espace avant la grille */
+            
+            /* Style Glassmorphism Lumineux */
+            background: rgba(255, 255, 255, 0.2); 
+            border: 2px solid #fff;
+            border-radius: 50px;
+            
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #fff;
+            
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+            animation: pulse 2s infinite; /* Animation de respiration */
+            cursor: pointer;
+        }
+
+        .quiz-btn i {
+            margin-right: 15px;
+            font-size: 24px;
+        }
+
+        .quiz-btn:hover {
+            background: #fff;
+            color: #0a2862; /* Texte devient bleu foncé */
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8); /* Glow effect */
+            transform: scale(1.05);
+            border-color: #fff;
+        }
+
+        .quiz-btn:hover i {
+            color: #0a2862;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.6); }
+            100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+        }
+
+        /* --- GRID CONTAINER --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 40px;
+        }
+
+        /* --- CARTES (PARTS) --- */
+        .card {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(13px);
+            -webkit-backdrop-filter: blur(13px);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card span {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+            color: #eee;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* --- BOUTON GET BACK --- */
+        .btnn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: #0a2862;
+            width: 200px;
+            border-radius: 30px;
+            font-size: 16px;
+            height: 45px;
+            font-weight: 600;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btnn:hover {
+            opacity: 0.9;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .btnn i {
+            margin-right: 10px;
+            color: #0a2862;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>ORG VIV SYSTEM</h1>
+
+    <a href="QUIZ1SVT.html" class="quiz-btn">
+        <i class="fas fa-brain"></i> QUIZ
+    </a>
+
+    <div class="grid-container">
+        
+        <a href="part 1.html" class="card">
+            <span>Part 1</span>
+            <h3>La Matière Vivante</h3>
+        </a>
+
+        <a href="part 2.html" class="card">
+            <span>Part 2</span>
+            <h3>Niveaux d'Organisation</h3>
+        </a>
+
+        <a href="part 3.html" class="card">
+            <span>Part 3</span>
+            <h3>Le Corps Humain</h3>
+        </a>
+
+        <a href="part 4.html" class="card">
+            <span>Part 4</span>
+            <h3>Organisation Cellulaire</h3>
+        </a>
+
+        <a href="part 5.html" class="card">
+            <span>Part 5</span>
+            <h3>Les Procaryotes (Bactéries)</h3>
+        </a>
+
+        <a href="part 6.html" class="card">
+            <span>Part 6</span>
+            <h3>Les Virus</h3>
+        </a>
+
+        <a href="part 7.html" class="card">
+            <span>Part 7</span>
+            <h3>Les Eucaryotes</h3>
+        </a>
+
+        <a href="part 8.html" class="card">
+            <span>Part 8</span>
+            <h3>Le Système Nerveux</h3>
+        </a>
+
+        <a href="part 9.html" class="card">
+            <span>Part 9</span>
+            <h3>Le Système Respiratoire</h3>
+        </a>
+
+        <a href="part 10.html" class="card">
+            <span>Part 10</span>
+            <h3>L'Appareil Circulatoire</h3>
+        </a>
+
+        <a href="part 11.html" class="card">
+            <span>Part 11</span>
+            <h3>L'Appareil Digestif</h3>
+        </a>
+
+        <a href="part 12.html" class="card">
+            <span>Part 12</span>
+            <h3>L'Appareil Génital</h3>
+        </a>
+
+    </div>
+
+    <a href="index.html" class="btnn">
+        <i>&#8592;</i> GET BACK
+    </a>
+
+</body>
+</html>

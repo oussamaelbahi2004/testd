@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapitre 4 : Techniques de Traitement de l'Information</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Segoe+UI&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #8e44ad; /* Violet pour le "Traitement Intellectuel" */
+            --darija-color: #27ae60;
+            --bg-color: #fdfefe;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .instruction {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #ffeeba;
+            margin-bottom: 30px;
+        }
+
+        /* Card Style */
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--accent-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-top: 25px;
+            font-size: 1.2rem;
+        }
+
+        /* Interactive Text Area */
+        .interactive-text {
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #bdc3c7;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .interactive-text:hover {
+            background-color: #f3e5f5; /* Light purple hover */
+            border-left-color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        /* Style spécifique pour la Darija (Active) */
+        .interactive-text.darija-active {
+            border-left-color: var(--darija-color);
+            background-color: #e8f5e9;
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+            font-size: 1.1em;
+            color: #0e6655;
+        }
+
+        .interactive-text::after {
+            content: "👆 Traduire";
+            display: block;
+            font-size: 0.7em;
+            color: #999;
+            text-align: right;
+            margin-top: 5px;
+            opacity: 0.5;
+        }
+        
+        .interactive-text.darija-active::after {
+            text-align: left;
+            content: "👆 Retour au Français";
+        }
+
+        /* Buttons Container */
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-quiz {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-back {
+            background-color: #7f8c8d;
+            color: white;
+        }
+        
+        ul { margin: 0; padding-left: 20px; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Chapitre 4 : Traitement de l'Information</h1>
+        <p>Méthodologie de Travail Universitaire (MTU)</p>
+        <div class="instruction">
+            💡 <strong>Mode d'emploi :</strong> Clique sur le texte pour traduire en Darija !
+            <br>(اضغط على النص باش تقرا الشرح بالدارجة)
+        </div>
+    </header>
+
+    <div class="section-card">
+        <h2>1. Introduction au Traitement de l'Information</h2>
+        
+        <div class="interactive-text" 
+             data-darija='معالجة المعلومات هي تحويل المعلومة "الخام" لمعلومة واضحة وبسيطة يمكن نستعملوها. فالحياة المهنية، الغلط فالفهم أو التحليل كيتعتبر "خطأ جسيم" (Faute grave) ويقدر يعرضك لعقوبات.'>
+            Les techniques de traitement de l'information visent à transformer une information brute en une information claire et exploitable. Dans la vie professionnelle, un défaut d'interprétation est une "faute grave" pouvant entraîner des sanctions.
+        </div>
+
+        <div class="interactive-text" 
+             data-darija='كاين 5 تقنيات رئيسية: إعادة الصياغة (Reformulation)، الحفاظة (Mémorisation)، الخطاطات (Schématisation)، حل المشكلات (Résolution de problèmes)، والتفكير النقدي (Pensée critique).'>
+            On identifie cinq techniques majeures : la reformulation, la mémorisation, la schématisation, la résolution de problèmes et la pensée critique.
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>2. La Reformulation</h2>
+        <p>C'est un outil pour exprimer ses idées plus clairement.</p>
+        
+        <div class="interactive-text" 
+             data-darija='<strong>1. إعادة الصياغة بالمطابقة (Reflet):</strong> كتعاود نفس الهضرة ولكن بكلمات ومرادفات أخرى باش توضح المعنى كثر.<br><strong>2. إعادة الصياغة العكسية (Inversée):</strong> كتقلب الجملة من الإثبات للنفي أو العكس (مثال: بلاصت ماتقول "صعيب"، كتقول "ماشي ساهل") باش تبين أنك فهمتي مزيان.'>
+            <strong>1. Reformulation Reflet :</strong> Réexprimer le contenu avec des synonymes ou en changeant l'organisation des mots.<br>
+            <strong>2. Reformulation Inversée :</strong> Changer le mode de la phrase (affirmatif ↔ négatif) pour faire preuve de bonne compréhension (ex: "Je ne comprends pas" → "Tout le monde y arrive ?").
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>3. Fonctionnement de la Mémoire</h2>
+        <p>Le traitement de l'information passe par 3 étapes dynamiques :</p>
+
+        <div class="interactive-text" 
+             data-darija='<strong>1. الترميز (Encodage):</strong> الدماغ كيترجم المعلومات (صورة، كلمة، جملة) لواحد الكود باش يقدر يفهمو.<br><strong>2. التخزين (Conservation):</strong> الدماغ كيخبي المعلومة. ماشي كلشي كيبقى، كاين "سيليكسيون".<br><strong>3. الاسترجاع (Restitution):</strong> ملي كتجبد المعلومة، إما تلقائيا (تفكرتي شي حاجة بوحدك) أو بالعاني (كاتراجع للامتحان).'>
+            <strong>1. Encodage :</strong> Traduire l'information (visuelle, verbale) dans un format que le cerveau peut traiter.<br>
+            <strong>2. Conservation :</strong> Stocker les informations. La rétention dépend d'un processus de sélection.<br>
+            <strong>3. Restitution :</strong> Récupérer l'information stockée, soit spontanément (souvenir), soit délibérément (révision, résolution de problème).
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>4. Les Types de Mémoire</h2>
+
+        <h3>A. Mémoire à court terme</h3>
+        <div class="interactive-text" 
+             data-darija='الذاكرة قصيرة المدى كتشد المعلومات لمدة قصيرة (ثواني أو دقائق). المساحة ديالها محدودة، يلا كثرتي عليها المعلومات دقة وحدة غاتعمر دغيا (بحال نمرة التليفون).'>
+            Elle retient l'information quelques secondes à quelques minutes. Sa capacité est limitée ; elle sature vite si exposée à trop d'informations (ex: retenir un numéro de téléphone).
+        </div>
+
+        <h3>B. Mémoire à long terme</h3>
+        <div class="interactive-text" 
+             data-darija='المعلومات اللي تنظمات ف "قصيرة المدى" كدوز لـ "طويلة المدى". هنا التخزين غير محدود (Unlimited) وكيقدر يبقى ديما، بحال القاموس ديال الكلمات والمعايير الاجتماعية.'>
+            Si l'information est organisée, elle passe dans la mémoire à long terme. Sa capacité est illimitée et peut stocker des connaissances indéfiniment (ex: sens des mots, normes sociales).
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>5. La Schématisation</h2>
+        
+        <div class="interactive-text" 
+             data-darija='الخطاطة (Schéma) هي شبكة ديال المعلومات منظمة. كتعاونك فالفهم، فالقراءة، وفالتحليل. فاللول د العام كتعاونك فالنوط (Prise de note)، وفاللخر د العام كتعاونك فالتلخيص (Synthèse).'>
+            Le schéma est un réseau de connaissances organisées (conceptuel, heuristique, imagé). Il améliore l'analyse et la synthèse. Utile pour la prise de note (début) et la révision (fin).
+        </div>
+
+        <div class="interactive-text" 
+             data-darija='باش الخطاطة تكون فعالة، كنستعملو "الخصائص القبل-انتباهية" (Caractéristiques pré-attentives). هما علامات كتخلي العين تشوف المهم دغيا: التسطار، التغلاض (Gras)، الألوان، والأشكال الهندسية.'>
+            Pour être efficace, utilisez des caractéristiques « pré-attentives » : des signes visuels qui facilitent le repérage (souligner, encadrer, mettre en gras, couleurs, formes géométriques).
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>6. Résolution de Problèmes (La Problématique)</h2>
+        
+        <div class="interactive-text" 
+             data-darija='فالجامعة، أي مشروع بحث كيبدا بـ "إشكالية" (Problématique). هي وصف لمشكل كاين فالواقع أو فالكتب، وكيتصاغ على شكل "سؤال بحث" (Question de recherche) اللي كيجمع كاع المحاور.'>
+            Un projet de recherche vise la résolution de problème via une « problématique ». C'est la description d'un problème qui aboutit à une question de recherche structurante.
+        </div>
+
+        <div class="interactive-text" 
+             data-darija='الإشكالية المزيانة خاص تكون:<br>1. دقيقة (Précise) باش البحث يكون محدد.<br>2. واضحة ومفهومة.<br>3. ملائمة (Pertinente) وكتجيب شي حاجة جديدة.<br>4. واقعية (Réaliste) ويمكن تطبيقها فالوقت والموارد المتاحة.'>
+            Une bonne problématique doit être :<br>
+            1. Précise (pour une recherche ciblée).<br>
+            2. Claire et compréhensible.<br>
+            3. Pertinente (apporte une nouvelle perspective).<br>
+            4. Réaliste (faisable avec le temps et les ressources disponibles).
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>7. La Pensée Critique (Raisonnement)</h2>
+        <p>Le niveau supérieur du traitement de l'info utilise deux types de raisonnement :</p>
+
+        <div class="interactive-text" 
+             data-darija='<strong>1. الاستدلال الاستقرائي (Inductif):</strong> كتشوف ملاحظات وتجارب (من الخاص) وكتخرج بخلاصة عامة (إلى العام).<br><strong>2. الاستدلال الاستنتاجي (Déductif):</strong> كتبدا بنظرية عامة، كتحط فرضيات، وكدير تجارب باش تأكد منها أو ترفضها (من العام إلى الخاص).'>
+            <strong>1. Raisonnement Inductif :</strong> Partir d'observations et d'expériences pour arriver à une conclusion générale.<br>
+            <strong>2. Raisonnement Déductif :</strong> Partir d'une théorie, formuler des hypothèses, et les vérifier (confirmer ou rejeter) par des observations concrètes.
+        </div>
+    </div>
+
+    <div class="buttons-container">
+         <a href="game4.html" class="btn btn-quiz" >PASSER LE QUIZ</a>
+        <a href="index.html" class="btn btn-back">GET BACK</a>
+    </div>
+
+</div>
+
+<script>
+    const textElements = document.querySelectorAll('.interactive-text');
+
+    textElements.forEach(element => {
+        // Stocker le HTML original
+        element.dataset.french = element.innerHTML;
+
+        element.addEventListener('click', () => {
+            if (element.classList.contains('darija-active')) {
+                // Retour au français
+                element.innerHTML = element.dataset.french;
+                element.classList.remove('darija-active');
+            } else {
+                // Passage en Darija
+                if(element.dataset.darija) {
+                    element.innerHTML = element.dataset.darija;
+                    element.classList.add('darija-active');
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+
+</html>

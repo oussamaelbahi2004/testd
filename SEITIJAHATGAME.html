@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الاتجاهات الفلسفية - ENS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #16a085; /* لون أخضر تركوازي */
+            --secondary: #2c3e50;
+            --accent: #f1c40f;
+            --success: #27ae60;
+            --error: #c0392b;
+            --bg: #e8f8f5;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--secondary);
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card);
+            width: 100%;
+            max-width: 700px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            min-height: 650px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #d1f2eb;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .badge {
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .back-button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-3px);
+        }
+
+        /* Progress */
+        .progress-bar {
+            height: 8px;
+            background: #eee;
+            width: 100%;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Screens */
+        .screen {
+            flex: 1;
+            padding: 30px;
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .screen.active { display: flex; }
+
+        /* Typography */
+        h1 { margin: 0 0 10px 0; color: var(--primary); font-size: 2rem; }
+        
+        /* البطاقة الرئيسية (الاتجاه) */
+        .trend-card {
+            background: var(--secondary);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 0 auto 25px;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .trend-card::before {
+            content: "الاتجاه الفلسفي";
+            position: absolute;
+            top: 5px;
+            right: 50%;
+            transform: translateX(50%);
+            font-size: 0.8rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+        }
+
+        .trend-content {
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-top: 10px;
+        }
+
+        .step-label {
+            display: inline-block;
+            background: #e8f8f5;
+            color: var(--primary);
+            padding: 8px 25px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            border: 1px solid #a2d9ce;
+        }
+
+        /* Grid */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #ecf0f1;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Tajawal', sans-serif;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--primary);
+            background: #e8f8f5;
+            transform: translateX(5px);
+        }
+
+        .option-btn.correct {
+            background: #d5f5e3;
+            border-color: var(--success);
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background: #fadbd8;
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        /* Controls */
+        .next-btn {
+            margin-top: 25px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-self: center;
+        }
+        .next-btn:hover { background: #117a65; }
+
+        .start-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 25px;
+            font-size: 1.1rem;
+        }
+
+        .final-score {
+            font-size: 4rem;
+            color: var(--primary);
+            font-weight: 800;
+            margin: 20px 0;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <button class="back-button" onclick="window.location.href='SEITIJAHATCOURE.html'">
+            ← رجوع
+        </button>
+        <div id="section-title">من الاتجاه إلى التفاصيل</div>
+        <div class="badge">النقاط: <span id="score">0</span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+    <div class="screen active" id="screen-intro">
+        <h1>لعبة الاتجاهات 🧭</h1>
+        <p style="font-size:1.2rem; color:#555;">هل تضبط خصائص كل اتجاه فلسفي؟</p>
+        <div style="background:#fff; padding:20px; border-radius:15px; margin:20px 0; border:1px solid #eee; text-align:right;">
+            <p>1️⃣ <strong>اللعبة:</strong> سأعطيك "الاتجاه" (مثلاً: البراغماتي)، وأنت تكمل البروفايل.</p>
+            <p>2️⃣ <strong>اختبار QCM:</strong> 30 سؤال دقيق حول الفلسفات التربوية.</p>
+        </div>
+        <button class="start-btn" onclick="startGame()">ابدأ التحدي</button>
+    </div>
+
+    <div class="screen" id="screen-game">
+        <div class="trend-card">
+            <div class="trend-content" id="g-trend">...</div>
+        </div>
+
+        <div class="step-label" id="g-step-label">...</div>
+        
+        <div class="options-grid" id="g-options"></div>
+        <div class="feedback" id="g-feedback"></div>
+        <button class="next-btn" id="g-next-btn" onclick="nextGameStep()">تابع</button>
+    </div>
+
+    <div class="screen" id="screen-qcm">
+        <div class="step-label" style="background:var(--secondary); color:white; border:none;" id="qcm-counter">سؤال 1</div>
+        <h2 id="qcm-text" style="line-height:1.5; margin-bottom:20px;">...</h2>
+        <div class="options-grid" id="qcm-options"></div>
+        <div class="feedback" id="qcm-feedback"></div>
+        <button class="next-btn" id="qcm-next-btn" onclick="nextQCMStep()">السؤال التالي</button>
+    </div>
+
+    <div class="screen" id="screen-result">
+        <h1>النتيجة النهائية</h1>
+        <div class="final-score" id="final-score">0</div>
+        <p id="final-msg" style="font-size:1.3rem;">...</p>
+        <button class="start-btn" style="background:var(--secondary)" onclick="location.reload()">إعادة المحاولة</button>
+    </div>
+</div>
+  <script>
+    /* ================= DATA: The Matrix (Source: PDF Page 41) ================= */
+    const matrixData = [
+        {
+            trend: "الاتجاه المثالي",
+            philosopher: "أفلاطون / كانط",
+            view: "كائن روحي وعقلي (يسمو عن الغرائز)",
+            goal: "تهذيب الأخلاق وتنمية العقل والكمال",
+            role: "موجه، نموذج، وناقل للقيم والمعرفة",
+            method: "الحوار، التأمل، والمحاضرة"
+        },
+        {
+            trend: "الاتجاه الطبيعي",
+            philosopher: "جون جاك روسو / بستالوتزي",
+            view: "كائن فطري خير بطبعه (يفسده المجتمع)",
+            goal: "نمو حر ومتوازن (حماية الطبيعة الخيرة)",
+            role: "ملاحظ، مرافق، وحارس من التدخل السلبي",
+            method: "التعلم بالاكتشاف في الطبيعة (التربية السلبية)"
+        },
+        {
+            trend: "الاتجاه التجريبي",
+            philosopher: "جون لوك / فرانسيس بيكون",
+            view: "كائن حسي (صفحة بيضاء) معرفته تأتي من التجربة",
+            goal: "تكوين التفكير العلمي الدقيق",
+            role: "منظم للتجارب والبيئة التعليمية",
+            method: "الملاحظة، التجريب، والاستقراء"
+        },
+        {
+            trend: "الاتجاه البراغماتي (النفعي)",
+            philosopher: "جون ديوي / وليام جيمس",
+            view: "كائن اجتماعي عملي (يتعلم بالفعل)",
+            goal: "التأقلم مع البيئة وحل المشكلات الحياتية",
+            role: "ميسر، منشط، وموجه للمشاريع",
+            method: "التعلم بالمشروع، العمل، وحل المشكلات"
+        }
+    ];
+
+    // Steps (Order: Trend (Displayed) -> Philosopher -> View -> Goal -> Role -> Method)
+    const stepsOrder = [
+        { key: 'philosopher', label: "🤔 المرحلة 1: من هم رواد هذا الاتجاه؟" },
+        { key: 'view',        label: "🧠 المرحلة 2: كيف ينظر هذا الاتجاه للإنسان؟" },
+        { key: 'goal',        label: "🎯 المرحلة 3: ما هو الهدف الأسمى للتربية؟" },
+        { key: 'role',        label: "👨‍🏫 المرحلة 4: ما هو دور المربي (الأستاذ)؟" },
+        { key: 'method',      label: "📚 المرحلة 5: ما هو المنهج المعتمد؟" }
+    ];
+
+    /* ================= DATA: 30 QCM Questions ================= */
+    const qcmData = [
+        { q: "المفهوم الذي يربط التربية بـ 'إعداد الفرد للحياة عبر الحياة نفسها' هو جوهر:", o: ["المثالية", "الطبيعية", "البراغماتية", "السكولائية"], a: 2 },
+        { q: "يرى الاتجاه الطبيعي أن المجتمع:", o: ["هو مصدر الفضيلة", "يفسد الطبيعة الخيرة للطفل", "ضروري للتربية", "يجب أن يسيطر على المدرسة"], a: 1 },
+        { q: "صاحب نظرية 'الصفحة البيضاء' (Tabula Rasa) هو:", o: ["أفلاطون", "كانط", "جون لوك", "روسو"], a: 2 },
+        { q: "في الاتجاه المثالي، يعتبر المعلم:", o: ["ميسراً فقط", "مراقباً سلبياً", "نموذجاً وناقلاً للقيم", "زميلاً للمتعلم"], a: 2 },
+        { q: "طريقة 'حل المشكلات' هي التطبيق التربوي للفلسفة:", o: ["الوجودية", "النفعية (البراغماتية)", "المثالية", "الطبيعية"], a: 1 },
+        { q: "الغاية من التربية عند 'كانط' هي:", o: ["تهذيب الطبيعة الحيوانية والانضباط", "التمتع بالحياة", "كسب المال", "الحرية المطلقة"], a: 0 },
+        { q: "يعتبر 'بستالوتزي' مجدداً تربوياً تأثر بـ:", o: ["روسو (الطبيعية)", "أفلاطون (المثالية)", "ديوي (البراغماتية)", "سكنر (السلوكية)"], a: 0 },
+        { q: "المنهج القائم على 'التوليد' (المايوطيو) ينسب لـ:", o: ["سقراط", "أرسطو", "بيكون", "ديوي"], a: 0 },
+        { q: "التربية السلبية عند روسو تعني:", o: ["عدم التدخل المباشر وحماية الطفل", "ضرب الطفل", "تلقين المعلومات", "ترك الطفل في الشارع"], a: 0 },
+        { q: "يركز الاتجاه التجريبي في المنهج على:", o: ["الحفظ", "الملاحظة والتجريب", "التأمل", "الوحي"], a: 1 },
+        { q: "أي اتجاه يرى الطفل 'كائناً اجتماعياً' يتعلم بالمشاركة؟", o: ["الطبيعي", "البراغماتي", "المثالي", "التجريبي"], a: 1 },
+        { q: "كتاب 'الجمهورية' يمثل الفكر التربوي لـ:", o: ["أفلاطون", "أرسطو", "سقراط", "ابن خلدون"], a: 0 },
+        { q: "المربي في الاتجاه البراغماتي دوره:", o: ["مُلقن", "حارس", "منشط وموجه", "سيد مطاع"], a: 2 },
+        { q: "فكرة 'تكامل الرأس والقلب واليد' تعود لـ:", o: ["بستالوتزي", "فروبل", "مونتيسوري", "هيربارت"], a: 0 },
+        { q: "الاتجاه الذي يعتمد 'الاستقراء' كمنهج للمعرفة هو:", o: ["المثالي", "التجريبي", "الطبيعي", "الوجودي"], a: 1 },
+        { q: "من رواد الاتجاه البراغماتي إلى جانب جون ديوي:", o: ["وليام جيمس", "جون لوك", "كانط", "هيغل"], a: 0 },
+        { q: "الهدف من التربية في الاتجاه الطبيعي هو:", o: ["المواطنة الصالحة", "النمو الحر المتوافق مع الطبيعة", "النجاح المهني", "الطاعة العمياء"], a: 1 },
+        { q: "يرى الاتجاه المثالي الإنسان كـ:", o: ["كائن مادي", "كائن روحي وعقلي", "آلة بيولوجية", "حيوان ناطق فقط"], a: 1 },
+        { q: "المدرسة النشطة (L'école active) هي تطبيق لـ:", o: ["النظرية البراغماتية", "النظرية السلوكية", "النظرية المثالية", "النظرية التقليدية"], a: 0 },
+        { q: "يعتبر 'فرانسيس بيكون' من دعاة:", o: ["المنطق الأرسطي", "المنهج العلمي التجريبي", "الفلسفة الصوفية", "اللاهوت"], a: 1 },
+        { q: "في الاتجاه التجريبي، دور المربي هو:", o: ["تنظيم البيئة والتجارب", "الوعظ والإرشاد", "عدم التدخل نهائياً", "التلقين"], a: 0 },
+        { q: "التربية التي تهدف لـ 'بناء الدولة المثالية' هي:", o: ["تربية أفلاطون", "تربية روسو", "تربية ديوي", "تربية نيل"], a: 0 },
+        { q: "أي من هؤلاء ليس من رواد الاتجاه التجريبي؟", o: ["جون لوك", "دافيد هيوم", "فرانسيس بيكون", "أفلاطون"], a: 3 },
+        { q: "المقصود بـ 'التربية من أجل الحياة' عند ديوي:", o: ["التعلم من خلال خبرات واقعية", "الحفظ للامتحان", "التربية الدينية", "الرياضة"], a: 0 },
+        { q: "يرى روسو أن الكتب:", o: ["أساسية في الصغر", "يجب تأخيرها والتركيز على الطبيعة", "المصدر الوحيد للمعرفة", "مقدسة"], a: 1 },
+        { q: "الاتجاه الذي يركز على 'الحقائق المطلقة والثابتة' هو:", o: ["المثالي", "البراغماتي (الحقيقة نسبية)", "التجريبي", "الطبيعي"], a: 0 },
+        { q: "يتميز 'التعلم بالمشروع' بـ:", o: ["الفردية المطلقة", "العمل الجماعي وحل المشكلات", "السلبية", "النظرية المجردة"], a: 1 },
+        { q: "من خصائص المنهج المثالي:", o: ["المحاضرة والحوار", "التجارب المعملية", "الخرجات الميدانية", "الأشغال اليدوية"], a: 0 },
+        { q: "نظرة الاتجاه التجريبي للإنسان:", o: ["يولد بأفكار فطرية", "يولد صفحة بيضاء", "يولد شريراً", "يولد عالماً"], a: 1 },
+        { q: "الهدف 'التأقلم مع البيئة المتغيرة' يخص:", o: ["الاتجاه البراغماتي", "الاتجاه المثالي", "الاتجاه الديني", "الاتجاه التقليدي"], a: 0 }
+    ];
+
+    /* ================= LOGIC ================= */
+    let totalScore = 0;
+    
+    // Game vars
+    let matrixIndex = 0;
+    let stepIndex = 0;
+    
+    // QCM vars
+    let qcmIndex = 0;
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function shuffleArray(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+    function updateScore() {
+        document.getElementById('score').innerText = totalScore;
+    }
+
+    function startGame() {
+        totalScore = 0;
+        matrixIndex = 0;
+        stepIndex = 0;
+        qcmIndex = 0;
+        updateScore();
+        
+        // Randomize
+        shuffleArray(matrixData);
+        shuffleArray(qcmData);
+
+        // Start
+        loadGameRound();
+        showScreen('screen-game');
+    }
+
+    /* ------- Part 1: Trends Game ------- */
+    function loadGameRound() {
+        const data = matrixData[matrixIndex];
+        const step = stepsOrder[stepIndex]; // Current step definition
+
+        // UI Elements
+        const trendDisplay = document.getElementById('g-trend');
+        const stepLabel = document.getElementById('g-step-label');
+        const optionsDiv = document.getElementById('g-options');
+        const feedbackEl = document.getElementById('g-feedback');
+        const nextBtn = document.getElementById('g-next-btn');
+        const progressBar = document.getElementById('progress');
+
+        // Update Text
+        trendDisplay.innerText = data.trend; // Always show Trend as anchor
+        stepLabel.innerText = step.label;
+        feedbackEl.innerText = "";
+        nextBtn.style.display = "none";
+        optionsDiv.innerHTML = "";
+
+        // Progress Calculation
+        let totalSteps = matrixData.length * stepsOrder.length;
+        let currentAbs = (matrixIndex * stepsOrder.length) + stepIndex;
+        let progressPercent = (currentAbs / totalSteps) * 50;
+        progressBar.style.width = `${progressPercent}%`;
+
+        // Determine correct answer & distractors
+        const correctAns = data[step.key];
+        
+        // Distractors must come from other rows but SAME column (key)
+        let distractors = matrixData
+            .filter((_, i) => i !== matrixIndex)
+            .map(d => d[step.key]);
+        
+        shuffleArray(distractors);
+        let options = [correctAns, distractors[0], distractors[1]];
+        shuffleArray(options);
+
+        createButtons(optionsDiv, options, correctAns, 'game');
+    }
+
+    function nextGameStep() {
+        stepIndex++;
+        // If we finished the 5 steps for this trend
+        if (stepIndex >= stepsOrder.length) {
+            stepIndex = 0;
+            matrixIndex++;
+            // If we finished all trends
+            if (matrixIndex >= matrixData.length) {
+                startQCMPhase();
+                return;
+            }
+        }
+        loadGameRound();
+    }
+
+    /* ------- Part 2: QCM ------- */
+    function startQCMPhase() {
+        showScreen('screen-qcm');
+        document.getElementById('section-title').innerText = "المرحلة 2: اختبار QCM";
+        loadQCMRound();
+    }
+
+    function loadQCMRound() {
+        const data = qcmData[qcmIndex];
+        const optionsDiv = document.getElementById('qcm-options');
+        const feedbackEl = document.getElementById('qcm-feedback');
+        const nextBtn = document.getElementById('qcm-next-btn');
+        const progressBar = document.getElementById('progress');
+
+        document.getElementById('qcm-counter').innerText = `سؤال ${qcmIndex + 1} / ${qcmData.length}`;
+        document.getElementById('qcm-text').innerText = data.q;
+        feedbackEl.innerText = "";
+        nextBtn.style.display = "none";
+        optionsDiv.innerHTML = "";
+
+        // Progress: 50% -> 100%
+        let progressPercent = 50 + ((qcmIndex / qcmData.length) * 50);
+        progressBar.style.width = `${progressPercent}%`;
+
+        let options = [...data.o];
+        let correctTxt = data.o[data.a];
+        
+        createButtons(optionsDiv, options, correctTxt, 'qcm');
+    }
+
+    function nextQCMStep() {
+        qcmIndex++;
+        if (qcmIndex < qcmData.length) {
+            loadQCMRound();
+        } else {
+            finishExam();
+        }
+    }
+
+    /* ------- Helpers ------- */
+    function createButtons(container, optionsList, correctText, mode) {
+        optionsList.forEach(opt => {
+            if(!opt) return;
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = function() { checkAnswer(this, opt, correctText, container, mode); };
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(btn, selected, correct, container, mode) {
+        const allBtns = container.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.disabled = true);
+
+        const feedbackEl = document.getElementById(mode === 'game' ? 'g-feedback' : 'qcm-feedback');
+        const nextBtn = document.getElementById(mode === 'game' ? 'g-next-btn' : 'qcm-next-btn');
+
+        if (selected === correct) {
+            btn.classList.add('correct');
+            totalScore += 10;
+            updateScore();
+            feedbackEl.innerText = "✅ صحيح! تابع...";
+            feedbackEl.style.color = "#27ae60";
+        } else {
+            btn.classList.add('wrong');
+            allBtns.forEach(b => {
+                if (b.innerText === correct) b.classList.add('correct');
+            });
+            feedbackEl.innerText = "❌ خطأ!";
+            feedbackEl.style.color = "#c0392b";
+        }
+        nextBtn.style.display = "block";
+    }
+
+    function finishExam() {
+        showScreen('screen-result');
+        document.getElementById('progress').style.width = "100%";
+        document.getElementById('final-score').innerText = totalScore;
+        
+        // Max Score: (4 trends * 5 steps * 10) + (30 QCM * 10) = 200 + 300 = 500
+        const maxScore = 500;
+        const percentage = (totalScore / maxScore) * 100;
+        const msgEl = document.getElementById('final-msg');
+
+        if (percentage >= 85) {
+            msgEl.innerText = "أداء خرافي! راك ضبطتي الاتجاهات 100% 🎓";
+            msgEl.style.color = "#27ae60";
+        } else if (percentage >= 50) {
+            msgEl.innerText = "مزيان، ولكن باقي خاصك شوية د التركيز 🧐";
+            msgEl.style.color = "#f39c12";
+        } else {
+            msgEl.innerText = "عاود اللعبة باش ترسخ المعلومات! 💪";
+            msgEl.style.color = "#c0392b";
+        }
+    }
+</script>
+
+</body>
+</html>

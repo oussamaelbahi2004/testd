@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game - MTU Chapitre 4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #8e44ad; /* Violet pour le Chapitre 4 */
+            --wrong: #e74c3c;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .game-container {
+            background: var(--card);
+            width: 100%;
+            max-width: 800px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header { margin-bottom: 20px; }
+        h1 { color: var(--primary); margin: 0; font-size: 1.8rem; }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            color: #777;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .question-box { margin: 30px 0; }
+        
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--primary);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: #e9ecef;
+            border-color: #dbe4eb;
+        }
+
+        .correct {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724;
+        }
+
+        .incorrect {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24;
+        }
+
+        .result-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
+        }
+
+        .btn-action {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .badge-type {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .badge-qcm { background-color: #3498db; }
+        .badge-vf { background-color: #9b59b6; }
+        .badge-sit { background-color: #e67e22; }
+
+        #error-display {
+            color: red;
+            background: #fee;
+            border: 1px solid red;
+            padding: 10px;
+            margin: 10px;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <div id="error-display"></div>
+
+    <div id="game-interface">
+        <header>
+            <h1>Quiz : Traitement de l'Information</h1>
+            <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+            <div class="stats">
+                <span id="q-counter">Question 1/45</span>
+                <span id="score-display">Score: 0</span>
+            </div>
+        </header>
+
+        <div class="question-box">
+            <span id="q-type-badge" class="badge-type badge-qcm">QCM</span>
+            <div class="question-text" id="question">Chargement en cours...</div>
+            <div class="options-grid" id="options">
+                </div>
+        </div>
+    </div>
+
+    <div id="result-interface" class="result-screen">
+        <h2>Quiz Terminé ! (ساليتي)</h2>
+        <div class="score-circle" id="final-score">0/45</div>
+        <p id="feedback-text">Analyse en cours...</p>
+        
+        <a href="MTU CHAP 4.html" class="btn-action">GO BACK TO LESSON</a>
+        <button onclick="location.reload()" class="btn-action" style="background-color: #7f8c8d; margin-top: 10px;">REJOUER</button>
+    </div>
+</div>
+
+<script>
+try {
+    // --- DATABASE DES QUESTIONS CHAPITRE 4 (45 Questions) ---
+    const quizData = [
+        // --- 30 QCM ---
+        // Introduction & Techniques
+        { t: "QCM", q: "Le traitement de l'information vise à transformer une information brute en :", o: ["Une information fausse", "Une information claire et exploitable", "Un fichier illisible", "Une image floue"], a: 1 },
+        { t: "QCM", q: "Dans la vie professionnelle, un défaut d'interprétation de l'information est considéré comme :", o: ["Une qualité", "Une faute grave", "Un détail sans importance", "Une preuve d'intelligence"], a: 1 },
+        { t: "QCM", q: "Combien y a-t-il de techniques majeures de traitement de l'information ?", o: ["3", "5", "10", "2"], a: 1 },
+        { t: "QCM", q: "Quelle technique n'appartient PAS aux 5 techniques de traitement ?", o: ["La reformulation", "La mémorisation", "Le sommeil", "La pensée critique"], a: 2 },
+
+        // Reformulation
+        { t: "QCM", q: "La reformulation 'Reflet' consiste à :", o: ["Contredire l'interlocuteur", "Répéter avec des synonymes pour s'assurer de la compréhension", "Changer le sujet", "Ne rien dire"], a: 1 },
+        { t: "QCM", q: "La reformulation 'Inversée' consiste à :", o: ["Parler à l'envers", "Traduire en anglais", "Changer le mode (affirmatif/négatif) ou le point de vue", "Crier"], a: 2 },
+        { t: "QCM", q: "Laquelle est une reformulation inversée de 'C'est difficile' ?", o: ["C'est dur", "C'est compliqué", "Ce n'est pas facile", "C'est impossible"], a: 2 },
+
+        // Mémoire
+        { t: "QCM", q: "Quelle est la première étape du processus de mémorisation ?", o: ["La restitution", "L'encodage", "Le stockage", "L'oubli"], a: 1 },
+        { t: "QCM", q: "L'étape de 'Conservation' correspond au :", o: ["Traitement du signal", "Stockage de l'information", "Rappel de l'information", "Suppression de l'information"], a: 1 },
+        { t: "QCM", q: "La mémoire à court terme a une capacité :", o: ["Illimitée", "Très limitée (quelques éléments)", "De 1 To", "Permanente"], a: 1 },
+        { t: "QCM", q: "La mémoire à long terme a une capacité :", o: ["Limitée à 1 heure", "Quasi illimitée", "Limitée à 7 éléments", "Nulle"], a: 1 },
+        { t: "QCM", q: "La 'Restitution' peut être :", o: ["Spontanée ou volontaire", "Payante ou gratuite", "Rapide ou lente seulement", "Impossible"], a: 0 },
+
+        // Schématisation
+        { t: "QCM", q: "La schématisation sert principalement à :", o: ["Rendre le texte plus long", "Organiser et visualiser les liens entre les idées", "Perdre du temps", "Dessiner des mangas"], a: 1 },
+        { t: "QCM", q: "Les caractéristiques 'pré-attentives' aident l'œil à :", o: ["Repérer l'information instantanément", "Dormir", "Lire moins vite", "Ignorer l'information"], a: 0 },
+        { t: "QCM", q: "Lequel est un attribut pré-attentif ?", o: ["Le texte en petit", "La couleur", "L'encre invisible", "Le silence"], a: 1 },
+        { t: "QCM", q: "La schématisation est utile en début d'année pour :", o: ["La prise de notes", "La synthèse", "L'examen", "Les vacances"], a: 0 },
+        { t: "QCM", q: "La schématisation est utile en fin d'année pour :", o: ["La découverte", "La synthèse et la révision", "L'oubli", "L'inscription"], a: 1 },
+
+        // Résolution de Problèmes & Pensée Critique
+        { t: "QCM", q: "Une 'Problématique' est généralement formulée sous forme de :", o: ["Réponse", "Question de recherche", "Dessin", "Calcul mathématique"], a: 1 },
+        { t: "QCM", q: "Une bonne problématique doit être :", o: ["Floue et longue", "Précise, claire et pertinente", "Impossible à résoudre", "Déjà résolue"], a: 1 },
+        { t: "QCM", q: "Le critère 'Réaliste' d'une problématique signifie :", o: ["Qu'elle est vraie", "Qu'elle est faisable avec les ressources disponibles", "Qu'elle est chère", "Qu'elle est facile"], a: 1 },
+        { t: "QCM", q: "Le raisonnement 'Inductif' va du :", o: ["Général au Particulier", "Particulier (Observations) au Général (Théorie)", "Faux au Vrai", "Vrai au Faux"], a: 1 },
+        { t: "QCM", q: "Le raisonnement 'Déductif' va du :", o: ["Général (Théorie) au Particulier (Hypothèse)", "Particulier au Général", "Haut vers le Bas", "Gauche à Droite"], a: 0 },
+        { t: "QCM", q: "Vérifier une hypothèse par l'expérience est une démarche :", o: ["Inductive", "Déductive", "Intuitive", "Hasardeuse"], a: 1 },
+        { t: "QCM", q: "La pensée critique permet de :", o: ["Tout accepter", "Tout refuser", "Analyser, évaluer et juger l'information", "Dormir en cours"], a: 2 },
+        { t: "QCM", q: "L'Encodage transforme l'information en :", o: ["Code secret", "Traces mnésiques (Code compréhensible par le cerveau)", "Bruit", "Lumière"], a: 1 },
+        { t: "QCM", q: "La 'Reformulation' est un outil pour :", o: ["La mémorisation", "La communication et la vérification de sens", "La perte de temps", "L'écriture"], a: 1 },
+        { t: "QCM", q: "Une information 'brute' est :", o: ["Traitée et analysée", "Non traitée et difficile à utiliser", "Fausse", "Vraie"], a: 1 },
+        { t: "QCM", q: "Le 'Schéma' est un réseau de :", o: ["Fils électriques", "Connaissances organisées", "Routes", "Mensonges"], a: 1 },
+
+        // --- 10 Vrai/Faux ---
+        { t: "V/F", q: "Vrai ou Faux : La mémoire à court terme peut stocker une infinité d'informations.", o: ["Vrai", "Faux"], a: 1 },
+        { t: "V/F", q: "Vrai ou Faux : La reformulation 'miroir' consiste à répéter exactement les mêmes mots.", o: ["Vrai", "Faux"], a: 1 }, // C'est des synonymes, pas perroquet
+        { t: "V/F", q: "Vrai ou Faux : Le raisonnement déductif part d'une théorie pour arriver à une observation.", o: ["Vrai", "Faux"], a: 0 },
+        { t: "V/F", q: "Vrai ou Faux : L'encodage est la dernière étape de la mémorisation.", o: ["Vrai", "Faux"], a: 1 }, // C'est la première
+        { t: "V/F", q: "Vrai ou Faux : Mettre un texte en gras est un attribut pré-attentif.", o: ["Vrai", "Faux"], a: 0 },
+        { t: "V/F", q: "Vrai ou Faux : Une problématique doit être vague pour couvrir tous les sujets.", o: ["Vrai", "Faux"], a: 1 }, // Elle doit être précise
+        { t: "V/F", q: "Vrai ou Faux : La mémoire à long terme stocke nos souvenirs d'enfance.", o: ["Vrai", "Faux"], a: 0 },
+        { t: "V/F", q: "Vrai ou Faux : L'interprétation erronée de l'information peut mener à des sanctions professionnelles.", o: ["Vrai", "Faux"], a: 0 },
+        { t: "V/F", q: "Vrai ou Faux : Le raisonnement inductif commence par des observations concrètes.", o: ["Vrai", "Faux"], a: 0 },
+        { t: "V/F", q: "Vrai ou Faux : La schématisation complique la lecture des notes.", o: ["Vrai", "Faux"], a: 1 },
+
+        // --- 5 Situations ---
+        { t: "SITUATION", q: "Mise en situation : Amina dit 'Je ne comprends rien'. Son ami répond : 'Tu veux dire que ce cours te semble difficile ?'. Quel type de reformulation ?", o: ["Reflet (Miroir)", "Inversée", "Synthèse", "Critique"], a: 0 },
+        { t: "SITUATION", q: "Mise en situation : Karim observe que tous les cygnes qu'il a vus sont blancs. Il conclut que 'Tous les cygnes sont blancs'. Quel raisonnement ?", o: ["Déductif", "Inductif", "Absurde", "Hypothétique"], a: 1 },
+        { t: "SITUATION", q: "Mise en situation : Sara utilise des couleurs fluo et des cadres pour ses révisions. Elle utilise la technique de :", o: ["Mémorisation par cœur", "Schématisation (Attributs pré-attentifs)", "Reformulation", "Raisonnement"], a: 1 },
+        { t: "SITUATION", q: "Mise en situation : Vous partez de la loi de la gravité (Théorie) pour prédire que votre stylo va tomber (Hypothèse). C'est :", o: ["Une induction", "Une déduction", "Une observation", "Une erreur"], a: 1 },
+        { t: "SITUATION", q: "Mise en situation : Vous transformez un texte long en une liste à puces avec des mots-clés. C'est du :", o: ["Traitement de l'information", "Plagiat", "Perte de temps", "Sommeil"], a: 0 }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const ui = {
+        question: document.getElementById('question'),
+        options: document.getElementById('options'),
+        progress: document.getElementById('progress'),
+        counter: document.getElementById('q-counter'),
+        score: document.getElementById('score-display'),
+        gameInterface: document.getElementById('game-interface'),
+        resultInterface: document.getElementById('result-interface'),
+        finalScore: document.getElementById('final-score'),
+        feedbackText: document.getElementById('feedback-text'),
+        badge: document.getElementById('q-type-badge')
+    };
+
+    function loadQuestion() {
+        if(currentQuestionIndex >= quizData.length) {
+            endGame();
+            return;
+        }
+
+        const data = quizData[currentQuestionIndex];
+        
+        // Mise à jour de l'affichage
+        if(ui.question) ui.question.innerText = data.q;
+        if(ui.counter) ui.counter.innerText = `Question ${currentQuestionIndex + 1}/${quizData.length}`;
+        if(ui.score) ui.score.innerText = `Score: ${score}`;
+        
+        // Badge Type
+        if(ui.badge) {
+            ui.badge.innerText = data.t;
+            ui.badge.className = 'badge-type'; 
+            if(data.t === 'QCM') ui.badge.classList.add('badge-qcm');
+            else if(data.t === 'V/F') ui.badge.classList.add('badge-vf');
+            else ui.badge.classList.add('badge-sit');
+        }
+
+        // Barre de progression
+        if(ui.progress) {
+            const progressPercent = ((currentQuestionIndex) / quizData.length) * 100;
+            ui.progress.style.width = `${progressPercent}%`;
+        }
+
+        // Générer les boutons
+        if(ui.options) {
+            ui.options.innerHTML = '';
+            data.o.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = option;
+                btn.onclick = () => checkAnswer(index, btn);
+                ui.options.appendChild(btn);
+            });
+        }
+    }
+
+    // Fonction globale pour être accessible
+    window.checkAnswer = function(selectedIndex, btnElement) {
+        const allBtns = document.querySelectorAll('.option-btn');
+        allBtns.forEach(btn => btn.disabled = true);
+
+        const correctIndex = quizData[currentQuestionIndex].a;
+
+        if (selectedIndex === correctIndex) {
+            btnElement.classList.add('correct');
+            score++;
+            ui.score.innerText = `Score: ${score}`;
+        } else {
+            btnElement.classList.add('incorrect');
+            if(allBtns[correctIndex]) {
+                allBtns[correctIndex].classList.add('correct');
+            }
+        }
+
+        setTimeout(() => {
+            currentQuestionIndex++;
+            loadQuestion();
+        }, 1000);
+    };
+
+    function endGame() {
+        ui.gameInterface.style.display = 'none';
+        ui.resultInterface.style.display = 'flex';
+        ui.finalScore.innerText = `${score}/${quizData.length}`;
+
+        const percentage = (score / quizData.length) * 100;
+        let msg = "";
+        if (percentage === 100) msg = "Bravo ! Tu es un maître du traitement de l'info ! (تبارك الله عليك)";
+        else if (percentage >= 70) msg = "Très bien ! Tu as bien assimilé le cours.";
+        else if (percentage >= 50) msg = "Pas mal, mais revois les types de raisonnement et la mémoire.";
+        else msg = "Attention, il faut relire le Chapitre 4. (خاصك تراجع الدرس مزيان)";
+        
+        ui.feedbackText.innerText = msg;
+    }
+
+    // Lancement du jeu
+    loadQuestion();
+
+} catch (error) {
+    document.getElementById('error-display').innerText = "Erreur : " + error.message;
+    document.getElementById('error-display').style.display = 'block';
+}
+</script>
+
+</body>
+</html>

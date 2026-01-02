@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 3: خصائص الفعل</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #818cf8;
+            --accent: #f59e0b;
+            --text: #1f2937;
+            --bg: #f9fafb;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-link {
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-link:hover { background: white; color: var(--primary); transform: translateY(-2px); }
+
+        h1 { margin: 0; font-size: 1.8rem; }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 10px; margin-top: 30px; }
+
+        .content { padding: 30px; }
+
+        .info-card {
+            background: #eef2ff;
+            border-right: 5px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .example-box {
+            background: #fffbeb;
+            border: 1px dashed var(--accent);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #b45309;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block; padding: 2px 8px; border-radius: 12px;
+            font-size: 0.9em; color: white; margin: 0 2px;
+        }
+        .tag-sahih { background: #059669; }
+        .tag-motal { background: #dc2626; }
+
+        /* Table Style */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+        .summary-table th, .summary-table td {
+            border: 1px solid #d1d5db;
+            padding: 12px;
+            text-align: right;
+        }
+        .summary-table th {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+        }
+        .summary-table tr:nth-child(even) { background-color: #f3f4f6; }
+
+        /* Quiz Style */
+        .game-area {
+            background: #1f2937; color: white; padding: 25px;
+            border-radius: 10px; text-align: center; margin-top: 40px;
+        }
+        .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 15px; }
+        .btn-game {
+            background: #374151; border: 2px solid #4b5563; color: white;
+            padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; transition: 0.3s;
+        }
+        .btn-game:hover { background: #4b5563; }
+        .btn-game.correct { background: var(--success); border-color: var(--success); }
+        .btn-game.wrong { background: var(--error); border-color: var(--error); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>الدرس 3: خصائص الفعل</h1>
+        <p>التصرف والجمود • الصحة والعلة</p>
+        
+        <div class="nav-buttons">
+            <a href="index.html" class="btn-link">الرئيسية</a>
+            <a href="gamea1.html" class="btn-link">الكويز (Game)</a>
+        </div>
+    </header>
+
+    <div class="content">
+        
+        <section>
+            <h2>1. الفعل من حيث التصرف والجمود</h2>
+            <p>ينقسم الفعل حسب قدرته على التحول للأزمنة المختلفة إلى:</p>
+            
+            <div class="info-card">
+                <h3>أ. الفعل المتصرف</h3>
+                <ul>
+                    <li><strong>تام التصرف:</strong> تأتي منه الأفعال الثلاثة (ماضي، مضارع، أمر). <br>
+                        <em>مثال:</em> كَتَبَ ⬅️ يَكْتُبُ ⬅️ اُكْتُبْ.
+                    </li>
+                    <li><strong>ناقص التصرف:</strong> يأتي منه الماضي والمضارع فقط (لا أمر له). <br>
+                        <em>مثال:</em> كَادَ (يَكَادُ)، مَا زَالَ (مَا يَزَالُ).
+                    </li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>ب. الفعل الجامد</h3>
+                <p>يلزم صورة واحدة لا يغادرها.</p>
+                <ul>
+                    <li><strong>ملازم للماضي:</strong> لَيْسَ، عَسَى، نِعْمَ، بِئْسَ.</li>
+                    <li><strong>ملازم للأمر:</strong> هَبْ، تَعَالَ، هَاتِ.</li>
+                </ul>
+                <div class="example-box">تنبيه: "تعال" فعل أمر جامد، وليس له ماضٍ ولا مضارع.</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. الفعل الصحيح والمعتل</h2>
+            
+            <div class="info-card">
+                <h3>أ. الفعل الصحيح</h3>
+                <p>ما خلت أصوله من حروف العلة (و، ا، ي). وهو 3 أنواع:</p>
+                <ol>
+                    <li><strong>السالم:</strong> سلم من الهمز والتضعيف (كَتَبَ).</li>
+                    <li><strong>المهموز:</strong> أحد أصوله همزة (أَكَلَ، سَأَلَ، قَرَأَ).</li>
+                    <li><strong>المضعف:</strong> فيه حرف مكرر (مَدَّ، زَلْزَلَ).</li>
+                </ol>
+            </div>
+
+            <div class="info-card">
+                <h3>ب. الفعل المعتل</h3>
+                <p>ما كان أحد أصوله حرف علة. وهو 5 أنواع:</p>
+                <ol>
+                    <li><strong>المثال:</strong> أوله علة (وَعَدَ، يَئِسَ).</li>
+                    <li><strong>الأجوف:</strong> وسطه علة (قَالَ، بَاعَ).</li>
+                    <li><strong>الناقص:</strong> آخره علة (رَمَى، دَعَا).</li>
+                    <li><strong>اللفيف المقرون:</strong> وسطه وآخره علة (طَوَى).</li>
+                    <li><strong>اللفيف المفروق:</strong> أوله وآخره علة (وَقَى).</li>
+                </ol>
+                <div class="example-box">مثال اللفيف المفروق: <span class="tag tag-motal">وَ</span>قَ<span class="tag tag-motal">ى</span> (العلة مفروقة بحرف صحيح).</div>
+            </div>
+        </section>
+
+        <div class="game-area">
+            <h3>تمرين تطبيقي</h3>
+            <div id="quiz-content">
+                <div class="game-question" id="q-text">...</div>
+                <div class="options" id="q-options"></div>
+                <div id="feedback" style="margin-top:15px; font-weight:bold;"></div>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px;">
+            <h3>خلاصة الدرس (جدول)</h3>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th width="20%">التصنيف</th>
+                        <th width="25%">النوع</th>
+                        <th>التعريف / القاعدة</th>
+                        <th>مثال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="3"><strong>التصرف والجمود</strong></td>
+                        <td>تام التصرف</td>
+                        <td>يأتي منه ماضي + مضارع + أمر</td>
+                        <td>ذَهَبَ، عَلِمَ</td>
+                    </tr>
+                    <tr>
+                        <td>ناقص التصرف</td>
+                        <td>يأتي منه ماضي + مضارع فقط</td>
+                        <td>كَادَ، أَوْشَكَ، مَا زَالَ</td>
+                    </tr>
+                    <tr>
+                        <td>جامد</td>
+                        <td>يلزم صورة واحدة (غالباً الماضي)</td>
+                        <td>لَيْسَ، عَسَى، نِعْمَ</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3"><strong>الفعل الصحيح</strong></td>
+                        <td>السالم</td>
+                        <td>لا همزة ولا تضعيف</td>
+                        <td>كَتَبَ، جَلَسَ</td>
+                    </tr>
+                    <tr>
+                        <td>المهموز</td>
+                        <td>فيه همزة أصلية</td>
+                        <td>أَخَذَ، سَأَلَ، قَرَأَ</td>
+                    </tr>
+                    <tr>
+                        <td>المضعف</td>
+                        <td>فيه شدة (تكرار حرف)</td>
+                        <td>مَدَّ، فَرَّ، زَلْزَلَ</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5"><strong>الفعل المعتل</strong></td>
+                        <td>المثال</td>
+                        <td>أوله حرف علة</td>
+                        <td>وَعَدَ، وَجَدَ</td>
+                    </tr>
+                    <tr>
+                        <td>الأجوف</td>
+                        <td>وسطه حرف علة</td>
+                        <td>قَالَ، نَامَ</td>
+                    </tr>
+                    <tr>
+                        <td>الناقص</td>
+                        <td>آخره حرف علة</td>
+                        <td>دَعَا، قَضَى</td>
+                    </tr>
+                    <tr>
+                        <td>لفيف مقرون</td>
+                        <td>وسطه وآخره علة</td>
+                        <td>طَوَى، شَوَى</td>
+                    </tr>
+                    <tr>
+                        <td>لفيف مفروق</td>
+                        <td>أوله وآخره علة</td>
+                        <td>وَقَى، وَشَى</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            text: "الفعل 'لَيْسَ' هو فعل:",
+            options: ["تام التصرف", "ناقص التصرف", "جامد"],
+            correct: 2,
+            explanation: "صحيح! ليس فعل جامد ملازم للماضي."
+        },
+        {
+            text: "الفعل 'وَقَى' (أوله وآخره علة) يسمى:",
+            options: ["مثال", "لفيف مقرون", "لفيف مفروق"],
+            correct: 2,
+            explanation: "ممتاز! لأن حرفي العلة مفروقين بحرف صحيح."
+        },
+        {
+            text: "الفعل 'مَدَّ' هو فعل:",
+            options: ["صحيح سالم", "صحيح مضعف", "معتل أجوف"],
+            correct: 1,
+            explanation: "صحيح! مضعف لأن فيه الشدة (أصله مَدَدَ)."
+        },
+        {
+            text: "أي فعل من هؤلاء هو 'ناقص التصرف'؟",
+            options: ["كَتَبَ", "مَا زَالَ", "نِعْمَ"],
+            correct: 1,
+            explanation: "برافو! ما زال يأتي منه المضارع (لا يزال) فقط."
+        },
+        {
+            text: "الفعل 'قَالَ' نوعه:",
+            options: ["مثال", "أجوف", "ناقص"],
+            correct: 1,
+            explanation: "صحيح! أجوف لأن وسطه حرف علة (الألف)."
+        }
+    ];
+
+    let currentQ = 0;
+    const qText = document.getElementById("q-text");
+    const qOptions = document.getElementById("q-options");
+    const feedback = document.getElementById("feedback");
+
+    function loadQuestion() {
+        const q = questions[currentQ];
+        qText.textContent = q.text;
+        qOptions.innerHTML = "";
+        feedback.textContent = "";
+
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement("button");
+            btn.className = "btn-game";
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(index, btn);
+            qOptions.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(idx, btn) {
+        const q = questions[currentQ];
+        const buttons = qOptions.children;
+        for(let b of buttons) b.disabled = true;
+
+        if (idx === q.correct) {
+            btn.classList.add("correct");
+            feedback.style.color = "#4ade80";
+            feedback.innerHTML = q.explanation + " <br> <span style='cursor:pointer; text-decoration:underline' onclick='nextQ()'>التالي ⬅️</span>";
+        } else {
+            btn.classList.add("wrong");
+            buttons[q.correct].classList.add("correct");
+            feedback.style.color = "#f87171";
+            feedback.innerHTML = "خطأ. الجواب الصحيح هو: " + q.options[q.correct] + " <br> <span style='cursor:pointer; text-decoration:underline' onclick='nextQ()'>التالي ⬅️</span>";
+        }
+    }
+
+    function nextQ() {
+        currentQ++;
+        if (currentQ < questions.length) loadQuestion();
+        else document.querySelector(".game-area").innerHTML = "<h3>🎉 ساليتي الدرس! تبارك الله عليك.</h3><button class='btn-game' onclick='location.reload()'>عاود</button>";
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 8: التصغير والنسب</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #818cf8;
+            --accent: #f59e0b;
+            --text: #1f2937;
+            --bg: #f9fafb;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-link {
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-link:hover { background: white; color: var(--primary); transform: translateY(-2px); }
+
+        h1 { margin: 0; font-size: 2rem; }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 10px; margin-top: 40px; }
+
+        .content { padding: 40px; }
+
+        /* Rule Cards */
+        .rule-card {
+            background: #f8fafc;
+            border-right: 5px solid var(--accent);
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Logic Box */
+        .logic-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            background: #fffbeb;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px dashed var(--accent);
+            margin: 10px 0;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .arrow { color: var(--accent); }
+        .change { color: #dc2626; text-decoration: underline; }
+
+        /* Summary Table */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            font-size: 0.95rem;
+        }
+        .summary-table th, .summary-table td {
+            border: 1px solid #cbd5e1;
+            padding: 12px;
+            text-align: right;
+        }
+        .summary-table th { background-color: var(--primary); color: white; text-align: center; }
+        .summary-table tr:nth-child(even) { background-color: #f1f5f9; }
+
+        /* Quiz */
+        .game-area {
+            background: #1e293b; color: white; padding: 30px;
+            border-radius: 12px; text-align: center; margin-top: 50px;
+        }
+        .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 20px; }
+        .btn-game {
+            background: #334155; border: 2px solid #475569; color: white;
+            padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; transition: 0.3s;
+        }
+        .btn-game:hover { background: #475569; }
+        .btn-game.correct { background: var(--success); border-color: var(--success); }
+        .btn-game.wrong { background: var(--error); border-color: var(--error); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>الدرس 8: التصغير والنسب</h1>
+        <p>فُعَيْل، فُعَيْعِل • الياء المشددة</p>
+        
+        <div class="nav-buttons">
+            <a href="index.html" class="btn-link">🏠 الرئيسية</a>
+            <a href="gamea1.html" class="btn-link">🎮 الكويز (Game)</a>
+        </div>
+    </header>
+
+    <div class="content">
+        
+        <section>
+            <h2>1. التصغير (Diminutive)</h2>
+            <p>تغيير في بنية الكلمة للدلالة على الصغر أو التحقير أو التحبيب. أوزانه ثلاثة:</p>
+
+            <div class="rule-card">
+                <h3>أ. فُعَيْل (للثلاثي)</h3>
+                <p>نضم الأول، نفتح الثاني، ونزيد ياء ساكنة.</p>
+                <div class="logic-box">رَجُل <span class="arrow">⬅️</span> رُجَيْل</div>
+                <div class="logic-box">حَسَن <span class="arrow">⬅️</span> حُسَيْن</div>
+                <small>*ملاحظة: إذا كان مؤنثاً بلا تاء، نزيد التاء (شمس ⬅️ شُميسة).</small>
+            </div>
+
+            <div class="rule-card">
+                <h3>ب. فُعَيْعِل (للرباعي)</h3>
+                <div class="logic-box">مَنْزِل <span class="arrow">⬅️</span> مُنَيْزِل</div>
+                <div class="logic-box">دِرْهَم <span class="arrow">⬅️</span> دُرَيْهِم</div>
+            </div>
+
+            <div class="rule-card">
+                <h3>ج. فُعَيْعِيل (للخماسي)</h3>
+                <p>ما كان قبل آخره حرف مد.</p>
+                <div class="logic-box">مِفْتَاح <span class="arrow">⬅️</span> مُفَيْتِيح</div>
+                <div class="logic-box">عُصْفُور <span class="arrow">⬅️</span> عُصَيْفِير</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. النَّسَب (Relativity)</h2>
+            <p>إلحاق <strong>ياء مشددة</strong> بآخر الاسم (مغرب ⬅️ مغربيّ).</p>
+
+            <div class="rule-card" style="border-color: #ef4444;">
+                <h3>أ. المختوم بالتاء المربوطة</h3>
+                <p><strong>تُحذف التاء</strong> وجوباً.</p>
+                <div class="logic-box">مَكَّة <span class="arrow">⬅️</span> مَكِّيّ</div>
+                <div class="logic-box">هَنْدَسَة <span class="arrow">⬅️</span> هَنْدَسِيّ</div>
+            </div>
+
+            <div class="rule-card">
+                <h3>ب. المقصور (فتى، عصا)</h3>
+                <ul>
+                    <li><strong>ألفه ثالثة:</strong> تقلب واواً (فَتَى ⬅️ فَتَوِيّ).</li>
+                    <li><strong>ألفه رابعة:</strong> تُحذف غالباً (كَنَدَا ⬅️ كَنَدِيّ).</li>
+                </ul>
+            </div>
+
+            <div class="rule-card">
+                <h3>ج. المنقوص (القاضي)</h3>
+                <ul>
+                    <li><strong>ياؤه ثالثة:</strong> تقلب واواً ويفتح ما قبلها (العَمِي ⬅️ العَمَوِيّ).</li>
+                    <li><strong>ياؤه رابعة:</strong> تحذف (القاضي ⬅️ القاضِيّ).</li>
+                </ul>
+            </div>
+
+            <div class="rule-card">
+                <h3>د. الممدود (صحراء)</h3>
+                <p>يعامل معاملة التثنية (همزة التأنيث تقلب واواً).</p>
+                <div class="logic-box">صَحْرَاء <span class="arrow">⬅️</span> صَحْرَاوِيّ</div>
+                <div class="logic-box">سَمَاء <span class="arrow">⬅️</span> سَمَاوِيّ / سَمَائِيّ</div>
+            </div>
+        </section>
+
+        <div class="game-area">
+            <h3>🎮 تمرين التحدي</h3>
+            <div id="quiz-content">
+                <div class="game-question" id="q-text">...</div>
+                <div class="options" id="q-options"></div>
+                <div id="feedback" style="margin-top:15px; font-weight:bold;"></div>
+            </div>
+        </div>
+
+        <div style="margin-top: 50px;">
+            <h3>🌟 الخلاصة</h3>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>القاعدة</th>
+                        <th>الأوزان / التغيير</th>
+                        <th>مثال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>تصغير الثلاثي</strong></td>
+                        <td>فُعَيْل</td>
+                        <td>قَلَم ⬅️ قُلَيْم</td>
+                    </tr>
+                    <tr>
+                        <td><strong>تصغير الرباعي</strong></td>
+                        <td>فُعَيْعِل</td>
+                        <td>مَسْجِد ⬅️ مُسَيْجِد</td>
+                    </tr>
+                    <tr>
+                        <td><strong>النسب لـ (ة)</strong></td>
+                        <td>حذف التاء</td>
+                        <td>فَاطِمَة ⬅️ فَاطِمِيّ</td>
+                    </tr>
+                    <tr>
+                        <td><strong>النسب للمقصور (3)</strong></td>
+                        <td>قلب الألف واواً</td>
+                        <td>عَصَا ⬅️ عَصَوِيّ</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            text: "تصغير كلمة 'كِتَاب' (رباعي) هو:",
+            options: ["كُتَيْب", "كُتَيْبِب", "كُتَيِّب"],
+            correct: 2,
+            explanation: "صحيح! على وزن فُعَيْعِل (أصلها كُتَيْئِب ثم أدغمت)."
+        },
+        {
+            text: "النسب إلى 'بَيْضَاء' (همزة تأنيث) هو:",
+            options: ["بَيْضَائِيّ", "بَيْضَاوِيّ", "بَيْضِيّ"],
+            correct: 1,
+            explanation: "ممتاز! همزة التأنيث تقلب واواً في النسب."
+        },
+        {
+            text: "النسب إلى 'حَيَاة' هو:",
+            options: ["حَيَاتِيّ", "حَيَوِيّ", "حَيِّيّ"],
+            correct: 1,
+            explanation: "برافو! تحذف التاء، وتقلب الألف واواً لأنها ثالثة (حيو + يّ)."
+        },
+        {
+            text: "تصغير 'عُصْفُور' هو:",
+            options: ["عُصَيْفِر", "عُصَيْفِير", "عُصْفُورِي"],
+            correct: 1,
+            explanation: "صحيح! على وزن فُعَيْعِيل."
+        },
+        {
+            text: "النسب إلى 'النَّادِي' (ياء رابعة) هو:",
+            options: ["النَّادَوِيّ", "النَّادِيّ", "النَّدَوِيّ"],
+            correct: 1,
+            explanation: "صحيح! تحذف الياء الرابعة وتضاف ياء النسب (الناديّ)."
+        }
+    ];
+
+    let currentQ = 0;
+    const qText = document.getElementById("q-text");
+    const qOptions = document.getElementById("q-options");
+    const feedback = document.getElementById("feedback");
+
+    function loadQuestion() {
+        const q = questions[currentQ];
+        qText.textContent = q.text;
+        qOptions.innerHTML = "";
+        feedback.textContent = "";
+
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement("button");
+            btn.className = "btn-game";
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(index, btn);
+            qOptions.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(idx, btn) {
+        const q = questions[currentQ];
+        const buttons = qOptions.children;
+        for(let b of buttons) b.disabled = true;
+
+        if (idx === q.correct) {
+            btn.classList.add("correct");
+            feedback.style.color = "#4ade80";
+            feedback.innerHTML = q.explanation + " <br> <span style='cursor:pointer; text-decoration:underline' onclick='nextQ()'>السؤال التالي ⬅️</span>";
+        } else {
+            btn.classList.add("wrong");
+            buttons[q.correct].classList.add("correct");
+            feedback.style.color = "#f87171";
+            feedback.innerHTML = "خطأ. الجواب الصحيح هو: " + q.options[q.correct] + " <br> <span style='cursor:pointer; text-decoration:underline' onclick='nextQ()'>السؤال التالي ⬅️</span>";
+        }
+    }
+
+    function nextQ() {
+        currentQ++;
+        if (currentQ < questions.length) loadQuestion();
+        else document.querySelector(".game-area").innerHTML = "<h3>🎉 ساليتي الدرس 8! تبارك الله عليك.</h3><button class='btn-game' onclick='location.reload()'>عاود</button>";
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game - MTU Chapitre 2</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <script src="pwa.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&family=Cairo:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #475569;
+            --accent: #3b82f6;
+            --wrong: #ef4444;
+            --success: #22c55e;
+            --bg: #f8fafc;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Cairo', sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Animations */
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .animate-pop {
+            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            width: 95%;
+            max-width: 800px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        header {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 999px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 999px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            color: #64748b;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .question-box {
+            margin: 40px 0;
+            min-height: 120px;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #1e293b;
+            line-height: 1.4;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 18px 25px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #475569;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .option-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .correct {
+            background-color: #ecfdf5 !important;
+            border-color: #22c55e !important;
+            color: #15803d !important;
+            font-weight: 700;
+        }
+
+        .incorrect {
+            background-color: #fef2f2 !important;
+            border-color: #ef4444 !important;
+            color: #b91c1c !important;
+            opacity: 0.8;
+        }
+
+        .result-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .score-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.5);
+            animation: pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .badge-type {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge-qcm {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .badge-vf {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .badge-sit {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        /* Confetti Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 99;
+        }
+    </style>
+    <!-- Add Canvas for confetti -->
+    <canvas id="confetti-canvas"></canvas>
+</head>
+
+<body>
+
+    <div class="game-container">
+
+        <div id="game-interface">
+            <header>
+                <h1>Quiz : Styles & Gestion du Temps</h1>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress"></div>
+                </div>
+                <div class="stats">
+                    <span id="q-counter">Question 1/45</span>
+                    <span id="score-display">Score: 0</span>
+                </div>
+            </header>
+
+            <div class="question-box">
+                <span id="q-type-badge" class="badge-type badge-qcm">QCM</span>
+                <div class="question-text" id="question">Chargement...</div>
+                <div class="options-grid" id="options">
+                </div>
+            </div>
+        </div>
+
+        <div id="result-interface" class="result-screen">
+            <h2>Quiz Terminé ! (ساليتي)</h2>
+            <div class="score-circle" id="final-score">0/45</div>
+            <p id="feedback-text">Analyse en cours...</p>
+
+            <a href="MTU CHAP 2.html" class="btn-action">GO BACK TO LESSON</a>
+            <button onclick="location.reload()" class="btn-action"
+                style="background-color: #7f8c8d; margin-top: 10px;">REJOUER</button>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // --- Confetti Logic ---
+            const confetti = { maxCount: 150, speed: 2, frameInterval: 15, alpha: 1.0, gradient: false, start: null, stop: null, toggle: null, pause: null, resume: null, togglePause: null, remove: null, isPaused: null, isRunning: null };
+            (function () {
+                confetti.start = startConfetti; confetti.stop = stopConfetti; confetti.toggle = toggleConfetti; confetti.pause = pauseConfetti; confetti.resume = resumeConfetti; confetti.togglePause = toggleConfettiPause; confetti.isPaused = isConfettiPaused; confetti.remove = removeConfetti; confetti.isRunning = isConfettiRunning;
+                var supportsAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame;
+                var colors = ["rgba(30,144,255,", "rgba(107,142,35,", "rgba(255,215,0,", "rgba(255,192,203,", "rgba(106,90,205,", "rgba(173,216,230,", "rgba(238,130,238,", "rgba(152,251,152,", "rgba(70,130,180,", "rgba(244,164,96,", "rgba(210,105,30,", "rgba(220,20,60,"];
+                var streamingConfetti = false; var animationTimer = null; var pause = false; var lastFrameTime = Date.now(); var particles = []; var waveAngle = 0; var context = null;
+                function resetParticle(particle, width, height) {
+                    particle.color = colors[(Math.random() * colors.length) | 0] + (confetti.alpha + ")");
+                    particle.color2 = colors[(Math.random() * colors.length) | 0] + (confetti.alpha + ")");
+                    particle.x = Math.random() * width; particle.y = Math.random() * height - height;
+                    particle.diameter = Math.random() * 10 + 5; particle.tilt = Math.random() * 10 - 10;
+                    particle.tiltAngleIncrement = Math.random() * 0.07 + 0.05; particle.tiltAngle = Math.random() * Math.PI;
+                    return particle;
+                }
+                function startConfetti(timeout, min, max) {
+                    var width = window.innerWidth; var height = window.innerHeight;
+                    window.requestAnimationFrame = (function () { return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) { return window.setTimeout(callback, confetti.frameInterval); }; })();
+                    var canvas = document.getElementById("confetti-canvas");
+                    if (canvas === null) { canvas = document.createElement("canvas"); canvas.setAttribute("id", "confetti-canvas"); canvas.setAttribute("style", "display:block;z-index:999999;pointer-events:none;position:fixed;top:0"); document.body.prepend(canvas); canvas.width = width; canvas.height = height; window.addEventListener("resize", function () { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }, true); context = canvas.getContext("2d"); } else if (context === null) context = canvas.getContext("2d");
+                    var count = confetti.maxCount;
+                    if (min) { if (max) { if (min == max) count = particles.length + max; else { if (min > max) { var temp = min; min = max; max = temp; } count = particles.length + ((Math.random() * (max - min) + min) | 0); } } else count = particles.length + min; } else if (max) count = particles.length + max;
+                    while (particles.length < count) particles.push(resetParticle({}, width, height));
+                    streamingConfetti = true; pause = false; runAnimation();
+                    if (timeout) { window.setTimeout(stopConfetti, timeout); }
+                }
+                function stopConfetti() { streamingConfetti = false; }
+                function removeConfetti() { stopConfetti(); pause = false; particles = []; }
+                function toggleConfetti() { if (streamingConfetti) stopConfetti(); else startConfetti(); }
+                function isConfettiPaused() { return pause; }
+                function toggleConfettiPause() { if (pause) resumeConfetti(); else pauseConfetti(); }
+                function pauseConfetti() { pause = true; }
+                function resumeConfetti() { pause = false; runAnimation(); }
+                function runAnimation() {
+                    if (pause) return;
+                    else if (particles.length === 0) { context.clearRect(0, 0, window.innerWidth, window.innerHeight); animationTimer = null; } else {
+                        var now = Date.now(); var delta = now - lastFrameTime;
+                        if (!supportsAnimationFrame || delta > confetti.frameInterval) { context.clearRect(0, 0, window.innerWidth, window.innerHeight); updateParticles(); drawParticles(context); lastFrameTime = now - (delta % confetti.frameInterval); }
+                        animationTimer = requestAnimationFrame(runAnimation);
+                    }
+                }
+                function drawParticles(context) {
+                    var particle; var x, y, x2, y2;
+                    for (var i = 0; i < particles.length; i++) {
+                        particle = particles[i]; context.beginPath(); context.lineWidth = particle.diameter; x2 = particle.x + particle.tilt; x = x2 + particle.diameter / 2; y2 = particle.y + particle.tilt + particle.diameter / 2;
+                        if (confetti.gradient) { var gradient = context.createLinearGradient(x, particle.y, x2, y2); gradient.addColorStop("0", particle.color); gradient.addColorStop("1.0", particle.color2); context.strokeStyle = gradient; } else context.strokeStyle = particle.color;
+                        context.moveTo(x, particle.y); context.lineTo(x2, y2); context.stroke();
+                    }
+                }
+                function updateParticles() {
+                    var width = window.innerWidth; var height = window.innerHeight; var particle; waveAngle += 0.01;
+                    for (var i = 0; i < particles.length; i++) {
+                        particle = particles[i];
+                        if (!streamingConfetti && particle.y < -15) particle.y = height + 100;
+                        else { particle.tiltAngle += particle.tiltAngleIncrement; particle.x += Math.sin(waveAngle) - 0.5; particle.y += (Math.cos(waveAngle) + particle.diameter + confetti.speed) * 0.5; particle.tilt = Math.sin(particle.tiltAngle) * 15; }
+                        if (particle.x > width + 20 || particle.x < -20 || particle.y > height) { if (streamingConfetti && particles.length <= confetti.maxCount) resetParticle(particle, width, height); else { particles.splice(i, 1); i--; } }
+                    }
+                }
+            })();
+
+            // --- DATABASE DES QUESTIONS (45 Questions) ---
+            const quizData = [
+                // --- 30 QCM ---
+                // Styles d'apprentissage (VAKOG)
+                { t: 'QCM', q: "Le style d'apprentissage est défini comme :", o: ["Une mesure de l'intelligence", "La manière de traiter et retenir l'information", "La vitesse de lecture", "La capacité à réussir un examen"], a: 1 },
+                { t: 'QCM', q: "Que signifie l'acronyme VAKOG ?", o: ["Visuel, Auditif, Kinesthésique, Olfactif, Gustatif", "Visuel, Abstrait, Kinesthésique, Oral, Global", "Vitesse, Action, Kinesthésique, Oreille, Geste", "Visuel, Auditif, Kinesthésique, Oral, Graphique"], a: 0 },
+                { t: 'QCM', q: "Quel est le style dominant d'un étudiant qui préfère les graphiques et les images ?", o: ["Auditif", "Kinesthésique", "Visuel", "Olfactif"], a: 2 },
+                { t: 'QCM', q: "Un apprenant auditif apprend mieux en :", o: ["Dessinant des schémas", "Écoutant des podcasts et discutant", "Faisant des expériences manuelles", "Regardant des vidéos muettes"], a: 1 },
+                { t: 'QCM', q: "Pour un apprenant kinesthésique, il est recommandé de :", o: ["Rester immobile", "Lire silencieusement", "Bouger et manipuler des objets", "Écouter sans prendre de notes"], a: 2 },
+                { t: 'QCM', q: "Est-ce qu'un étudiant se limite à un seul style d'apprentissage ?", o: ["Oui, c'est génétique", "Non, il peut combiner plusieurs styles", "Oui, sauf s'il est malade", "Non, il n'a aucun style"], a: 1 },
+                { t: 'QCM', q: "La découverte de votre style d'apprentissage permet de :", o: ["Augmenter votre implication et chances de succès", "Réduire le temps de sommeil", "Changer de personnalité", "Ignorer les cours magistraux"], a: 0 },
+
+                // Gestion du temps
+                { t: 'QCM', q: "La perception du temps est :", o: ["Objective et la même pour tous", "Subjective selon les individus", "Déterminée par l'horloge uniquement", "Fixe et immuable"], a: 1 },
+                { t: 'QCM', q: "Qu'est-ce que la procrastination ?", o: ["Travailler en avance", "Remettre une tâche à plus tard", "Une méthode de lecture rapide", "Un type de mémoire"], a: 1 },
+                { t: 'QCM', q: "La procrastination face au 'Devoir' est souvent causée par :", o: ["L'envie de s'amuser", "La peur de l'échec ou la difficulté", "L'excès de confiance", "La faim"], a: 1 },
+                { t: 'QCM', q: "La procrastination face au 'Vouloir' privilégie :", o: ["Les tâches importantes", "Les activités agréables (distractions)", "Le sommeil", "Les révisions"], a: 1 },
+                { t: 'QCM', q: "Le 'Temps Créateur' est celui qui :", o: ["Est perdu par négligence", "Permet de générer de la valeur ajoutée", "Sert à répondre aux obligations", "Est passé à dormir"], a: 1 },
+                { t: 'QCM', q: "Le 'Temps Inutile' doit être :", o: ["Augmenté", "Conservé", "Éliminé", "Planifié"], a: 2 },
+                { t: 'QCM', q: "Pour bien gérer son temps, il faut d'abord évaluer :", o: ["Son argent", "Les attentes de l'environnement universitaire", "La météo", "Ses amis"], a: 1 }, // Corrected index here
+
+                // Méthodes (Eisenhower, Pomodoro)
+                { t: 'QCM', q: "La grille d'Eisenhower classe les tâches selon :", o: ["Le plaisir et la douleur", "L'urgence et l'importance", "La durée et le coût", "Le jour et la nuit"], a: 1 },
+                { t: 'QCM', q: "Dans la grille d'Eisenhower, le Quadrant 1 correspond aux tâches :", o: ["Urgentes et Importantes", "Ni urgentes ni importantes", "Importantes mais peu urgentes", "Urgentes mais pas importantes"], a: 0 },
+                { t: 'QCM', q: "Le Quadrant 3 (Urgent mais pas important) concerne souvent :", o: ["Les crises", "La planification stratégique", "Les interruptions et distractions", "Les pertes de temps totales"], a: 2 },
+                { t: 'QCM', q: "La méthode Pomodoro a été développée par :", o: ["Eisenhower", "Francesco Cirillo", "Tony Buzan", "Einstein"], a: 1 },
+                { t: 'QCM', q: "Une session de travail Pomodoro standard dure :", o: ["1 heure", "10 minutes", "25 minutes", "45 minutes"], a: 2 },
+                { t: 'QCM', q: "Après chaque session Pomodoro, il faut prendre une pause de :", o: ["5 minutes", "20 minutes", "1 heure", "Pas de pause"], a: 0 },
+                { t: 'QCM', q: "Après combien de sessions Pomodoro prend-on une longue pause ?", o: ["2 sessions", "4 sessions", "6 sessions", "8 sessions"], a: 1 },
+                { t: 'QCM', q: "La longue pause Pomodoro dure entre :", o: ["5 et 10 min", "15 et 30 min", "45 et 60 min", "1 et 2 heures"], a: 1 },
+
+                // Stress
+                { t: 'QCM', q: "Le stress est une réponse de l'organisme face à :", o: ["Une situation apaisante", "Une situation perçue comme menaçante", "Un moment de sommeil", "Un repas copieux"], a: 1 },
+                { t: 'QCM', q: "Quel type de stress améliore la productivité ?", o: ["Stress paralysant", "Stress improductif", "Stress productif", "Stress chronique"], a: 2 },
+                { t: 'QCM', q: "Le stress productif aide à :", o: ["Dormir", "Rester concentré et décider vite", "Tomber malade", "Procrastiner"], a: 1 },
+                { t: 'QCM', q: "Le stress improductif peut causer :", o: ["De la joie", "Une meilleure santé", "De l'anxiété et une baisse de motivation", "Une augmentation de la créativité"], a: 2 },
+                { t: 'QCM', q: "Le stress paralysant entraîne :", o: ["Une action rapide", "Une incapacité à agir", "Une relaxation totale", "Une planification efficace"], a: 1 },
+                { t: 'QCM', q: "Pour gérer le temps, il faut augmenter le temps :", o: ["Nécessaire", "Inutile", "Créateur", "De sommeil"], a: 2 },
+                { t: 'QCM', q: "Un Mind Map est particulièrement utile pour le profil :", o: ["Auditif", "Visuel", "Kinesthésique", "Gustatif"], a: 1 },
+                { t: 'QCM', q: "La procrastination est-elle héréditaire (génétique) ?", o: ["Oui, c'est dans l'ADN", "Non, c'est une habitude qui se change", "Oui, on ne peut rien y faire", "Seulement chez les étudiants"], a: 1 },
+
+                // --- 10 Vrai/Faux ---
+                { t: 'V/F', q: "Vrai ou Faux : Un étudiant Kinesthésique apprend mieux en restant assis sans bouger.", o: ["Vrai", "Faux"], a: 1 },
+                { t: 'V/F', q: "Vrai ou Faux : La méthode Pomodoro divise le travail en plages de 25 minutes.", o: ["Vrai", "Faux"], a: 0 },
+                { t: 'V/F', q: "Vrai ou Faux : Le stress est toujours mauvais pour la santé et la productivité.", o: ["Vrai", "Faux"], a: 1 },
+                { t: 'V/F', q: "Vrai ou Faux : La grille d'Eisenhower sert à classer les tâches par couleur.", o: ["Vrai", "Faux"], a: 1 },
+                { t: 'V/F', q: "Vrai ou Faux : La procrastination face au 'Vouloir' est liée aux distractions comme les réseaux sociaux.", o: ["Vrai", "Faux"], a: 0 },
+                { t: 'V/F', q: "Vrai ou Faux : On peut être à la fois Visuel et Auditif selon la situation.", o: ["Vrai", "Faux"], a: 0 },
+                { t: 'V/F', q: "Vrai ou Faux : Le 'Temps Nécessaire' est celui qu'on gaspille par négligence.", o: ["Vrai", "Faux"], a: 1 },
+                { t: 'V/F', q: "Vrai ou Faux : Le stress paralysant aide à prendre des décisions rapides.", o: ["Vrai", "Faux"], a: 1 },
+                { t: 'V/F', q: "Vrai ou Faux : Les podcasts sont recommandés pour les apprenants Auditifs.", o: ["Vrai", "Faux"], a: 0 },
+                { t: 'V/F', q: "Vrai ou Faux : Il faut éliminer le 'Temps Créateur'.", o: ["Vrai", "Faux"], a: 1 },
+
+                // --- 5 Situations ---
+                { t: 'SITUATION', q: "Mise en situation : Karim révise mieux en marchant dans sa chambre et en mimant les concepts. Quel est son style ?", o: ["Visuel", "Auditif", "Kinesthésique", "Olfactif"], a: 2 },
+                { t: 'SITUATION', q: "Mise en situation : Nawal a un examen demain (Urgent) et c'est crucial pour son année (Important). Dans quel quadrant d'Eisenhower est-ce ?", o: ["Q1 (Urgent/Important)", "Q2 (Peu Urgent/Important)", "Q3 (Urgent/Peu Important)", "Q4 (Ni l'un ni l'autre)"], a: 0 },
+                { t: 'SITUATION', q: "Mise en situation : Ahmed doit rendre un devoir, mais il passe 3 heures sur TikTok car c'est plus agréable. C'est de la procrastination face au :", o: ["Devoir", "Vouloir", "Pouvoir", "Savoir"], a: 1 },
+                { t: 'SITUATION', q: "Mise en situation : Sara se sent tendue avant l'examen, mais cela la rend plus concentrée et rapide. C'est du stress :", o: ["Paralysant", "Improductif", "Productif", "Destructeur"], a: 2 },
+                { t: 'SITUATION', q: "Mise en situation : Vous avez beaucoup de choses à faire. La première étape selon la MTU est de :", o: ["Dormir", "Évaluer les attentes", "Jouer", "Manger"], a: 1 }
+            ];
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+
+            const ui = {
+                question: document.getElementById('question'),
+                options: document.getElementById('options'),
+                progress: document.getElementById('progress'),
+                counter: document.getElementById('q-counter'),
+                score: document.getElementById('score-display'),
+                gameInterface: document.getElementById('game-interface'),
+                resultInterface: document.getElementById('result-interface'),
+                finalScore: document.getElementById('final-score'),
+                feedbackText: document.getElementById('feedback-text'),
+                badge: document.getElementById('q-type-badge')
+            };
+
+            function loadQuestion() {
+                if (currentQuestionIndex >= quizData.length) {
+                    endGame();
+                    return;
+                }
+
+                const data = quizData[currentQuestionIndex];
+
+                // Mise à jour de l'affichage
+                ui.question.innerText = data.q;
+                ui.counter.innerText = `Question ${currentQuestionIndex + 1}/${quizData.length}`;
+                ui.score.innerText = `Score: ${score}`;
+
+                // Badge Type
+                ui.badge.innerText = data.t;
+                ui.badge.className = 'badge-type';
+                if (data.t === 'QCM') ui.badge.classList.add('badge-qcm');
+                else if (data.t === 'V/F') ui.badge.classList.add('badge-vf');
+                else ui.badge.classList.add('badge-sit');
+
+                // Barre de progression
+                const progressPercent = ((currentQuestionIndex) / quizData.length) * 100;
+                ui.progress.style.width = `${progressPercent}%`;
+
+                // Générer les boutons
+                ui.options.innerHTML = '';
+                data.o.forEach((option, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerText = option;
+                    btn.onclick = () => checkAnswer(index, btn);
+                    ui.options.appendChild(btn);
+                });
+            }
+
+            window.checkAnswer = function (selectedIndex, btnElement) {
+                const allBtns = document.querySelectorAll('.option-btn');
+                allBtns.forEach(btn => btn.disabled = true);
+
+                const correctIndex = quizData[currentQuestionIndex].a;
+                const gameContainer = document.querySelector('.game-container');
+
+                if (selectedIndex === correctIndex) {
+                    btnElement.classList.add('correct');
+                    btnElement.classList.add('animate-pop');
+                    score++;
+                    ui.score.innerText = `Score: ${score}`;
+                } else {
+                    btnElement.classList.add('incorrect');
+                    gameContainer.classList.add('animate-shake');
+                    setTimeout(() => gameContainer.classList.remove('animate-shake'), 400);
+
+                    if (allBtns[correctIndex]) {
+                        allBtns[correctIndex].classList.add('correct');
+                        allBtns[correctIndex].classList.add('animate-pop');
+                    }
+                }
+
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    loadQuestion();
+                }, 1200);
+            };
+
+            function endGame() {
+                ui.gameInterface.style.display = 'none';
+                ui.resultInterface.style.display = 'flex';
+                ui.finalScore.innerText = `${score}/${quizData.length}`;
+
+                const percentage = (score / quizData.length) * 100;
+                let msg = "";
+
+                if (percentage >= 70) {
+                    if (typeof confetti !== 'undefined' && confetti.start) confetti.start(3000);
+                    msg = percentage === 100 ? "Bravo ! Tu es un expert MTU ! (تبارك الله عليك)" : "Très bien ! Tu as bien compris le chapitre.";
+                } else if (percentage >= 50) {
+                    msg = "Pas mal, mais tu peux encore réviser un peu.";
+                } else {
+                    msg = "Il faut relire le chapitre 2. (خاصك تراجع الدرس مزيان)";
+                    ui.resultInterface.classList.add('animate-shake');
+                    setTimeout(() => ui.resultInterface.classList.remove('animate-shake'), 500);
+                }
+
+                ui.feedbackText.innerText = msg;
+            }
+
+            // Lancement du jeu
+            loadQuestion();
+
+        });
+    </script>
+
+</body>
+
+</html>

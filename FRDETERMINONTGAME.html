@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu des Déterminants : Ultimate Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Couleurs dynamiques */
+            --theme-color: #27ae60; 
+            --bg: #ecf0f1;
+            --text: #2c3e50;
+            --white: #ffffff;
+            --wrong: #c0392b;
+            --highlight: #e74c3c;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.5s;
+        }
+
+        .game-container {
+            background: var(--white);
+            width: 100%;
+            max-width: 700px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 650px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--theme-color);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            transition: background 0.5s;
+        }
+
+        .btn-return {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.5);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-return:hover {
+            background: rgba(255,255,255,0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        .header {
+            background: var(--theme-color);
+            color: white;
+            padding: 10px 20px 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            transition: background 0.5s;
+        }
+
+        .level-badge {
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #bdc3c7;
+            height: 10px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #f1c40f;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Question Area */
+        .question-area {
+            padding: 30px;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .question-type {
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #bdc3c7;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .question-text {
+            font-size: 1.6rem;
+            margin-bottom: 40px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .red-word {
+            color: var(--highlight);
+            font-weight: 800;
+            text-decoration: underline;
+            padding: 0 5px;
+            font-size: 1.1em;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .question-text { font-size: 1.3rem; }
+        }
+
+        .btn-option {
+            background: white;
+            border: 3px solid #dfe6e9;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .btn-option:hover {
+            border-color: var(--theme-color);
+            background: #f7f9fa;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Popups */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.98);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+            padding: 20px;
+        }
+
+        .overlay.active { visibility: visible; opacity: 1; }
+
+        .big-icon { font-size: 4rem; margin-bottom: 15px; animation: pop 0.4s; }
+        .big-title { font-size: 2rem; font-weight: 800; margin-bottom: 15px; }
+        .big-msg { font-size: 1.2rem; color: #555; margin-bottom: 30px; font-family: 'Cairo', sans-serif; }
+
+        .btn-next {
+            background: var(--theme-color);
+            color: white;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s, background 0.5s;
+        }
+        .btn-next:hover { transform: scale(1.05); }
+        .btn-retry { background: var(--wrong); }
+
+        .correct-txt { color: #27ae60; }
+        .wrong-txt { color: var(--wrong); }
+
+        @keyframes pop {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <div class="top-bar">
+        <button class="btn-return" onclick="window.location.href='FRDETERMINONTCOURE.html'">⬅ Retour à la leçon</button>
+    </div>
+
+    <div class="header">
+        <span id="score-display">Score: 0</span>
+        <span class="level-badge" id="level-display">Niveau 1</span>
+    </div>
+    <div class="progress-container"><div class="progress-fill" id="progress"></div></div>
+
+    <div class="question-area">
+        <div class="question-type" id="q-type">Chargement...</div>
+        <div class="question-text" id="q-text"></div>
+        <div class="options-grid" id="options-container"></div>
+    </div>
+
+    <div class="overlay" id="feedback-overlay">
+        <div class="big-icon" id="fb-icon"></div>
+        <div class="big-title" id="fb-title"></div>
+        <p class="big-msg" id="fb-msg"></p>
+        <button class="btn-next" onclick="nextQuestion()">Suivant</button>
+    </div>
+
+    <div class="overlay" id="level-overlay">
+        <div class="big-icon" id="lvl-icon">🏆</div>
+        <div class="big-title" id="lvl-title"></div>
+        <p class="big-msg" id="lvl-msg"></p>
+        <button class="btn-next" id="lvl-btn"></button>
+    </div>
+</div>
+
+<script>
+    /* ================= BASE DE DONNÉES MASSIVE (ANTI-RÉPÉTITION) ================= */
+    
+    // Diff 1: Articles définis/indéfinis (Niveaux 1, 2, 3) - Besoin de 30 questions min
+    const qDiff1 = [
+        { type: "QCM", text: "Je mange <span class='red-word'>___</span> pomme.", options: ["un", "une", "des", "du"], answer: "une", reason: "Pomme est féminin." },
+        { type: "QCM", text: "Il a <span class='red-word'>___</span> stylo.", options: ["un", "une", "des", "la"], answer: "un", reason: "Stylo est masculin." },
+        { type: "ID", text: "Nature de : <span class='red-word'>La</span> table.", options: ["Art Défini", "Art Indéfini", "Pronom"], answer: "Art Défini", reason: "Désigne une table précise." },
+        { type: "QCM", text: "Regarde <span class='red-word'>___</span> chat.", options: ["le", "la", "les", "une"], answer: "le", reason: "Chat est masculin." },
+        { type: "VF", text: "On dit <span class='red-word'>Une</span> homme.", answer: "Faux", reason: "Homme est masculin -> Un homme." },
+        { type: "QCM", text: "C'est <span class='red-word'>___</span> école.", options: ["Le", "La", "L'", "Les"], answer: "L'", reason: "Devant voyelle." },
+        { type: "QCM", text: "J'aime <span class='red-word'>___</span> vacances.", options: ["le", "la", "l'", "les"], answer: "les", reason: "Vacances est pluriel." },
+        { type: "ID", text: "Nature de : <span class='red-word'>Un</span> chien.", options: ["Art Indéfini", "Art Défini", "Pronom"], answer: "Art Indéfini", reason: "Un chien quelconque." },
+        { type: "QCM", text: "Tu as <span class='red-word'>___</span> gommes ?", options: ["un", "une", "des", "le"], answer: "des", reason: "Pluriel." },
+        { type: "QCM", text: "Voici <span class='red-word'>___</span> maison.", options: ["le", "la", "les", "un"], answer: "la", reason: "Maison est féminin." },
+        { type: "QCM", text: "Il lit <span class='red-word'>___</span> livre.", options: ["un", "une", "des", "la"], answer: "un", reason: "Livre est masculin." },
+        { type: "QCM", text: "Elle ouvre <span class='red-word'>___</span> porte.", options: ["le", "la", "l'", "un"], answer: "la", reason: "Porte est féminin." },
+        { type: "VF", text: "'Les' est un article indéfini.", answer: "Faux", reason: "'Les' est défini. 'Des' est indéfini." },
+        { type: "QCM", text: "J'ai vu <span class='red-word'>___</span> oiseau.", options: ["un", "une", "des", "la"], answer: "un", reason: "Oiseau est masculin." },
+        { type: "QCM", text: "Donne-moi <span class='red-word'>___</span> chaise.", options: ["le", "la", "l'", "un"], answer: "la", reason: "Chaise est féminin." },
+        { type: "ID", text: "Nature de : <span class='red-word'>Des</span> fleurs.", options: ["Art Indéfini", "Art Défini", "Pronom"], answer: "Art Indéfini", reason: "Pluriel indéterminé." },
+        { type: "QCM", text: "C'est <span class='red-word'>___</span> ami de Paul.", options: ["l'", "le", "la", "une"], answer: "l'", reason: "Ami commence par voyelle." },
+        { type: "QCM", text: "Il y a <span class='red-word'>___</span> soleil.", options: ["le", "la", "du", "une"], answer: "du", reason: "Soleil est masculin (aussi partitif ici)." },
+        { type: "VF", text: "On dit 'Le <span class='red-word'>armoire</span>'.", answer: "Faux", reason: "Armoire commence par voyelle -> L'armoire." },
+        { type: "QCM", text: "Je prends <span class='red-word'>___</span> bus.", options: ["le", "la", "l'", "une"], answer: "le", reason: "Bus est masculin." },
+        { type: "QCM", text: "C'est <span class='red-word'>___</span> belle journée.", options: ["un", "une", "le", "des"], answer: "une", reason: "Journée est féminin." },
+        { type: "QCM", text: "Regarde <span class='red-word'>___</span> étoiles.", options: ["le", "la", "les", "un"], answer: "les", reason: "Étoiles est pluriel." },
+        { type: "ID", text: "Nature de : <span class='red-word'>L'</span>avion.", options: ["Art Défini", "Art Indéfini", "Adj"], answer: "Art Défini", reason: "L' remplace Le ou La." },
+        { type: "QCM", text: "J'achète <span class='red-word'>___</span> pain.", options: ["un", "une", "la", "des"], answer: "un", reason: "Pain est masculin." },
+        { type: "QCM", text: "C'est <span class='red-word'>___</span> voiture rouge.", options: ["un", "une", "le", "du"], answer: "une", reason: "Voiture est féminin." },
+        { type: "VF", text: "Le pluriel de 'Un' est 'Des'.", answer: "Vrai", reason: "Un chat -> Des chats." },
+        { type: "QCM", text: "Il écoute <span class='red-word'>___</span> radio.", options: ["le", "la", "l'", "un"], answer: "la", reason: "Radio est féminin." },
+        { type: "QCM", text: "C'est <span class='red-word'>___</span> ordinateur.", options: ["un", "une", "la", "de"], answer: "un", reason: "Ordinateur est masculin." },
+        { type: "QCM", text: "Je porte <span class='red-word'>___</span> pantalon.", options: ["un", "une", "la", "des"], answer: "un", reason: "Pantalon est masculin." },
+        { type: "QCM", text: "Voici <span class='red-word'>___</span> clés.", options: ["les", "le", "la", "un"], answer: "les", reason: "Clés est pluriel." }
+    ];
+
+    // Diff 2: Possessifs/Démonstratifs/Partitifs (Niveaux 4, 5, 6) - Besoin de 30 questions min
+    const qDiff2 = [
+        { type: "QCM", text: "C'est <span class='red-word'>___</span> amie.", options: ["ma", "mon", "mes", "sa"], answer: "mon", reason: "Exception: Mon devant féminin + voyelle." },
+        { type: "QCM", text: "Il a perdu <span class='red-word'>___</span> clés.", options: ["son", "sa", "ses", "leur"], answer: "ses", reason: "Pluriel (Ses clés à lui)." },
+        { type: "ID", text: "Nature de : <span class='red-word'>Ce</span> garçon.", options: ["Adj Démonstratif", "Adj Possessif", "Pronom"], answer: "Adj Démonstratif", reason: "Sert à montrer." },
+        { type: "QCM", text: "Je bois <span class='red-word'>___</span> café.", options: ["du", "de la", "des", "le"], answer: "du", reason: "Partitif masculin." },
+        { type: "VF", text: "Le pluriel de <span class='red-word'>Notre</span> est 'Notres'.", answer: "Faux", reason: "C'est 'Nos'." },
+        { type: "QCM", text: "<span class='red-word'>___</span> homme est gentil.", options: ["Ce", "Cet", "Cette", "Ces"], answer: "Cet", reason: "Masc devant H muet." },
+        { type: "ID", text: "Nature de : <span class='red-word'>Mon</span> père.", options: ["Adj Possessif", "Art Défini", "Pronom"], answer: "Adj Possessif", reason: "Indique la possession." },
+        { type: "QCM", text: "Nous aimons <span class='red-word'>___</span> professeur.", options: ["notre", "nos", "votre", "leur"], answer: "notre", reason: "Singulier possédé par Nous." },
+        { type: "QCM", text: "Elles parlent à <span class='red-word'>___</span> parents.", options: ["leur", "leurs", "ses", "sa"], answer: "leurs", reason: "Pluriel possédé par Elles." },
+        { type: "ID", text: "Nature de : Je veux <span class='red-word'>du</span> pain.", options: ["Art Partitif", "Art Contracté", "Art Défini"], answer: "Art Partitif", reason: "Quantité indénombrable." },
+        { type: "QCM", text: "Je veux <span class='red-word'>___</span> eau.", options: ["du", "de la", "de l'", "des"], answer: "de l'", reason: "Partitif devant voyelle." },
+        { type: "QCM", text: "C'est <span class='red-word'>___</span> voiture.", options: ["ma", "mon", "mes", "mien"], answer: "ma", reason: "Voiture est féminin." },
+        { type: "QCM", text: "Regarde <span class='red-word'>___</span> fille.", options: ["ce", "cet", "cette", "ces"], answer: "cette", reason: "Fille est féminin." },
+        { type: "QCM", text: "Ils ont oublié <span class='red-word'>___</span> livre.", options: ["leur", "leurs", "ses", "son"], answer: "leur", reason: "Singulier possédé par Ils." },
+        { type: "VF", text: "On dit 'Ce arbre'.", answer: "Faux", reason: "Arbre commence par voyelle -> Cet arbre." },
+        { type: "QCM", text: "Tu as pris <span class='red-word'>___</span> affaires ?", options: ["ton", "ta", "tes", "votre"], answer: "tes", reason: "Affaires est pluriel." },
+        { type: "QCM", text: "Il mange <span class='red-word'>___</span> salade.", options: ["du", "de la", "de l'", "des"], answer: "de la", reason: "Partitif féminin." },
+        { type: "QCM", text: "J'aime <span class='red-word'>___</span> chaussures.", options: ["ce", "cet", "cette", "ces"], answer: "ces", reason: "Démonstratif pluriel." },
+        { type: "QCM", text: "C'est <span class='red-word'>___</span> problème.", options: ["notre", "nos", "vos", "mes"], answer: "notre", reason: "Problème est singulier." },
+        { type: "ID", text: "Nature de : <span class='red-word'>Vos</span> amis.", options: ["Adj Possessif", "Pronom Possessif", "Adj Démonstratif"], answer: "Adj Possessif", reason: "Indique la possession (Vous)." },
+        { type: "QCM", text: "Elle adore <span class='red-word'>___</span> frère.", options: ["son", "sa", "ses", "sien"], answer: "son", reason: "Frère est masculin." },
+        { type: "QCM", text: "Je voudrais <span class='red-word'>___</span> frites.", options: ["du", "de la", "des", "le"], answer: "des", reason: "Partitif pluriel." },
+        { type: "VF", text: "Le féminin de 'Cet' est 'Cette'.", answer: "Vrai", reason: "Cet homme -> Cette femme." },
+        { type: "QCM", text: "Ce sont <span class='red-word'>___</span> parents.", options: ["mes", "mon", "ma", "mien"], answer: "mes", reason: "Parents est pluriel." },
+        { type: "QCM", text: "<span class='red-word'>___</span> hôtel est beau.", options: ["Ce", "Cet", "Cette", "Ces"], answer: "Cet", reason: "Hôtel commence par H muet." },
+        { type: "QCM", text: "Vous avez <span class='red-word'>___</span> billets ?", options: ["votre", "vos", "nos", "tes"], answer: "vos", reason: "Pluriel possédé par Vous." },
+        { type: "ID", text: "Nature de : <span class='red-word'>Leur</span> maison.", options: ["Adj Possessif", "Pronom Possessif", "Art Défini"], answer: "Adj Possessif", reason: "Accompagne le nom." },
+        { type: "QCM", text: "Il boit <span class='red-word'>___</span> jus.", options: ["du", "de la", "des", "le"], answer: "du", reason: "Partitif masculin." },
+        { type: "QCM", text: "<span class='red-word'>___</span> histoire est drôle.", options: ["Ce", "Cet", "Cette", "Ces"], answer: "Cette", reason: "Histoire est féminin." },
+        { type: "QCM", text: "C'est <span class='red-word'>___</span> idée.", options: ["mon", "ma", "mes", "ta"], answer: "mon", reason: "Idée est féminin mais commence par voyelle -> Mon." }
+    ];
+
+    // Diff 3: Pronoms/Contractés (Niveaux 7, 8, 9) - Besoin de 30 questions min
+    const qDiff3 = [
+        { type: "QCM", text: "C'est ton stylo ? Oui, c'est <span class='red-word'>___</span>.", options: ["le mien", "la mienne", "le tien", "mon"], answer: "le mien", reason: "Pronom remplaçant Stylo (Masc)." },
+        { type: "QCM", text: "Je reviens <span class='red-word'>___</span> marché.", options: ["de le", "du", "des", "de la"], answer: "du", reason: "Contracté (De + Le)." },
+        { type: "QCM", text: "Je parle <span class='red-word'>___</span> élèves.", options: ["à les", "aux", "au", "des"], answer: "aux", reason: "Contracté (À + Les)." },
+        { type: "VF", text: "Dans 'La voiture <span class='red-word'>du</span> voisin', Du est partitif.", answer: "Faux", reason: "C'est un contracté (De+Le). On ne dit pas 'un peu de voisin'." },
+        { type: "QCM", text: "Ces chaussures sont à elles. Ce sont <span class='red-word'>___</span>.", options: ["les leurs", "la leur", "le leur", "les siennes"], answer: "les leurs", reason: "Pluriel (chaussures) + Elles." },
+        { type: "QCM", text: "Je vais <span class='red-word'>___</span> toilettes.", options: ["au", "aux", "à la", "des"], answer: "aux", reason: "Toilettes est toujours pluriel." },
+        { type: "ID", text: "Nature de : La queue <span class='red-word'>du</span> chat.", options: ["Art Contracté", "Art Partitif", "Art Défini"], answer: "Art Contracté", reason: "De + Le (Appartenance)." },
+        { type: "QCM", text: "Il ne faut pas parler <span class='red-word'>___</span> inconnus.", options: ["aux", "des", "les", "à les"], answer: "aux", reason: "Parler À + Les." },
+        { type: "ID", text: "Nature de : J'ai acheté <span class='red-word'>des</span> fleurs.", options: ["Art Indéfini", "Art Contracté", "Art Partitif"], answer: "Art Indéfini", reason: "Pluriel de Une fleur." },
+        { type: "QCM", text: "Cette place est à moi, c'est <span class='red-word'>___</span>.", options: ["la mienne", "le mien", "mon", "ma"], answer: "la mienne", reason: "Place (Fem) -> La mienne." },
+        { type: "QCM", text: "C'est ta voiture ? Non, c'est <span class='red-word'>___</span>.", options: ["la sienne", "le sien", "la tienne", "son"], answer: "la sienne", reason: "Voiture (Fem) -> La sienne (à lui/elle)." },
+        { type: "QCM", text: "Je viens <span class='red-word'>___</span> cinéma.", options: ["du", "de la", "au", "des"], answer: "du", reason: "Venir De + Le = Du." },
+        { type: "QCM", text: "Il téléphone <span class='red-word'>___</span> parents.", options: ["aux", "les", "des", "à les"], answer: "aux", reason: "Téléphoner À + Les = Aux." },
+        { type: "VF", text: "'Les vôtres' remplace un nom singulier.", answer: "Faux", reason: "'Les' indique le pluriel." },
+        { type: "QCM", text: "C'est notre projet. C'est <span class='red-word'>___</span>.", options: ["le nôtre", "la nôtre", "les nôtres", "notre"], answer: "le nôtre", reason: "Projet (Masc) + Nous -> Le nôtre." },
+        { type: "QCM", text: "La peur <span class='red-word'>___</span> chiens.", options: ["des", "les", "aux", "de les"], answer: "des", reason: "Peur De + Les = Des." },
+        { type: "ID", text: "Nature de : Je mange <span class='red-word'>du</span> riz.", options: ["Art Partitif", "Art Contracté", "Art Défini"], answer: "Art Partitif", reason: "Test : un peu de riz." },
+        { type: "QCM", text: "Ce sont vos papiers ? Oui, ce sont <span class='red-word'>___</span>.", options: ["les vôtres", "le vôtre", "la vôtre", "les tiens"], answer: "les vôtres", reason: "Papiers (Pluriel) + Vous." },
+        { type: "QCM", text: "Il joue <span class='red-word'>___</span> piano.", options: ["du", "au", "le", "de la"], answer: "du", reason: "Jouer De + Le (Instrument)." },
+        { type: "QCM", text: "Il joue <span class='red-word'>___</span> football.", options: ["au", "du", "le", "à la"], answer: "au", reason: "Jouer À + Le (Sport)." },
+        { type: "VF", text: "On dit 'Je vais au gare'.", answer: "Faux", reason: "Gare est féminin -> À la gare." },
+        { type: "QCM", text: "Ce sac est à toi ? Oui, c'est <span class='red-word'>___</span>.", options: ["le tien", "le mien", "la mienne", "mon"], answer: "le mien", reason: "Réponse (Moi) + Sac (Masc)." },
+        { type: "QCM", text: "La maison <span class='red-word'>___</span> voisins.", options: ["des", "les", "aux", "du"], answer: "des", reason: "De + Les = Des (Appartenance)." },
+        { type: "ID", text: "Nature de : <span class='red-word'>Le mien</span> est rouge.", options: ["Pronom Possessif", "Adj Possessif", "Art Défini"], answer: "Pronom Possessif", reason: "Remplace le nom." },
+        { type: "QCM", text: "Je parle <span class='red-word'>___</span> directeur.", options: ["au", "à le", "du", "le"], answer: "au", reason: "Parler À + Le = Au." },
+        { type: "QCM", text: "Ils ont leurs billets, nous avons <span class='red-word'>___</span>.", options: ["les nôtres", "le nôtre", "la nôtre", "nos"], answer: "les nôtres", reason: "Billets (Pluriel) + Nous." },
+        { type: "QCM", text: "C'est la sœur <span class='red-word'>___</span> ami.", options: ["de l'", "du", "de la", "des"], answer: "de l'", reason: "Ami commence par voyelle (pas de contraction)." },
+        { type: "QCM", text: "Je pense <span class='red-word'>___</span> vacances.", options: ["aux", "des", "les", "à les"], answer: "aux", reason: "Penser À + Les = Aux." },
+        { type: "VF", text: "'Du' peut être partitif et contracté.", answer: "Vrai", reason: "Mange du pain (Partitif) / Voiture du père (Contracté)." },
+        { type: "QCM", text: "C'est sa gomme. C'est <span class='red-word'>___</span>.", options: ["la sienne", "le sien", "la tienne", "sa"], answer: "la sienne", reason: "Gomme (Fem) + Il/Elle." }
+    ];
+
+    // Diff 4: BOSS FINAL (Niveau 10) - 40 Questions uniques
+    const qDiff4 = [
+        { type: "QCM", text: "J'ai bien <span class='red-word'>___</span> soucis.", options: ["des", "de", "du", "les"], answer: "des", reason: "Locution 'Bien des' est toujours suivie de 'des'." },
+        { type: "QCM", text: "Je n'ai pas <span class='red-word'>___</span> argent.", options: ["d'", "de l'", "du", "un"], answer: "d'", reason: "Négation absolue (Pas de/d')." },
+        { type: "QCM", text: "Ce sont de <span class='red-word'>___</span> beaux enfants.", options: ["des", "de", "les", "du"], answer: "de", reason: "Devant un adjectif pluriel (beaux), 'des' devient souvent 'de'." },
+        { type: "VF", text: "On dit : <span class='red-word'>De</span> bons amis.", answer: "Vrai", reason: "Des -> De devant adj pluriel." },
+        { type: "ID", text: "Nature de : <span class='red-word'>Chaque</span> jour.", options: ["Adj Indéfini", "Pronom Indéfini", "Art Indéfini"], answer: "Adj Indéfini", reason: "Accompagne le nom 'jour'." },
+        { type: "ID", text: "Nature de : <span class='red-word'>Chacun</span> pense à soi.", options: ["Pronom Indéfini", "Adj Indéfini", "Nom"], answer: "Pronom Indéfini", reason: "Remplace le nom." },
+        { type: "QCM", text: "Toutes les <span class='red-word'>___</span> gens.", options: ["vieux", "vieilles", "vieil", "vielle"], answer: "vieilles", reason: "Gens : Féminin si l'adjectif est AVANT." },
+        { type: "QCM", text: "Ce sont des gens <span class='red-word'>___</span>.", options: ["heureux", "heureuses", "heureuse", "heureu"], answer: "heureux", reason: "Gens : Masculin si l'adjectif est APRÈS." },
+        { type: "QCM", text: "C'est <span class='red-word'>___</span> de mes amis.", options: ["un", "l'un", "une", "le"], answer: "un", reason: "Un de mes amis (Partitif d'un groupe)." },
+        { type: "QCM", text: "Elle est <span class='red-word'>___</span> contente.", options: ["tout", "toute", "toutes", "touts"], answer: "toute", reason: "Tout (Adverbe) s'accorde devant adj fém commençant par consonne." },
+        { type: "QCM", text: "Elle est <span class='red-word'>___</span> émue.", options: ["tout", "toute", "toutes", "touts"], answer: "tout", reason: "Tout (Adverbe) reste invariable devant voyelle." },
+        { type: "VF", text: "On dit : 'La <span class='red-word'>Saint</span>-Valentin'.", answer: "Vrai", reason: "Saint prend une majuscule et un trait d'union dans les fêtes." },
+        { type: "QCM", text: "Je cherche le livre <span class='red-word'>___</span> tu parles.", options: ["dont", "que", "lequel", "duquel"], answer: "dont", reason: "Parler DE quelque chose -> Dont." },
+        { type: "QCM", text: "La chaise sur <span class='red-word'>___</span> je suis assis.", options: ["laquelle", "lequel", "la quelle", "qui"], answer: "laquelle", reason: "Accord avec Chaise (Fem)." },
+        { type: "ID", text: "Nature de : <span class='red-word'>Quelque</span> chose.", options: ["Adj Indéfini", "Adverbe", "Pronom"], answer: "Adj Indéfini", reason: "Signifie 'Un certain'." },
+        { type: "QCM", text: "J'ai vu <span class='red-word'>___</span> 200 personnes.", options: ["quelque", "quelques", "quelsque", "quel que"], answer: "quelque", reason: "Quelque (Adverbe = Environ) est invariable devant un nombre." },
+        { type: "VF", text: "<span class='red-word'>Maintes</span> fois signifie 'plusieurs fois'.", answer: "Vrai", reason: "Adj indéfini pluriel soutenu." },
+        { type: "QCM", text: "Sans <span class='red-word'>___</span> doute.", options: ["aucun", "aucune", "nul", "pas de"], answer: "aucun", reason: "Doute est masculin." },
+        { type: "QCM", text: "Je ne parle à <span class='red-word'>___</span>.", options: ["personne", "aucun", "rien", "nul"], answer: "personne", reason: "Négation pour les humains." },
+        { type: "ID", text: "Nature de : <span class='red-word'>Plusieurs</span> élèves.", options: ["Adj Indéfini", "Pronom", "Nom"], answer: "Adj Indéfini", reason: "Invariable, indique le nombre." },
+        { type: "QCM", text: "Il a vécu de <span class='red-word'>___</span> amours.", options: ["fous", "folles", "folle", "fou"], answer: "folles", reason: "Amour est masculin au singulier, mais FÉMININ au pluriel (littéraire)." },
+        { type: "QCM", text: "Les <span class='red-word'>___</span> et les autres.", options: ["uns", "un", "unes", "une"], answer: "uns", reason: "Expression : Les uns et les autres." },
+        { type: "QCM", text: "<span class='red-word'>___</span> soit votre choix.", options: ["Quel que", "Quelle que", "Quels que", "Quelque"], answer: "Quel que", reason: "Quel que s'écrit en deux mots devant 'être' et s'accorde avec le sujet (Choix = Masc Sing)." },
+        { type: "QCM", text: "<span class='red-word'>___</span> soient vos raisons.", options: ["Quelles que", "Quels que", "Quel que", "Quelle que"], answer: "Quelles que", reason: "Accord avec Raisons (Fem Plur)." },
+        { type: "VF", text: "<span class='red-word'>Même</span> les enfants ont joué.", answer: "Vrai", reason: "Même (Adverbe = aussi) est invariable." },
+        { type: "QCM", text: "Ce sont les enfants <span class='red-word'>___</span>.", options: ["mêmes", "même", "mème", "mèmes"], answer: "mêmes", reason: "Même (Adjectif = eux-mêmes) s'accorde." },
+        { type: "QCM", text: "Il a mangé <span class='red-word'>___</span> pain.", options: ["tout le", "tous le", "toute la", "tout"], answer: "tout le", reason: "Tout le (la totalité)." },
+        { type: "QCM", text: "<span class='red-word'>___</span> hommes sont mortels.", options: ["Tous les", "Tout les", "Touts les", "Toute les"], answer: "Tous les", reason: "Tous (Pluriel) + Les." },
+        { type: "ID", text: "Nature de : <span class='red-word'>Quiconque</span> parle sera puni.", options: ["Pronom Relatif Indéfini", "Adj Indéfini", "Nom"], answer: "Pronom Relatif Indéfini", reason: "Signifie 'Toute personne qui'." },
+        { type: "QCM", text: "C'est <span class='red-word'>___</span> plus belle.", options: ["la", "le", "les", "une"], answer: "la", reason: "Superlatif absolu." },
+        { type: "QCM", text: "C'est la femme <span class='red-word'>___</span> je pense.", options: ["à laquelle", "auquel", "à qui", "dont"], answer: "à laquelle", reason: "Penser À + Femme." },
+        { type: "QCM", text: "Le chien <span class='red-word'>___</span> la patte est cassée.", options: ["dont", "que", "qui", "où"], answer: "dont", reason: "La patte DU chien (De -> Dont)." },
+        { type: "VF", text: "On dit 'Au <span class='red-word'>fur</span> et à mesure'.", answer: "Vrai", reason: "Expression figée." },
+        { type: "QCM", text: "Il n'y a <span class='red-word'>___</span> problème.", options: ["nul", "nuls", "nulle", "aucuns"], answer: "nul", reason: "Nul remplace Aucun (Soutenu)." },
+        { type: "QCM", text: "J'ai acheté de <span class='red-word'>___</span> orgues.", options: ["belles", "beaux", "bel", "belle"], answer: "belles", reason: "Orgue est masculin singulier, mais FÉMININ pluriel." },
+        { type: "QCM", text: "C'est un <span class='red-word'>___</span> délice.", options: ["vrai", "vraie", "vrais", "vraies"], answer: "vrai", reason: "Délice : Masc Sing." },
+        { type: "QCM", text: "Ce sont de <span class='red-word'>___</span> délices.", options: ["vraies", "vrais", "vraie", "vrai"], answer: "vraies", reason: "Délice : Fem Plur (Littéraire)." },
+        { type: "QCM", text: "Je leur <span class='red-word'>___</span> ai donné.", options: ["en", "y", "le", "les"], answer: "en", reason: "Donner DE cela -> En." },
+        { type: "QCM", text: "Il y a <span class='red-word'>___</span> de monde.", options: ["peu", "petit", "le peu", "un peu"], answer: "peu", reason: "Adverbe de quantité." },
+        { type: "VF", text: "'Autrui' est un pronom indéfini.", answer: "Vrai", reason: "Signifie 'les autres'." }
+    ];
+
+    /* ================= MOTEUR DU JEU ================= */
+    
+    let currentLevel = 1;
+    let currentScore = 0;
+    let questionsForLevel = [];
+    let questionIndex = 0;
+    let levelScore = 0;
+    
+    // Pour stocker les questions utilisées et éviter la répétition
+    let usedQuestions = { 1: [], 2: [], 3: [] }; 
+
+    function initGame() {
+        currentLevel = 1;
+        currentScore = 0;
+        usedQuestions = { 1: [], 2: [], 3: [] }; // Reset des questions utilisées
+        startLevel(1);
+    }
+
+    function updateTheme(lvl) {
+        const root = document.documentElement;
+        let color, themeName;
+
+        if (lvl <= 3) { // 1-3: Easy (Green)
+            color = "#27ae60"; 
+        } else if (lvl <= 6) { // 4-6: Medium (Orange)
+            color = "#d35400"; 
+        } else if (lvl <= 9) { // 7-9: Hard (Red)
+            color = "#c0392b"; 
+        } else { // 10: Boss (Purple/Dark)
+            color = "#8e44ad"; 
+        }
+
+        root.style.setProperty('--theme-color', color);
+    }
+
+    function startLevel(lvl) {
+        currentLevel = lvl;
+        questionIndex = 0;
+        levelScore = 0;
+        
+        updateTheme(lvl); 
+
+        let sourcePool = [];
+        let diffKey = 1;
+
+        if (lvl <= 3) { sourcePool = qDiff1; diffKey = 1; }
+        else if (lvl <= 6) { sourcePool = qDiff2; diffKey = 2; }
+        else if (lvl <= 9) { sourcePool = qDiff3; diffKey = 3; }
+        else if (lvl === 10) { sourcePool = qDiff4; diffKey = 4; }
+
+        if (lvl === 10) {
+            // Niveau Boss : On prend TOUT (40 questions)
+            questionsForLevel = shuffleArray([...sourcePool]);
+        } else {
+            // Niveaux normaux : On essaie de prendre des questions non utilisées
+            let availableQuestions = sourcePool.filter(q => !usedQuestions[diffKey].includes(q));
+            
+            // S'il n'y a plus assez de questions neuves, on réinitialise l'historique pour cette difficulté
+            if (availableQuestions.length < 10) {
+                usedQuestions[diffKey] = [];
+                availableQuestions = [...sourcePool];
+            }
+
+            const shuffled = shuffleArray(availableQuestions);
+            questionsForLevel = shuffled.slice(0, 10);
+            
+            // Marquer comme utilisées
+            questionsForLevel.forEach(q => usedQuestions[diffKey].push(q));
+        }
+
+        updateUI();
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        document.getElementById('feedback-overlay').classList.remove('active');
+        document.getElementById('level-overlay').classList.remove('active');
+
+        const maxQ = (currentLevel === 10) ? questionsForLevel.length : 10;
+
+        if (questionIndex >= maxQ) {
+            endLevel();
+            return;
+        }
+
+        const q = questionsForLevel[questionIndex];
+        
+        document.getElementById('q-type').textContent = getTypeName(q.type);
+        document.getElementById('q-text').innerHTML = q.text; 
+        
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+
+        let options = [];
+        if (q.type === 'VF') {
+            options = ["Vrai", "Faux"];
+            container.style.gridTemplateColumns = "1fr 1fr";
+        } else {
+            options = q.type === 'ID' ? q.options : shuffleArray([...q.options]);
+            if(window.innerWidth < 600 || options.some(o => o.length > 15)) {
+                container.style.gridTemplateColumns = "1fr";
+            } else {
+                container.style.gridTemplateColumns = "1fr 1fr";
+            }
+        }
+
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-option';
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(opt, q);
+            container.appendChild(btn);
+        });
+
+        let pct = ((questionIndex) / maxQ) * 100;
+        document.getElementById('progress').style.width = pct + '%';
+    }
+
+    function checkAnswer(selected, q) {
+        const isCorrect = (selected === q.answer);
+        const fbOverlay = document.getElementById('feedback-overlay');
+        
+        if (isCorrect) {
+            levelScore++;
+            currentScore += (currentLevel === 10 ? 20 : 10);
+            
+            document.getElementById('fb-icon').textContent = "🌟";
+            document.getElementById('fb-title').textContent = "Excellent !";
+            document.getElementById('fb-title').className = "big-title correct-txt";
+            document.getElementById('fb-msg').innerHTML = `<span style="color:#27ae60; font-weight:bold;">Bonne réponse !</span><br>${q.reason}`;
+        } else {
+            document.getElementById('fb-icon').textContent = "❌";
+            document.getElementById('fb-title').textContent = "Erreur...";
+            document.getElementById('fb-title').className = "big-title wrong-txt";
+            document.getElementById('fb-msg').innerHTML = `La réponse était : <b>${q.answer}</b>.<br><br>👉 ${q.reason}`;
+        }
+
+        updateUI();
+        fbOverlay.classList.add('active');
+    }
+
+    function nextQuestion() {
+        questionIndex++;
+        loadQuestion();
+    }
+
+    function endLevel() {
+        const lvlOverlay = document.getElementById('level-overlay');
+        const title = document.getElementById('lvl-title');
+        const msg = document.getElementById('lvl-msg');
+        const btn = document.getElementById('lvl-btn');
+
+        const maxQ = (currentLevel === 10) ? questionsForLevel.length : 10;
+        const threshold = (currentLevel === 10) ? 30 : 7; 
+
+        if (levelScore >= threshold) {
+            if(currentLevel === 10) {
+                title.textContent = `🏆 LÉGENDE DU FRANÇAIS ! 🏆`;
+                title.className = "big-title correct-txt";
+                msg.innerHTML = `Incroyable ! Vous avez terminé le niveau Boss avec <b>${levelScore}/${maxQ}</b>.<br>Vous maîtrisez les déterminants à la perfection !`;
+                btn.textContent = "Recommencer le Jeu";
+                btn.className = "btn-next";
+                btn.onclick = () => initGame();
+            } else {
+                title.textContent = `Niveau ${currentLevel} Réussi ! 🎉`;
+                title.className = "big-title correct-txt";
+                msg.innerHTML = `Bravo ! Score : <b>${levelScore}/${maxQ}</b>.<br>Prêt pour la suite ?`;
+                btn.textContent = "Niveau Suivant ➡";
+                btn.className = "btn-next";
+                btn.onclick = () => startLevel(currentLevel + 1);
+            }
+        } else {
+            title.textContent = `Niveau Échoué 😢`;
+            title.className = "big-title wrong-txt";
+            msg.innerHTML = `Score : <b>${levelScore}/${maxQ}</b>.<br>Il faut ${threshold}/${maxQ} pour passer.`;
+            btn.textContent = "Réessayer ↺";
+            btn.className = "btn-next btn-retry";
+            btn.onclick = () => startLevel(currentLevel);
+        }
+
+        lvlOverlay.classList.add('active');
+    }
+
+    function getTypeName(type) {
+        if(type === 'QCM') return "Complétez la phrase";
+        if(type === 'VF') return "Vrai ou Faux ?";
+        if(type === 'ID') return "Identifiez la nature";
+        return "Question";
+    }
+
+    function updateUI() {
+        document.getElementById('score-display').textContent = `Score Total: ${currentScore}`;
+        let lvlText = `Niveau ${currentLevel}/10`;
+        if(currentLevel === 10) lvlText = "Niveau 10 : BOSS FINAL";
+        document.getElementById('level-display').textContent = lvlText;
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Lancer le jeu
+    initGame();
+
+</script>
+
+</body>
+</html>

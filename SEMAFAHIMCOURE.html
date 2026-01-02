@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مجزوءة علوم التربية: المدخل المفاهيمي الشامل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563eb;      /* bg-blue-600 */
+            --secondary: #3b82f6;    /* bg-blue-500 */
+            --accent: #ffc93c;       
+            --bg: #fdfdfd;           
+            --text: #2c3333;         
+            --light-gray: #f0f2f5;
+        }
+
+        body {
+            /* تطبيق خط Cairo */
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        /* تنسيق الرأس */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-top: 10px;
+            font-weight: 400;
+        }
+
+        /* حاوية المحتوى */
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 30px;
+        }
+
+        /* القائمة الجانبية */
+        .sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .nav-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: transparent;
+            border: none;
+            border-right: 4px solid transparent;
+            text-align: right;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            color: var(--text);
+            border-radius: 5px;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--light-gray);
+            color: var(--primary);
+        }
+
+        .nav-btn.active {
+            border-right-color: var(--secondary);
+            background-color: #e0f7fa;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* منطقة الشرح الرئيسية */
+        .content-area {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .section-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-weight: 800;
+        }
+
+        .definition-box {
+            background-color: #f8f9fa;
+            border-right: 5px solid var(--secondary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        .quote-box {
+            font-style: italic; /* Cairo لا يدعم italic جيداً أحياناً لذا نعتمد على اللون */
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px dashed #e0a800;
+            margin: 15px 0;
+            color: #5d4037;
+        }
+
+        /* تنسيق المثلث الديداكتيكي */
+        .didactic-triangle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 60px 0;
+            position: relative;
+            height: 350px;
+        }
+
+        .triangle-node {
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            position: absolute;
+            font-weight: 700;
+            z-index: 2;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .t-top { top: 0; }
+        .t-right { bottom: 0; right: 0; }
+        .t-left { bottom: 0; left: 0; }
+
+        .triangle-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .relation-text {
+            position: absolute;
+            background: white;
+            padding: 8px 12px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #555;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* تنسيق الجدول الجديد */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+
+        .summary-table th, .summary-table td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: right;
+        }
+
+        .summary-table th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 700;
+        }
+
+        .summary-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .summary-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* أزرار التنقل */
+        .nav-button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            margin: 20px 10px;
+            display: inline-block;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .nav-button:active {
+            transform: translateY(0);
+        }
+
+        .nav-buttons-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--light-gray);
+        }
+        
+        /* تجاوب الشاشات */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: static;
+                display: flex;
+                overflow-x: auto;
+                padding: 10px;
+                white-space: nowrap;
+            }
+            .nav-btn {
+                min-width: 160px;
+                border-bottom: 4px solid transparent;
+                border-right: none;
+                margin-bottom: 0;
+            }
+            .nav-btn.active {
+                border-bottom-color: var(--secondary);
+                border-right-color: transparent;
+            }
+            .didactic-triangle {
+                transform: scale(0.8);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header style="position: relative;">
+    <div style="position: absolute; top: 20px; right: 20px;">
+        <button onclick="window.location.href='index.html'" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: 600; font-size: 1em; transition: all 0.3s; backdrop-filter: blur(10px);">
+            ← رجوع
+        </button>
+    </div>
+    <h1>مجزوءة علوم التربية</h1>
+    <p>المدخل المفاهيمي: شرح معمق وتفاعلي</p>
+</header>
+
+<div class="container">
+    <aside class="sidebar">
+        <button class="nav-btn active" onclick="showSection('intro')">مقدمة عامة</button>
+        <button class="nav-btn" onclick="showSection('theory')">مفهوم النظرية</button>
+        <button class="nav-btn" onclick="showSection('education')">مفهوم التربية</button>
+        <button class="nav-btn" onclick="showSection('eduTheory')">النظرية التربوية</button>
+        <button class="nav-btn" onclick="showSection('pedagogy')">البيداغوجيا</button>
+        <button class="nav-btn" onclick="showSection('didactics')">الديداكتيك (هام)</button>
+        <button class="nav-btn" onclick="showSection('summary')">جدول التلخيص الشامل</button>
+    </aside>
+
+    <main id="contentArea" class="content-area">
+        </main>
+    
+    <div class="nav-buttons-container">
+        <button class="nav-button" onclick="window.location.href='SEMAFAHIMGAME.html'">
+            ابدأ التمارين التفاعلية →
+        </button>
+    </div>
+</div>
+
+<script>
+    // قاعدة البيانات للمحتوى (تم حذف الإحالات كما طلبت)
+    const contentData = {
+        intro: `
+            <h2 class="section-title">مقدمة: لماذا علوم التربية؟</h2>
+            <p>تُعد <strong>علوم التربية</strong> مجالاً علمياً قائماً بذاته، لكنه يتميز بطابع "تعددي"؛ فهو يتقاطع مع تخصصات عديدة كالفلسفة، وعلم النفس، وعلم الاجتماع، والتاريخ.</p>
+            <div class="definition-box">
+                <strong>الهدف الأساسي:</strong><br>
+                لا تهدف هذه العلوم إلى الوصف فقط، بل تسعى إلى <strong>فهم الظاهرة التربوية وتحليلها وتحسينها</strong> ضمن سياقاتها الاجتماعية والمؤسساتية.
+            </div>
+            <p>في عصرنا الحالي، ومع الثورة الرقمية والعولمة، لم تعد التربية مجرد "تدريس"، بل أصبحت <strong>مشروعاً إنسانياً شاملاً</strong> يهدف لبناء الإنسان القادر على التفكير والإبداع والمشاركة في تنمية مجتمعه.</p>
+            <p style="text-align:center; color: var(--secondary); font-weight:700; font-size: 1.1em;">السؤال المركزي: كيف تمكننا هذه العلوم من فهم الواقع التربوي وتطويره؟</p>
+        `,
+        theory: `
+            <h2 class="section-title">أولاً: مفهوم النظرية (Theory)</h2>
+            <p>قبل الخوض في التربية، يجب ضبط مفهوم "النظرية" كأداة للتفكير.</p>
+            
+            <h3>1. التعريف اللغوي:</h3>
+            <p>الكلمة مشتقة من الجذر "نَظَرَ"، وتعني <strong>التأمل أثناء التفكير</strong> في شيء ما.</p>
+
+            <h3>2. التعريف الاصطلاحي:</h3>
+            <div class="definition-box">
+                هي مجموعة من <strong>القواعد والمبادئ</strong> التي تُستخدم لوصف شيء ما (سواء كان علمياً، فلسفياً، أو أدبياً) وتفسيره بطريقة عقلانية ومنطقية.
+            </div>
+            <p><strong>وظيفة النظرية:</strong> دراسة موضوع معين دراسة عقلانية لاستنتاج خلاصات ونتائج تساهم في تعزيز فكرة رئيسية أو بناء فكر جديد.</p>
+        `,
+        education: `
+            <h2 class="section-title">ثانياً: مفهوم التربية (Education)</h2>
+            <p>التربية هي المفهوم الأكثر شمولاً. هي عملية "نمو ورعاية وزيادة" (لغةً). أما اصطلاحاً، فهي سيرورة تهدف إلى تنمية الفرد في جميع أبعاده (العقلية، الوجدانية، الاجتماعية).</p>
+
+            <h3>أهم التعاريف عبر التاريخ:</h3>
+            <div class="quote-box">
+                <strong>أفلاطون:</strong> "التربية هي أن تضفي على الجسم والنفس كل جمال وكمال ممكن لها."
+            </div>
+            <div class="quote-box">
+                <strong>رفاعة الطهطاوي:</strong> "التربية هي التي تبني خُلق الطفل على ما يليق بالمجتمع الفاضل، وتنمي فيه جميع الفضائل."
+            </div>
+            <div class="quote-box">
+                <strong>جون ديوي:</strong> "التربية هي الحياة، وهي عملية تكيف بين الفرد وبيئته."
+            </div>
+            <div class="quote-box">
+                <strong>إميل دوركايم:</strong> "تكوين الأفراد تكويناً اجتماعياً."
+            </div>
+            
+            <p><strong>خلاصة:</strong> التربية أوسع من التعليم؛ فهي تشمل التنشئة النفسية والعاطفية والسلوكية، ولا تقتصر على نقل المعارف فقط.</p>
+        `,
+        eduTheory: `
+            <h2 class="section-title">ثالثاً: النظرية التربوية (Educational Theory)</h2>
+            <p>إذا كانت التربية هي "الممارسة"، فالنظرية التربوية هي "النموذج" أو المخطط.</p>
+            
+            <div class="definition-box">
+                هي النموذج الذي يطمح المجتمع القائم لأطفاله وناشئته وأجياله أن يكونوا عليه. وتشمل المؤسسات والمقررات التي تستعمل في إعدادهم وتطوير مهاراتهم.
+            </div>
+
+            <h3>خصائص النظرية التربوية:</h3>
+            <ul>
+                <li><strong>متغيرة:</strong> يختلف مفهومها من مجتمع إلى مجتمع، ومن حضارة إلى حضارة، ومن عصر إلى عصر.</li>
+                <li><strong>تحليلية:</strong> تتناول مشكلات التربية بالتحليل وتقدم اقتراحات للتطوير والتحسين.</li>
+                <li><strong>شاملة:</strong> تحدد غايات وأهداف التربية، مكانة المعلم وكفاءاته، والمناهج وعلاقتها بفلسفة وقيم المجتمع.</li>
+            </ul>
+
+            <p><em>أمثلة لنظريات حديثة:</em> النظرية السلوكية، البنائية، السوسيو-بنائية، الجشتالتية، والذكاءات المتعددة.</p>
+        `,
+        pedagogy: `
+            <h2 class="section-title">رابعاً: البيداغوجيا (Pédagogie)</h2>
+            <p>كثيراً ما يحدث خلط بينها وبين الديداكتيك. لنضبط المفهوم بدقة.</p>
+            
+            <h3>1. التأصيل اللغوي (الإيتيمولوجيا):</h3>
+            <p>كلمة يونانية مركبة من شقين: <strong>Péda</strong> (الطفل) و <strong>Agoge</strong> (القيادة والسياقة).</p>
+            <p>قديماً، كان "البيداغوجي" هو الشخص (غالباً العبد) المكلف بمراقبة الأطفال ومرافقتهم في خروجهم.</p>
+
+            <h3>2. المعنى الاصطلاحي الحديث:</h3>
+            <div class="definition-box">
+                هي <strong>فن التدريس</strong> أو العلم الذي يهتم بـ:
+                <ul>
+                    <li>العلاقات التفاعلية داخل القسم.</li>
+                    <li>طرق تنظيم التعلم.</li>
+                </ul>
+            </div>
+            <p><strong>ملاحظة جوهرية:</strong> البيداغوجيا تهتم بالجانب "العلائقي" و"التنظيمي" العام، بصرف النظر عن طبيعة المادة المدرسة.</p>
+        `,
+        didactics: `
+            <h2 class="section-title">خامساً: الديداكتيك (Didactique)</h2>
+            <p>الديداكتيك هو الشق المتخصص، ويسمى أحياناً "تدريسية المادة".</p>
+            
+            <div class="definition-box">
+                هو العلم الذي يدرس <strong>طرائق تدريس مادة معينة</strong>، ويهتم بالعلاقة الثلاثية (مدرس - متعلم - معرفة).
+            </div>
+
+            <h3>المثلث الديداكتيكي (أهم نموذج للفهم):</h3>
+            
+            <div class="didactic-triangle">
+                <div class="triangle-node t-top">المعرفة</div>
+                <div class="triangle-node t-right">المتعلم</div>
+                <div class="triangle-node t-left">المدرس</div>
+
+                <div class="relation-text" style="top: 35%; right: 15%;">القطب السيكولوجي<br>(التمثلات)</div>
+                <div class="relation-text" style="top: 35%; left: 15%;">القطب الإبستمولوجي<br>(النقل الديداكتيكي)</div>
+                <div class="relation-text" style="bottom: 15%; left: 35%;">القطب البيداغوجي<br>(التعاقد الديداكتيكي)</div>
+                
+                <svg class="triangle-lines">
+                    <line x1="50%" y1="15%" x2="10%" y2="85%" style="stroke:var(--secondary);stroke-width:3" />
+                    <line x1="50%" y1="15%" x2="90%" y2="85%" style="stroke:var(--secondary);stroke-width:3" />
+                    <line x1="10%" y1="85%" x2="90%" y2="85%" style="stroke:var(--secondary);stroke-width:3" />
+                </svg>
+            </div>
+
+            <h3>شرح العلاقات:</h3>
+            <ul>
+                <li><strong>المدرس - المعرفة (النقل الديداكتيكي):</strong> كيف يحول المدرس المعرفة العالمة إلى معرفة قابلة للتدريس.</li>
+                <li><strong>المدرس - المتعلم (التعاقد الديداكتيكي):</strong> القواعد الضمنية والصريحة التي تنظم العمل والمسؤوليات.</li>
+                <li><strong>المتعلم - المعرفة (التمثلات):</strong> كيف يتصور المتعلم المعرفة وكيف يبنيها ذهنياً (وهو لا يبنيها من الصفر بل بناءً على مكتسبات سابقة).</li>
+            </ul>
+
+            <h3>أنواع الديداكتيك:</h3>
+            <ol>
+                <li><strong>ديداكتيك عام:</strong> يبحث في المبادئ العامة للتدريس بصرف النظر عن المادة.</li>
+                <li><strong>ديداكتيك خاص:</strong> يدرس خصوصيات تدريس كل مادة (الديداكتيك الرياضي، الفيزيائي، اللغوي...).</li>
+            </ol>
+        `,
+        summary: `
+            <h2 class="section-title">خلاصة: جدول المقارنة الشامل</h2>
+            <p>هذا الجدول يلخص الفروقات الدقيقة بين المفاهيم لضبط المصطلحات:</p>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th width="20%">المفهوم</th>
+                        <th width="40%">التعريف المركز</th>
+                        <th width="40%">التركيز / المجال</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>النظرية</strong></td>
+                        <td>قواعد ومبادئ لوصف وتفسير ظاهرة ما عقلانياً.</td>
+                        <td>بناء الفكر، الاستنتاج، الوصف والتفسير.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>التربية</strong></td>
+                        <td>سيرورة نمو وتنشئة شاملة للفرد.</td>
+                        <td>تنمية العقل، الوجدان، الأخلاق، والسلوك الاجتماعي (أشمل من المدرسة).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>النظرية التربوية</strong></td>
+                        <td>النموذج الذي يطمح المجتمع لتطبيقه على الناشئة.</td>
+                        <td>السياسات، الغايات الكبرى، المؤسسات، المناهج (تتغير بتغير الزمان والمكان).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>البيداغوجيا</strong></td>
+                        <td>فن التدريس وقيادة التعلم.</td>
+                        <td>العلاقات التفاعلية، تنظيم القسم، التواصل الصفي (كيف نُدرس؟ - عام).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>الديداكتيك</strong></td>
+                        <td>علم تدريس المادة الدراسية.</td>
+                        <td>بناء المعرفة، المثلث الديداكتيكي، النقل الديداكتيكي (ماذا نُدرس وكيف نمرر المحتوى؟ - خاص).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>علوم التربية</strong></td>
+                        <td>حقل معرفي متعدد التخصصات.</td>
+                        <td>فهم وتحليل الظاهرة التربوية باستخدام (علم النفس، الاجتماع، التاريخ...).</td>
+                    </tr>
+                </tbody>
+            </table>
+        `
+    };
+
+    // دالة لعرض القسم المختار
+    function showSection(sectionKey) {
+        document.getElementById('contentArea').innerHTML = contentData[sectionKey];
+        
+        // تحديث الأزرار النشطة
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        // التمرير للأعلى في الموبايل
+        if(window.innerWidth < 768) {
+            document.getElementById('contentArea').scrollIntoView({behavior: 'smooth'});
+        }
+    }
+
+    // عرض المقدمة تلقائياً عند التحميل
+    window.onload = function() {
+        document.getElementById('contentArea').innerHTML = contentData.intro;
+    };
+</script>
+
+</body>
+</html>

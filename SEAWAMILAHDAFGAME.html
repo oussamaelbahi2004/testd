@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مهندس النظام التربوي - ENS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #27ae60;
+            --secondary: #2c3e50;
+            --accent: #f39c12;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --bg: #e9f7ef;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--secondary);
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card);
+            width: 100%;
+            max-width: 750px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            min-height: 680px;
+            display: flex;
+            flex-direction: column;
+            border-top: 5px solid var(--primary);
+        }
+
+        .header {
+            background: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .badge {
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, var(--primary), #1e8449);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #1e8449, var(--primary));
+            transform: translateX(-3px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #eee;
+            width: 100%;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .screen {
+            flex: 1;
+            padding: 30px;
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .screen.active { display: flex; }
+
+        h1 { margin: 0 0 10px 0; color: var(--primary); font-size: 2rem; }
+
+        .concept-card {
+            background: #fdfefe;
+            border: 2px solid #eaeded;
+            padding: 25px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .concept-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            line-height: 1.5;
+            color: #2c3e50;
+        }
+
+        .category-tag {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .step-label {
+            display: inline-block;
+            background: #e8f8f5;
+            color: var(--primary);
+            padding: 8px 25px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+            border: 1px solid #a2d9ce;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #d5dbdb;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Tajawal', sans-serif;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--primary);
+            background: #eafaf1;
+            transform: translateX(5px);
+        }
+
+        .option-btn.correct {
+            background: #d5f5e3;
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .option-btn.wrong {
+            background: #fadbd8;
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .next-btn {
+            margin-top: 25px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-self: center;
+        }
+        .next-btn:hover { background: #1e8449; }
+
+        .start-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 25px;
+            font-size: 1.1rem;
+        }
+
+        .final-score {
+            font-size: 4rem;
+            color: var(--primary);
+            font-weight: 800;
+            margin: 20px 0;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <button class="back-button" onclick="window.location.href='SEAWAMILAHDAFCOURE.html'">
+            ← رجوع
+        </button>
+        <div id="section-title">تصنيف النظام التربوي</div>
+        <div class="badge">النقاط: <span id="score">0</span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+    <div class="screen active" id="screen-intro">
+        <h1>مهندس النظام التربوي 🏗️</h1>
+        <p style="font-size:1.1rem; color:#555;">هل تستطيع التمييز بين مكونات النظام بدقة؟</p>
+        <div style="background:#fff; padding:20px; border-radius:15px; margin:20px 0; border:1px solid #eee; text-align:right;">
+            <p>1️⃣ <strong>المرحلة 1 (العوامل):</strong> صنف العنصر (تاريخي، ثقافي، اقتصادي...).</p>
+            <p>2️⃣ <strong>المرحلة 2 (الأهداف):</strong> هل هو هدف عام، خاص، أم إجرائي؟</p>
+            <p>3️⃣ <strong>المرحلة 3 (الغايات):</strong> هل هي غاية كبرى أم مرتكز؟</p>
+        </div>
+        <button class="start-btn" onclick="startGame()">ابدأ التصنيف</button>
+    </div>
+
+    <div class="screen" id="screen-game">
+        <div class="category-tag" id="g-category">...</div>
+        <div class="concept-card">
+            <div class="concept-text" id="g-concept">...</div>
+        </div>
+        <div class="step-label" id="g-instruction">...</div>
+        <div class="options-grid" id="g-options"></div>
+        <div class="feedback" id="g-feedback"></div>
+        <button class="next-btn" id="g-next-btn" onclick="nextGameStep()">تابع</button>
+    </div>
+
+    <div class="screen" id="screen-qcm">
+        <div class="step-label" style="background:var(--secondary); color:white; border:none;" id="qcm-counter">سؤال 1</div>
+        <h2 id="qcm-text" style="line-height:1.5; margin-bottom:20px;">...</h2>
+        <div class="options-grid" id="qcm-options"></div>
+        <div class="feedback" id="qcm-feedback"></div>
+        <button class="next-btn" id="qcm-next-btn" onclick="nextQCMStep()">السؤال التالي</button>
+    </div>
+
+    <div class="screen" id="screen-result">
+        <h1>نتيجة التصنيف</h1>
+        <div class="final-score" id="final-score">0</div>
+        <p id="final-msg" style="font-size:1.3rem;">...</p>
+        <button class="start-btn" style="background:var(--secondary)" onclick="location.reload()">إعادة المحاولة</button>
+    </div>
+</div>
+
+<script>
+    /* ================= DATA: Game Classification Items ================= */
+    const level1_factors = [
+        { text: "الإرث الاستعماري (فرنسي/إسباني)", type: "عامل تاريخي وسياسي" },
+        { text: "ارتفاع الطلب الاجتماعي على التعليم", type: "عامل اقتصادي واجتماعي" },
+        { text: "مغربة الأطر (استبدال الأجانب بالمغاربة)", type: "عامل ثقافي ولغوي" },
+        { text: "توصيات المنظمات الدولية (اليونسكو/البنك الدولي)", type: "عامل دولي" },
+        { text: "بناء الدولة الوطنية الحديثة بعد الاستقلال", type: "عامل تاريخي وسياسي" },
+        { text: "التعريب (جعل العربية لغة التدريس)", type: "عامل ثقافي ولغوي" },
+        { text: "محدودية الموارد المالية مقابل النمو الديمغرافي", type: "عامل اقتصادي واجتماعي" },
+        { text: "العولمة ومجتمع المعرفة والرقمنة", type: "عامل دولي" }
+    ];
+
+    const level2_objectives = [
+        { text: "تطوير القدرات العقلية والوجدانية للمتعلم بشكل عام", type: "هدف عام" },
+        { text: "أن يرسم المتعلم مثلثاً قائم الزاوية بدقة", type: "هدف إجرائي" },
+        { text: "تنمية مهارات القراءة والكتابة في اللغة العربية", type: "هدف خاص" },
+        { text: "ما يمكن ملاحظته وقياسه في وضعية محددة", type: "هدف إجرائي" },
+        { text: "استيعاب مفاهيم الرياضيات الأساسية", type: "هدف خاص" },
+        { text: "تكوين شخصية المتعلم المتوازنة", type: "هدف عام" }
+    ];
+
+    const level3_goals = [
+        { text: "تكوين مواطن مؤمن بالله ومتمسك بثوابت الأمة", type: "غاية كبرى" },
+        { text: "ضمان الإنصاف وتكافؤ الفرص لجميع الأطفال", type: "مرتكز (مبدأ)" },
+        { text: "إعداد الإنسان القادر على التعلم مدى الحياة", type: "غاية كبرى" },
+        { text: "تحقيق الجودة في التعلمات والأداء التربوي", type: "مرتكز (مبدأ)" },
+        { text: "التربية على القيم والمواطنة والسلوك المدني", type: "مرتكز (مبدأ)" },
+        { text: "الاعتزاز بالهوية الوطنية المتعددة الروافد", type: "غاية كبرى" }
+    ];
+
+    const allGameLevels = [
+        { title: "المرحلة 1: العوامل المؤثرة", data: level1_factors, options: ["عامل تاريخي وسياسي", "عامل ثقافي ولغوي", "عامل اقتصادي واجتماعي", "عامل دولي"] },
+        { title: "المرحلة 2: أنواع الأهداف", data: level2_objectives, options: ["هدف عام", "هدف خاص", "هدف إجرائي"] },
+        { title: "المرحلة 3: الغايات والمرتكزات", data: level3_goals, options: ["غاية كبرى", "مرتكز (مبدأ)"] }
+    ];
+
+    /* ================= DATA: 30 QCM Questions ================= */
+    const qcmData = [
+        { q: "المقصود بـ 'مغربة الأطر' هو:", o: ["ترجمة الكتب للمغربية", "إسناد المناصب لأطر مغربية بدل الأجنبية", "تدريس تاريخ المغرب", "إلغاء الفرنسية"], a: 1 },
+        { q: "الهدف الذي يمكن ملاحظته وقياسه بدقة في زمن قصير هو:", o: ["الهدف العام", "الغاية", "الهدف الإجرائي", "المرمى"], a: 2 },
+        { q: "من العوامل الدولية المؤثرة في النظام التربوي:", o: ["النمو الديمغرافي", "توصيات البنك الدولي واليونسكو", "الإرث الاستعماري", "التعريب"], a: 1 },
+        { q: "الغاية الكبرى هي:", o: ["هدف يتحقق في حصة واحدة", "مقصد عالٍ يتحقق على المدى البعيد", "مهارة يدوية", "قانون داخلي"], a: 1 },
+        { q: "مر التعريب في المغرب بمراحل، أخطرها كان في:", o: ["الخمسينات", "الثمانينيات (تعريب العلوم)", "الألفية الثالثة", "السبعينيات"], a: 1 },
+        { q: "المبدأ الذي يعني 'ضمان ولوج الجميع للتعليم بغض النظر عن انتمائهم' هو:", o: ["الجودة", "الإنصاف وتكافؤ الفرص", "الحكامة", "الرقمنة"], a: 1 },
+        { q: "الأهداف الخاصة ترتبط بـ:", o: ["النظام التربوي ككل", "مادة دراسية أو مجزوءة معينة", "حصة واحدة", "سلوك بسيط"], a: 1 },
+        { q: "مصطلح 'التناوب اللغوي' في الرؤية الاستراتيجية يعني:", o: ["إلغاء العربية", "تدريس بعض المواد (العلمية) بلغة أجنبية", "تدريس اللغات فقط", "الترجمة الفورية"], a: 1 },
+        { q: "من التحديات الاقتصادية التي واجهت التعليم:", o: ["ارتفاع الطلب الاجتماعي مقابل محدودية الموارد", "كثرة المدارس", "فائض الميزانية", "قلة التلاميذ"], a: 0 },
+        { q: "الوثيقة التي حولت الرؤية الاستراتيجية إلى قانون ملزم هي:", o: ["الميثاق الوطني", "الكتاب الأبيض", "القانون الإطار 51.17", "المخطط الاستعجالي"], a: 2 },
+        { q: "يهدف النظام التربوي إلى تكوين مواطن:", o: ["منغلق على ذاته", "متمسك بثوابته ومنفتح على العالم", "يتقن الفرنسية فقط", "لا يهتم بوطنه"], a: 1 },
+        { q: "الأهداف العامة تركز على:", o: ["تطوير القدرات العقلية والشخصية للمتعلم", "كتابة حرف الراء", "حل معادلة رياضية", "الجري لمسافة 100 متر"], a: 0 },
+        { q: "من مرتكزات النظام التربوي 'التربية على القيم'، ومنها:", o: ["التسامح والمواطنة", "الانعزال", "العنف", "الغش"], a: 0 },
+        { q: "تعتبر 'العولمة' عاملاً:", o: ["داخلياً", "محلياً", "دولياً خارجياً", "شخصياً"], a: 2 },
+        { q: "الإرث الاستعماري أثر في النظام التربوي عبر:", o: ["توحيد المناهج", "ازدواجية اللغة والنظام (عصري/أصيل)", "بناء الجامعات", "محو الأمية"], a: 1 },
+        { q: "مفهوم 'التعميم' الذي رفع بعد الاستقلال يعني:", o: ["جعل التعليم متاحاً لجميع أبناء المغاربة", "تعميم اللغة العربية", "تعميم الزي الموحد", "تعميم المنحة"], a: 0 },
+        { q: "الفرق بين الغاية والمرمى:", o: ["الغاية أعم وأشمل وأبعد مدى من المرمى", "المرمى أبعد من الغاية", "لا فرق بينهما", "الغاية تخص الأستاذ والمرمى يخص الوزير"], a: 0 },
+        { q: "تندرج 'القدرة على التحليل والتركيب' ضمن:", o: ["الأهداف الحس-حركية", "الأهداف المعرفية (العقلية)", "الأهداف الوجدانية", "الأهداف الاجتماعية"], a: 1 },
+        { q: "من آثار 'التقويم الهيكلي' (الثمانينات) على التعليم:", o: ["زيادة الميزانية", "تقليص النفقات وتراجع الجودة", "توظيف مكثف", "بناء مدارس كثيرة"], a: 1 },
+        { q: "يعتبر 'الارتقاء بالفرد والمجتمع' من:", o: ["المشاريع", "المرتكزات والمقاصد", "الوسائل", "الإكراهات"], a: 1 },
+        { q: "التوحيد (Unification) كان يهدف إلى:", o: ["توحيد الزي", "توحيد الأنظمة المدرسية في مدرسة وطنية واحدة", "توحيد الكتب", "توحيد الامتحانات"], a: 1 },
+        { q: "الأهداف الإجرائية يجب أن تكون:", o: ["عامة وغامضة", "قابلة للملاحظة والقياس (SMART)", "طويلة المدى", "فلسفية"], a: 1 },
+        { q: "من الغايات الكبرى: 'إعداد الإنسان القادر على...':", o: ["النوم طويلاً", "التعلم مدى الحياة", "الحفظ فقط", "العمل اليدوي فقط"], a: 1 },
+        { q: "علاقة التربية بالتنمية الاقتصادية تندرج ضمن:", o: ["العامل التاريخي", "العامل الاقتصادي والاجتماعي", "العامل اللغوي", "العامل الديني"], a: 1 },
+        { q: "المستوى الذي يحدد 'ما ينبغي أن يكون عليه المتعلم بعد سلك دراسي' يسمى:", o: ["الهدف الإجرائي", "المواصفات (Profil)", "الدرس", "التمرين"], a: 1 },
+        { q: "التعريب في الثمانينيات واجه مشكلة:", o: ["رفض المجتمع", "انفصال لغة الثانوي (عربية) عن العالي (فرنسية)", "سهولة المناهج", "كثرة المراجع"], a: 1 },
+        { q: "الوثيقة التي اعتبرت التعليم 'أولوية وطنية ثانية بعد الوحدة الترابية':", o: ["الميثاق الوطني للتربية والتكوين", "دستور 1962", "المخطط الخماسي", "ظهير 1958"], a: 0 },
+        { q: "الهدف الوجداني يرتبط بـ:", o: ["الحركات العضلية", "القيم والميول والمشاعر", "المعلومات والحقائق", "الحساب"], a: 1 },
+        { q: "بناء الدولة الوطنية الحديثة فرض على التعليم أن يكون:", o: ["نخبوياً", "أداة للتماسك الوطني والتنمية", "تقليدياً", "فرنسياً خالصاً"], a: 1 },
+        { q: "الجودة في التعلمات تعني:", o: ["الحصول على نقط عالية فقط", "تمكين المتعلم من كفايات حقيقية ومستدامة", "حفظ الكتب", "النجاح بنسبة 100%"], a: 1 }
+    ];
+
+    /* ================= LOGIC ================= */
+    let totalScore = 0;
+    let currentLevelIndex = 0;
+    let currentItemIndex = 0;
+    let qcmIndex = 0;
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function shuffleArray(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+    function updateScore() {
+        document.getElementById('score').innerText = totalScore;
+    }
+
+    function startGame() {
+        totalScore = 0;
+        currentLevelIndex = 0;
+        currentItemIndex = 0;
+        qcmIndex = 0;
+        updateScore();
+        
+        shuffleArray(qcmData);
+        loadGameRound();
+        showScreen('screen-game');
+    }
+
+    /* ------- Classification Game ------- */
+    function loadGameRound() {
+        const level = allGameLevels[currentLevelIndex];
+        const item = level.data[currentItemIndex];
+
+        document.getElementById('g-category').innerText = level.title;
+        document.getElementById('g-instruction').innerText = "إلى أي صنف ينتمي هذا العنصر؟";
+        document.getElementById('g-concept').innerText = item.text;
+        
+        const optionsDiv = document.getElementById('g-options');
+        const feedbackEl = document.getElementById('g-feedback');
+        const nextBtn = document.getElementById('g-next-btn');
+        const progressBar = document.getElementById('progress');
+
+        feedbackEl.innerText = "";
+        nextBtn.style.display = "none";
+        optionsDiv.innerHTML = "";
+
+        let totalItems = allGameLevels.reduce((acc, lvl) => acc + lvl.data.length, 0);
+        let itemsDone = allGameLevels.slice(0, currentLevelIndex).reduce((acc, lvl) => acc + lvl.data.length, 0) + currentItemIndex;
+        let progressPercent = (itemsDone / totalItems) * 50; 
+        progressBar.style.width = `${progressPercent}%`;
+
+        let correctAns = item.type;
+        let options = [...level.options];
+        shuffleArray(options);
+
+        createButtons(optionsDiv, options, correctAns, 'game');
+    }
+
+    function nextGameStep() {
+        const level = allGameLevels[currentLevelIndex];
+        currentItemIndex++;
+
+        if (currentItemIndex >= level.data.length) {
+            currentLevelIndex++;
+            currentItemIndex = 0;
+            
+            if (currentLevelIndex >= allGameLevels.length) {
+                startQCMPhase();
+                return;
+            }
+        }
+        loadGameRound();
+    }
+
+    /* ------- QCM ------- */
+    function startQCMPhase() {
+        showScreen('screen-qcm');
+        document.getElementById('section-title').innerText = "المرحلة النهائية: QCM";
+        loadQCMRound();
+    }
+
+    function loadQCMRound() {
+        const data = qcmData[qcmIndex];
+        const optionsDiv = document.getElementById('qcm-options');
+        const feedbackEl = document.getElementById('qcm-feedback');
+        const nextBtn = document.getElementById('qcm-next-btn');
+        const progressBar = document.getElementById('progress');
+
+        document.getElementById('qcm-counter').innerText = `سؤال ${qcmIndex + 1} / ${qcmData.length}`;
+        document.getElementById('qcm-text').innerText = data.q;
+        feedbackEl.innerText = "";
+        nextBtn.style.display = "none";
+        optionsDiv.innerHTML = "";
+
+        let progressPercent = 50 + ((qcmIndex / qcmData.length) * 50);
+        progressBar.style.width = `${progressPercent}%`;
+
+        let options = [...data.o];
+        let correctTxt = data.o[data.a];
+        createButtons(optionsDiv, options, correctTxt, 'qcm');
+    }
+
+    function nextQCMStep() {
+        qcmIndex++;
+        if (qcmIndex < qcmData.length) {
+            loadQCMRound();
+        } else {
+            finishExam();
+        }
+    }
+
+    /* ------- Helpers ------- */
+    function createButtons(container, optionsList, correctText, mode) {
+        optionsList.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = function() { checkAnswer(this, opt, correctText, container, mode); };
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(btn, selected, correct, container, mode) {
+        const allBtns = container.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.disabled = true);
+
+        const feedbackEl = document.getElementById(mode === 'game' ? 'g-feedback' : 'qcm-feedback');
+        const nextBtn = document.getElementById(mode === 'game' ? 'g-next-btn' : 'qcm-next-btn');
+
+        if (selected === correct) {
+            btn.classList.add('correct');
+            totalScore += 10;
+            updateScore();
+            feedbackEl.innerText = "✅ صحيح!";
+            feedbackEl.style.color = "#2ecc71";
+        } else {
+            btn.classList.add('wrong');
+            allBtns.forEach(b => {
+                if (b.innerText === correct) b.classList.add('correct');
+            });
+            feedbackEl.innerText = "❌ خطأ!";
+            feedbackEl.style.color = "#e74c3c";
+        }
+        nextBtn.style.display = "block";
+    }
+
+    function finishExam() {
+        showScreen('screen-result');
+        document.getElementById('progress').style.width = "100%";
+        document.getElementById('final-score').innerText = totalScore;
+        
+        const maxScore = 500;
+        const percentage = (totalScore / maxScore) * 100;
+        const msgEl = document.getElementById('final-msg');
+
+        if (percentage >= 85) {
+            msgEl.innerText = "أنت مهندس تربوي بامتياز! 🏗️🎓";
+            msgEl.style.color = "#27ae60";
+        } else if (percentage >= 50) {
+            msgEl.innerText = "جيد، ولكن راجع تصنيف الأهداف بدقة 📏";
+            msgEl.style.color = "#f39c12";
+        } else {
+            msgEl.innerText = "المفاهيم مختلطة، أعد المحاولة! 💪";
+            msgEl.style.color = "#e74c3c";
+        }
+    }
+</script>
+
+</body>
+</html>

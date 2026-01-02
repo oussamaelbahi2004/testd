@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البوصلة البيداغوجية - ENS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8e44ad; /* لون مميز للبيداغوجيا */
+            --secondary: #2c3e50;
+            --accent: #f1c40f;
+            --success: #27ae60;
+            --error: #c0392b;
+            --bg: #f4ecf7;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--secondary);
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card);
+            width: 100%;
+            max-width: 750px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            min-height: 680px;
+            display: flex;
+            flex-direction: column;
+            border-top: 5px solid var(--primary);
+        }
+
+        /* Header */
+        .header {
+            background: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .badge {
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, var(--primary), #6c3483);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #6c3483, var(--primary));
+            transform: translateX(-3px);
+            box-shadow: 0 4px 12px rgba(142, 68, 173, 0.4);
+        }
+
+        /* Progress */
+        .progress-bar {
+            height: 8px;
+            background: #eee;
+            width: 100%;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Screens */
+        .screen {
+            flex: 1;
+            padding: 30px;
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .screen.active { display: flex; }
+
+        h1 { margin: 0 0 10px 0; color: var(--primary); font-size: 2rem; }
+
+        /* Card Design */
+        .info-card {
+            background: #fbfbfb;
+            border: 2px solid #e8daef;
+            padding: 25px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .info-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            line-height: 1.5;
+            color: #2c3e50;
+        }
+
+        .type-tag {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .step-label {
+            display: inline-block;
+            background: #ffffff;
+            color: var(--primary);
+            padding: 8px 25px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+            border: 1px solid #d2b4de;
+        }
+
+        /* Grid */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #d5dbdb;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Tajawal', sans-serif;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--primary);
+            background: #f4ecf7;
+            transform: translateX(5px);
+        }
+
+        .option-btn.correct {
+            background: #d5f5e3;
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .option-btn.wrong {
+            background: #fadbd8;
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        /* Controls */
+        .next-btn {
+            margin-top: 25px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-self: center;
+        }
+        .next-btn:hover { background: #6c3483; }
+
+        .start-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 25px;
+            font-size: 1.1rem;
+        }
+
+        .final-score {
+            font-size: 4rem;
+            color: var(--primary);
+            font-weight: 800;
+            margin: 20px 0;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <button class="back-button" onclick="window.location.href='SE5IYARATBIDA5OJIYACOURE.html'">
+            ← رجوع
+        </button>
+        <div id="section-title">البوصلة البيداغوجية</div>
+        <div class="badge">النقاط: <span id="score">0</span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+    <div class="screen active" id="screen-intro">
+        <h1>الاختيارات البيداغوجية 🧭</h1>
+        <p style="font-size:1.1rem; color:#555;">هل يمكنك التمييز بين المضمون، الأهداف، والكفايات؟</p>
+        <div style="background:#fff; padding:20px; border-radius:15px; margin:20px 0; border:1px solid #eee; text-align:right;">
+            <p>1️⃣ <strong>الهوية:</strong> متى اعتمدت؟ وما هي فكرتها الجوهرية؟</p>
+            <p>2️⃣ <strong>التحليل:</strong> ما هي إيجابياتها وسلبياتها (الحدود)؟</p>
+            <p>3️⃣ <strong>اختبار QCM:</strong> أسئلة دقيقة حول الفروقات.</p>
+        </div>
+        <button class="start-btn" onclick="startGame()">ابدأ التصنيف</button>
+    </div>
+
+    <div class="screen" id="screen-game">
+        <div class="type-tag" id="g-type">...</div>
+        
+        <div class="info-card">
+            <div class="info-text" id="g-text">...</div>
+        </div>
+
+        <div class="step-label" id="g-instruction">...</div>
+        
+        <div class="options-grid" id="g-options"></div>
+        <div class="feedback" id="g-feedback"></div>
+        <button class="next-btn" id="g-next-btn" onclick="nextGameStep()">تابع</button>
+    </div>
+
+    <div class="screen" id="screen-qcm">
+        <div class="step-label" style="background:var(--secondary); color:white; border:none;" id="qcm-counter">سؤال 1</div>
+        <h2 id="qcm-text" style="line-height:1.5; margin-bottom:20px;">...</h2>
+        <div class="options-grid" id="qcm-options"></div>
+        <div class="feedback" id="qcm-feedback"></div>
+        <button class="next-btn" id="qcm-next-btn" onclick="nextQCMStep()">السؤال التالي</button>
+    </div>
+
+    <div class="screen" id="screen-result">
+        <h1>النتيجة النهائية</h1>
+        <div class="final-score" id="final-score">0</div>
+        <p id="final-msg" style="font-size:1.3rem;">...</p>
+        <button class="start-btn" style="background:var(--secondary)" onclick="location.reload()">إعادة المحاولة</button>
+    </div>
+</div>
+
+<script>
+    /* ================= DATA: Pedagogical Approaches ================= */
+    /* Based on  */
+    
+    // Level 1: Identification (تحديد الهوية) - Date & Core Idea
+    const level1_identity = [
+        { text: "اعتمدت مباشرة بعد الاستقلال (أقدم بيداغوجيا)", pedagogy: "بيداغوجيا المضمون" },
+        { text: "اعتمدت في السبعينيات والثمانينيات", pedagogy: "بيداغوجيا الأهداف" },
+        { text: "اعتمدت سنة 2000 مع الميثاق الوطني", pedagogy: "بيداغوجيا الكفايات" },
+        { text: "الأستاذ هو الناقل المباشر للمعرفة والمتعلم متلق سلبي", pedagogy: "بيداغوجيا المضمون" },
+        { text: "تقوم على صياغة أهداف سلوكية (معرفية، مهارية، وجدانية)", pedagogy: "بيداغوجيا الأهداف" },
+        { text: "تقوم على دمج الموارد لحل وضعيات مشكلة", pedagogy: "بيداغوجيا الكفايات" },
+        { text: "تركز على المعارف والمحتويات كجوهر للتعلم", pedagogy: "بيداغوجيا المضمون" },
+        { text: "تركز على السلوك الخارجي المتوقع من المتعلم", pedagogy: "بيداغوجيا الأهداف" }
+    ];
+
+    // Level 2: Pros & Cons (الإيجابيات والسلبيات)
+    const level2_analysis = [
+        { text: "وضوح المحتوى وسهولة التقويم", pedagogy: "بيداغوجيا المضمون", type: "إيجابية" },
+        { text: "تغييب نشاط المتعلم وعدم الملاءمة لمجتمع المعرفة", pedagogy: "بيداغوجيا المضمون", type: "سلبية (حدود)" },
+        { text: "دقة التخطيط وقابلية القياس", pedagogy: "بيداغوجيا الأهداف", type: "إيجابية" },
+        { text: "تجزيء التعلم والتركيز على نتائج قصيرة المدى", pedagogy: "بيداغوجيا الأهداف", type: "سلبية (حدود)" },
+        { text: "تنمية التفكير النقدي والاندماج في الحياة", pedagogy: "بيداغوجيا الكفايات", type: "إيجابية" },
+        { text: "صعوبة التقويم وضعف تكوين المدرسين", pedagogy: "بيداغوجيا الكفايات", type: "سلبية (حدود)" }
+    ];
+
+    /* ================= DATA: QCM ================= */
+    const qcmData = [
+        { q: "البيداغوجيا التي تعتبر المتعلم 'وعاءً للمعلومات' هي:", o: ["بيداغوجيا الكفايات", "بيداغوجيا المضمون", "بيداغوجيا المشروع", "بيداغوجيا الخطأ"], a: 1 },
+        { q: "انتقل المغرب رسمياً إلى المقاربة بالكفايات سنة:", o: ["1956", "1980", "2000", "2015"], a: 2 },
+        { q: "من عيوب بيداغوجيا الأهداف (PPO):", o: ["غموض الأهداف", "تجزيء الفعل التعليمي وتفتيت المعرفة", "صعوبة التقويم", "غياب التخطيط"], a: 1 },
+        { q: "المفهوم المركزي في المقاربة بالكفايات هو:", o: ["الحفظ", "السلوك الميكانيكي", "الوضعية المشكلة والإدماج", "المحتوى الدراسي"], a: 2 },
+        { q: "بيداغوجيا تركز على 'السلوك القابل للملاحظة والقياس':", o: ["بيداغوجيا الأهداف", "بيداغوجيا المضمون", "المقاربة بالكفايات", "البيداغوجيا الفارقية"], a: 0 },
+        { q: "تم اعتماد بيداغوجيا الأهداف في المغرب خلال:", o: ["فترة الاستقلال", "السبعينيات والثمانينيات", "الألفية الثالثة", "فترة الحماية"], a: 1 },
+        { q: "تتميز بيداغوجيا المضمون بـ:", o: ["صعوبة التقويم", "سهولة التقويم ووضوح المحتوى", "نشاط المتعلم المكثف", "العمل بالمجموعات"], a: 1 },
+        { q: "التحدي الأكبر لتطبيق المقاربة بالكفايات هو:", o: ["كثرة المراجع", "ضعف تكوين الأساتذة وصعوبة التقويم", "رفض التلاميذ لها", "سهولة تطبيقها"], a: 1 },
+        { q: "في بيداغوجيا الكفايات، دور المتعلم هو:", o: ["متلقي سلبي", "فاعل يبني تعلماته ويدمج الموارد", "منفذ للأوامر", "حافظ للدروس"], a: 1 },
+        { q: "الوثيقة المرجعية التي أرست بيداغوجيا الكفايات هي:", o: ["المخطط الخماسي", "الميثاق الوطني للتربية والتكوين", "الكتاب الأبيض", "دستور 2011"], a: 1 },
+        { q: "مصطلح 'Mobilisation' (تعبئة/تجنيد) الموارد يخص:", o: ["المقاربة بالكفايات", "بيداغوجيا الأهداف", "بيداغوجيا المحتوى", "بيداغوجيا اللعب"], a: 0 },
+        { q: "تركز بيداغوجيا المضمون على:", o: ["الكم المعرفي (الشحن)", "الكيف (المهارة)", "القيم", "التواصل"], a: 0 },
+        { q: "الخلفية النظرية لبيداغوجيا الأهداف هي:", o: ["النظرية البنائية", "النظرية السلوكية", "النظرية الجشتالتية", "التحليل النفسي"], a: 1 },
+        { q: "الهدف من الانتقال إلى الكفايات هو:", o: ["تعقيد الدراسة", "ربط التعلم بالحياة وتنمية الاستقلالية", "إلغاء الكتب المدرسية", "تقليص ساعات العمل"], a: 1 },
+        { q: "من إيجابيات بيداغوجيا الأهداف:", o: ["الشمولية", "دقة التخطيط والوضوح", "الإبداع", "التركيز على العمليات العقلية العليا"], a: 1 },
+        { q: "تعتبر 'صعوبة التقويم' من عوائق:", o: ["بيداغوجيا المضمون", "بيداغوجيا الكفايات", "بيداغوجيا الأهداف", "التعليم العتيق"], a: 1 },
+        { q: "في بيداغوجيا المضمون، السلطة المعرفية بيد:", o: ["المتعلم", "المدرس والكتاب المدرسي", "الأسرة", "الإعلام"], a: 1 },
+        { q: "الكفاية هي قدرة المتعلم على:", o: ["استظهار درس كامل", "حل وضعية مركبة بتعبئة موارد مدمجة", "الجلوس بهدوء", "الكتابة بخط جميل فقط"], a: 1 },
+        { q: "الفترة التي سميت بـ 'التقويم الهيكلي' تزامنت مع هيمنة:", o: ["بيداغوجيا الكفايات", "بيداغوجيا الأهداف", "بيداغوجيا الإدماج", "بيداغوجيا المشروع"], a: 1 },
+        { q: "أي بيداغوجيا تعتبر المتعلم 'صفحة بيضاء'؟", o: ["الكفايات", "المضمون (والأهداف جزئياً)", "البنائية", "الفارقية"], a: 1 },
+        { q: "التقويم في بيداغوجيا الكفايات يركز على:", o: ["الحفظ", "معايير ومؤشرات الإنجاز في وضعيات", "السرعة في الإجابة", "حسن الخط"], a: 1 },
+        { q: "من سلبيات بيداغوجيا المضمون:", o: ["عدم ملاءمتها لمجتمع المعرفة", "صعوبة الفهم", "غلاء الكتب", "طول العطل"], a: 0 },
+        { q: "مفهوم 'الإدماج' (Intégration) هو حجر الزاوية في:", o: ["المقاربة بالكفايات", "بيداغوجيا الأهداف", "الطريقة الحوارية", "التعليم المبرمج"], a: 0 },
+        { q: "ترتيب البيداغوجيات في المغرب زمنياً:", o: ["أهداف -> كفايات -> مضمون", "مضمون -> أهداف -> كفايات", "كفايات -> مضمون -> أهداف", "مضمون -> كفايات -> أهداف"], a: 1 },
+        { q: "النموذج 'الصناعي' (المدرسة كالمصنع) يرتبط أكثر بـ:", o: ["بيداغوجيا المضمون/التقليدية", "المدرسة الحديثة", "مدرسة النجاح", "مدرسة الفرصة الثانية"], a: 0 },
+        { q: "الفرق بين الهدف والكفاية:", o: ["الهدف جزئي وسلوكي، الكفاية مركبة وشاملة", "الهدف أصعب من الكفاية", "لا فرق", "الهدف للمدرس والكفاية للمدير"], a: 0 },
+        { q: "يعني اختصار APC:", o: ["Approche Par Contenus", "Approche Par Compétences", "Approche Par Concepts", "Approche Par Classes"], a: 1 },
+        { q: "يعني اختصار PPO:", o: ["Pédagogie Par Objectifs", "Projet Pédagogique", "Plan Par Objectif", "Programme Officiel"], a: 0 },
+        { q: "تعتمد بيداغوجيا الكفايات على نظريات تعلم مثل:", o: ["البنائية والسوسيوبنائية", "السلوكية فقط", "التحليل النفسي", "الوراثية"], a: 0 },
+        { q: "أهمية 'الوضعيات' في التدريس ظهرت بقوة مع:", o: ["بيداغوجيا المضمون", "المقاربة بالكفايات", "الكتاتيب القرآنية", "التعليم عن بعد"], a: 1 }
+    ];
+
+    /* ================= LOGIC ================= */
+    let totalScore = 0;
+    
+    // Game Vars
+    let gamePhase = 1; // 1: Identity, 2: Analysis
+    let itemIndex = 0;
+    let qcmIndex = 0;
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function shuffleArray(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+    function updateScore() {
+        document.getElementById('score').innerText = totalScore;
+    }
+
+    function startGame() {
+        totalScore = 0;
+        gamePhase = 1;
+        itemIndex = 0;
+        qcmIndex = 0;
+        updateScore();
+        
+        // Randomize
+        shuffleArray(level1_identity);
+        shuffleArray(level2_analysis);
+        shuffleArray(qcmData);
+
+        // Start Phase 1
+        loadGameRound();
+        showScreen('screen-game');
+    }
+
+    /* ------- Game Logic ------- */
+    function loadGameRound() {
+        let currentItem;
+        let instruction = "";
+        let options = ["بيداغوجيا المضمون", "بيداغوجيا الأهداف", "بيداغوجيا الكفايات"];
+        let typeText = "";
+
+        if (gamePhase === 1) {
+            currentItem = level1_identity[itemIndex];
+            instruction = "أي بيداغوجيا ينطبق عليها هذا الوصف؟";
+            typeText = "تحديد الهوية";
+        } else {
+            currentItem = level2_analysis[itemIndex];
+            instruction = `هذه الخاصية تعتبر (${currentItem.type}) لأي بيداغوجيا؟`;
+            typeText = "تحليل الخصائص";
+        }
+
+        // UI
+        document.getElementById('g-type').innerText = typeText;
+        document.getElementById('g-text').innerText = currentItem.text;
+        document.getElementById('g-instruction').innerText = instruction;
+        
+        const optionsDiv = document.getElementById('g-options');
+        const feedbackEl = document.getElementById('g-feedback');
+        const nextBtn = document.getElementById('g-next-btn');
+        const progressBar = document.getElementById('progress');
+
+        feedbackEl.innerText = "";
+        nextBtn.style.display = "none";
+        optionsDiv.innerHTML = "";
+
+        // Progress Calculation
+        let totalGameItems = level1_identity.length + level2_analysis.length;
+        let itemsDone = (gamePhase === 1 ? itemIndex : level1_identity.length + itemIndex);
+        let progressPercent = (itemsDone / totalGameItems) * 50; 
+        progressBar.style.width = `${progressPercent}%`;
+
+        // Create Options
+        let correctAns = currentItem.pedagogy;
+        shuffleArray(options); // Shuffle options position
+
+        createButtons(optionsDiv, options, correctAns, 'game');
+    }
+
+    function nextGameStep() {
+        if (gamePhase === 1) {
+            itemIndex++;
+            if (itemIndex >= level1_identity.length) {
+                gamePhase = 2;
+                itemIndex = 0;
+            }
+        } else {
+            itemIndex++;
+            if (itemIndex >= level2_analysis.length) {
+                startQCMPhase();
+                return;
+            }
+        }
+        loadGameRound();
+    }
+
+    /* ------- QCM Logic ------- */
+    function startQCMPhase() {
+        showScreen('screen-qcm');
+        document.getElementById('section-title').innerText = "المرحلة النهائية: QCM";
+        loadQCMRound();
+    }
+
+    function loadQCMRound() {
+        const data = qcmData[qcmIndex];
+        const optionsDiv = document.getElementById('qcm-options');
+        const feedbackEl = document.getElementById('qcm-feedback');
+        const nextBtn = document.getElementById('qcm-next-btn');
+        const progressBar = document.getElementById('progress');
+
+        document.getElementById('qcm-counter').innerText = `سؤال ${qcmIndex + 1} / ${qcmData.length}`;
+        document.getElementById('qcm-text').innerText = data.q;
+        feedbackEl.innerText = "";
+        nextBtn.style.display = "none";
+        optionsDiv.innerHTML = "";
+
+        let progressPercent = 50 + ((qcmIndex / qcmData.length) * 50);
+        progressBar.style.width = `${progressPercent}%`;
+
+        let options = [...data.o];
+        let correctTxt = data.o[data.a];
+        createButtons(optionsDiv, options, correctTxt, 'qcm');
+    }
+
+    function nextQCMStep() {
+        qcmIndex++;
+        if (qcmIndex < qcmData.length) {
+            loadQCMRound();
+        } else {
+            finishExam();
+        }
+    }
+
+    /* ------- Helpers ------- */
+    function createButtons(container, optionsList, correctText, mode) {
+        optionsList.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = function() { checkAnswer(this, opt, correctText, container, mode); };
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(btn, selected, correct, container, mode) {
+        const allBtns = container.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.disabled = true);
+
+        const feedbackEl = document.getElementById(mode === 'game' ? 'g-feedback' : 'qcm-feedback');
+        const nextBtn = document.getElementById(mode === 'game' ? 'g-next-btn' : 'qcm-next-btn');
+
+        if (selected === correct) {
+            btn.classList.add('correct');
+            totalScore += 10;
+            updateScore();
+            feedbackEl.innerText = "✅ صحيح!";
+            feedbackEl.style.color = "#27ae60";
+        } else {
+            btn.classList.add('wrong');
+            allBtns.forEach(b => {
+                if (b.innerText === correct) b.classList.add('correct');
+            });
+            feedbackEl.innerText = "❌ خطأ!";
+            feedbackEl.style.color = "#c0392b";
+        }
+        nextBtn.style.display = "block";
+    }
+
+    function finishExam() {
+        showScreen('screen-result');
+        document.getElementById('progress').style.width = "100%";
+        document.getElementById('final-score').innerText = totalScore;
+        
+        // Max Score Calculation
+        // Game items: (8 + 6) = 14 items * 10 pts = 140
+        // QCM: 30 items * 10 pts = 300
+        // Total = 440
+        const maxScore = 440;
+        const percentage = (totalScore / maxScore) * 100;
+        const msgEl = document.getElementById('final-msg');
+
+        if (percentage >= 85) {
+            msgEl.innerText = "أنت خبير في البيداغوجيا! 🧭🎓";
+            msgEl.style.color = "#27ae60";
+        } else if (percentage >= 50) {
+            msgEl.innerText = "جيد، ولكن راجع الفروقات بين الأهداف والكفايات 📚";
+            msgEl.style.color = "#f1c40f";
+        } else {
+            msgEl.innerText = "البوصلة تائهة، أعد المحاولة! 💪";
+            msgEl.style.color = "#c0392b";
+        }
+    }
+</script>
+
+</body>
+</html>

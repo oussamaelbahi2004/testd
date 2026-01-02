@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كرونولوجيا الإصلاح والمشاريع - ENS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e8449; /* أخضر للإصلاح */
+            --secondary: #2c3e50;
+            --accent: #f1c40f;
+            --success: #27ae60;
+            --error: #c0392b;
+            --bg: #eafaf1;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--secondary);
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card);
+            width: 100%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            min-height: 700px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #d5f5e3;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .badge {
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, var(--primary), #145a32);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(30, 132, 73, 0.3);
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #145a32, var(--primary));
+            transform: translateX(-3px);
+            box-shadow: 0 4px 12px rgba(30, 132, 73, 0.4);
+        }
+
+        /* Progress */
+        .progress-bar {
+            height: 8px;
+            background: #eee;
+            width: 100%;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Screens */
+        .screen {
+            flex: 1;
+            padding: 30px;
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .screen.active { display: flex; }
+
+        h1 { margin: 0 0 10px 0; color: var(--primary); font-size: 2rem; }
+
+        /* Timeline / Card */
+        .main-card {
+            background: #f8f9f9;
+            border-right: 6px solid var(--primary);
+            padding: 25px;
+            text-align: right;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .card-title {
+            color: var(--primary);
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-desc {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.6;
+            background: #fff;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        .phase-tag {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .step-label {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        /* Grid */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #ecf0f1;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Tajawal', sans-serif;
+            color: var(--secondary);
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--primary);
+            background: #eafaf1;
+            transform: translateX(5px);
+        }
+
+        .option-btn.correct {
+            background: #d5f5e3;
+            border-color: var(--success);
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background: #fadbd8;
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        /* Controls */
+        .next-btn {
+            margin-top: 25px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 60px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-self: center;
+        }
+        .next-btn:hover { background: #145a32; }
+
+        .start-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 25px;
+            font-size: 1.1rem;
+        }
+
+        .final-score {
+            font-size: 4rem;
+            color: var(--primary);
+            font-weight: 800;
+            margin: 20px 0;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <button class="back-button" onclick="window.location.href='SEMA7TATISLA7COURE.html'">
+            ← رجوع
+        </button>
+        <div id="section-title">الإصلاحات والمشاريع</div>
+        <div class="badge">النقاط: <span id="score">0</span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+    <div class="screen active" id="screen-intro">
+        <h1>مسار الإصلاح 🛣️</h1>
+        <p style="font-size:1.1rem; color:#555;">من 1956 إلى "المدارس الرائدة"</p>
+        <div style="background:#fff; padding:20px; border-radius:15px; margin:20px 0; border:1px solid #eee; text-align:right;">
+            <p>1️⃣ <strong>المرحلة 1 (محطات الإصلاح):</strong> اختر المحطة، وحدد شعارها وأهدافها.</p>
+            <p>2️⃣ <strong>المرحلة 2 (المشاريع الحالية):</strong> اختر المشروع (TaRL، التعليم الأولي...) وحدد فكرته، هدفه، ومكوناته.</p>
+            <p>3️⃣ <strong>المرحلة 3 (QCM):</strong> 30 سؤال دقيق في التواريخ والتفاصيل.</p>
+        </div>
+        <button class="start-btn" onclick="startGame()">ابدأ المسار</button>
+    </div>
+
+    <div class="screen" id="screen-game">
+        <div class="main-card">
+            <div class="phase-tag" id="g-phase-tag">...</div>
+            <div class="card-title" id="g-title">...</div>
+            <div class="card-desc" id="g-desc" style="display:none;"></div>
+        </div>
+
+        <div class="step-label" id="g-step-label">...</div>
+        
+        <div class="options-grid" id="g-options"></div>
+        <div class="feedback" id="g-feedback"></div>
+        <button class="next-btn" id="g-next-btn" onclick="nextGameStep()">تابع</button>
+    </div>
+
+    <div class="screen" id="screen-qcm">
+        <div class="step-label" style="background:var(--secondary); color:white; border:none;" id="qcm-counter">سؤال 1</div>
+        <h2 id="qcm-text" style="line-height:1.5; margin-bottom:20px;">...</h2>
+        <div class="options-grid" id="qcm-options"></div>
+        <div class="feedback" id="qcm-feedback"></div>
+        <button class="next-btn" id="qcm-next-btn" onclick="nextQCMStep()">السؤال التالي</button>
+    </div>
+
+    <div class="screen" id="screen-result">
+        <h1>النتيجة النهائية</h1>
+        <div class="final-score" id="final-score">0</div>
+        <p id="final-msg" style="font-size:1.3rem;">...</p>
+        <button class="start-btn" style="background:var(--secondary)" onclick="location.reload()">إعادة المحاولة</button>
+    </div>
+</div>
+
+<script>
+    /* ================= DATA ================= */
+    
+    // Part 1: Milestones (المحطات)
+    const milestones = [
+        {
+            title: "مرحلة ما بعد الاستقلال (1956-1980)",
+            focus: "المبادئ الأربعة: التعميم، التوحيد، المغربة، التعريب.",
+            goal: "بناء الدولة الوطنية وتوسيع البنيات التحتية."
+        },
+        {
+            title: "مرحلة التقويم الهيكلي (1980-1990)",
+            focus: "تقليص النفقات بضغط دولي.",
+            goal: "التوازنات المالية (مما أدى لتراجع الجودة وارتفاع الهدر)."
+        },
+        {
+            title: "الميثاق الوطني للتربية والتكوين (2000)",
+            focus: "إدخال بيداغوجيا الكفايات واللامركزية.",
+            goal: "جعل التعليم أولوية وطنية ثانية وإصلاح الأعطاب الكبرى."
+        },
+        {
+            title: "البرنامج الاستعجالي (2009-2012)",
+            focus: "تسريع وتيرة الإصلاح وتوفير الموارد.",
+            goal: "معالجة تعثرات تطبيق الميثاق ومحاربة الهدر."
+        },
+        {
+            title: "الرؤية الاستراتيجية (2015-2030)",
+            focus: "مدرسة الإنصاف، الجودة، والارتقاء.",
+            goal: "إرساء مدرسة جديدة وتفعيل التناوب اللغوي."
+        },
+        {
+            title: "القانون الإطار 51.17 (2019)",
+            focus: "إلزامية التعليم الأولي والتدبير بالكفايات.",
+            goal: "تحويل اختيارات الرؤية الاستراتيجية إلى قانون ملزم للدولة."
+        }
+    ];
+
+    // Part 2: Projects (المشاريع الحالية)
+    const projects = [
+        {
+            name: "المدارس الرائدة (Écoles Pionnières)",
+            idea: "مؤسسات تطبق مقاربة جديدة في التدريس والتدبير للحصول على 'علامة الجودة'.",
+            goal: "تحسين التعلمات الأساس (لغات/رياضيات) وتقليص الفوارق.",
+            component: "تكوين مكثف، تجهيز، ودعم مدرسي منتظم."
+        },
+        {
+            name: "مقاربة TaRL (التدريس وفق المستوى المناسب)",
+            idea: "تجاوز منطق القسم والتركيز على المستوى الفعلي للأداء.",
+            goal: "تصفية التعثرات المتراكمة (قراءة، حساب) لضمان الأساسيات.",
+            component: "الروائز التشخيصية، التفييئ (مجموعات)، وأنشطة اللعب البيداغوجي."
+        },
+        {
+            name: "تعميم التعليم الأولي",
+            idea: "جعل التعليم الأولي (4-5 سنوات) إلزامياً ومعمماً.",
+            goal: "تحقيق تكافؤ الفرص والإنصاف منذ الصغر (خاصة في القرى).",
+            component: "بناء الحجرات، تكوين المربيات، وشراكات مع الجمعيات."
+        },
+        {
+            name: "التحول الرقمي",
+            idea: "إدماج التكنولوجيا في التدبير والتعلم (مسار، موارد رقمية).",
+            goal: "تجويد الحكامة وتوفير موارد حديثة للمتعلم.",
+            component: "منصات رقمية، تجهيز القاعات، وتكوين عن بعد."
+        }
+    ];
+
+    // Part 3: QCM Questions (30 Questions)
+    const qcmData = [
+        { q: "المبادئ الأربعة لإصلاح 1956 هي:", o: ["الجودة والإنصاف", "التعميم، التوحيد، المغربة، التعريب", "الرقمنة والتكوين", "الكفايات والأهداف"], a: 1 },
+        { q: "صدر الميثاق الوطني للتربية والتكوين سنة:", o: ["1990", "2000", "2009", "2015"], a: 1 },
+        { q: "شعار الرؤية الاستراتيجية 2015-2030 هو:", o: ["من أجل مدرسة النجاح", "من أجل مدرسة الإنصاف والجودة والارتقاء", "التعليم أولوية", "مدرسة الغد"], a: 1 },
+        { q: "القانون الإطار 51.17 جعل التعليم الأولي:", o: ["اختيارياً", "ملزماً للدولة والأسر", "للقطاع الخاص فقط", "غير ضروري"], a: 1 },
+        { q: "برنامج TaRL يهدف أساساً إلى:", o: ["إنهاء المقرر بسرعة", "تجاوز التعثرات في التعلمات الأساس", "تدريس اللغات الأجنبية", "إلغاء الامتحانات"], a: 1 },
+        { q: "الخطوة الأولى في منهجية TaRL هي:", o: ["شرح الدرس", "التشخيص (تمرير رائز)", "التقويم الإجمالي", "الحفظ"], a: 1 },
+        { q: "يعتمد مشروع 'المدارس الرائدة' في التدريس على:", o: ["طريقة الإلقاء", "المقاربة بالكفايات التقليدية", "التدريس الصريح/الفعال و TaRL", "التعليم الذاتي"], a: 2 },
+        { q: "المقصود بـ 'التناوب اللغوي' هو:", o: ["تدريس اللغات فقط", "تدريس بعض المضامين أو المجزوءات بلغة أجنبية", "إلغاء اللغة العربية", "الترجمة"], a: 1 },
+        { q: "فترة التقويم الهيكلي (الثمانينيات) تميزت بـ:", o: ["انتعاش التعليم", "ضغط دولي وتقليص النفقات", "بناء مدارس كثيرة", "توظيف واسع"], a: 1 },
+        { q: "البرنامج الاستعجالي جاء لـ:", o: ["إلغاء الميثاق", "تسريع وتيرة إصلاح الميثاق", "وضع رؤية جديدة", "خصخصة التعليم"], a: 1 },
+        { q: "مشروع 'تيسير' يندرج ضمن:", o: ["الدعم البيداغوجي", "الدعم الاجتماعي المالي للأسر", "بناء المدارس", "التكوين المستمر"], a: 1 },
+        { q: "في مقاربة TaRL، يتم تقسيم التلاميذ بناءً على:", o: ["السن", "المستوى الدراسي (القسم)", "المستوى الفعلي للأداء", "الحروف الأبجدية"], a: 2 },
+        { q: "من مكونات مشروع المدارس الرائدة:", o: ["إلغاء الكتب", "منح علامة الجودة (Label) للمؤسسة", "تقليص ساعات العمل", "عطل إضافية"], a: 1 },
+        { q: "التعريب في الثمانينيات شمل:", o: ["التعليم العالي", "المواد العلمية في الإعدادي والثانوي", "التعليم الأولي فقط", "الطب والهندسة"], a: 1 },
+        { q: "الوثيقة التي يعتبر التعليم 'قاطرة التنمية':", o: ["الميثاق الوطني", "دستور 2011", "تقرير الخمسينية", "القانون الإطار"], a: 3 },
+        { q: "يهدف التعليم الأولي (4-5 سنوات) إلى:", o: ["الحفظ المبكر", "ضمان تكافؤ الفرص والاستعداد للمدرسة", "إراحة الأمهات", "اللعب العشوائي"], a: 1 },
+        { q: "التوحيد (Unification) بعد الاستقلال كان يعني:", o: ["توحيد اللباس", "توحيد النظام المدرسي المغربي", "توحيد الزمن المدرسي", "توحيد الأجور"], a: 1 },
+        { q: "من أسباب أزمة التعليم في الثمانينات:", o: ["كثرة الأساتذة", "محدودية الموارد والنمو الديمغرافي", "جودة المناهج", "التكنولوجيا"], a: 1 },
+        { q: "مشروع 'مسار' هو جزء من:", o: ["التحول الرقمي والحكامة", "الدعم الاجتماعي", "المناهج", "الحياة المدرسية"], a: 0 },
+        { q: "تعتمد المدارس الرائدة على:", o: ["المقاربة بالكفايات فقط", "التدريس وفق المستوى المناسب (TaRL) والتدريس الصريح", "بيداغوجيا المحتوى", "الإلقاء"], a: 1 },
+        { q: "يعتبر القانون الإطار 51.17:", o: ["وثيقة توجيهية", "إطاراً تعاقدياً ملزماً", "برنامجاً مؤقتاً", "اقتراحاً حزبياً"], a: 1 },
+        { q: "من آليات محاربة الهدر المدرسي:", o: ["النقل المدرسي والداخليات", "صعوبة الامتحانات", "غلاء الكتب", "غياب المطاعم"], a: 0 },
+        { q: "المغربة (Marocanisation) تعني:", o: ["تدريس جغرافية المغرب", "تعويض الأطر الأجنبية بأطر مغربية", "إلغاء اللغات", "اللباس التقليدي"], a: 1 },
+        { q: "الرؤية الاستراتيجية حددت المدى الزمني للإصلاح في:", o: ["5 سنوات", "10 سنوات", "15 سنة (2015-2030)", "20 سنة"], a: 2 },
+        { q: "التعلم في TaRL يعتمد كثيراً على:", o: ["المحاضرة", "اللعب البيداغوجي والأنشطة التفاعلية", "الكتابة على السبورة", "الحفظ الصامت"], a: 1 },
+        { q: "الهدف من التناوب اللغوي هو:", o: ["إضعاف العربية", "تحسين إتقان اللغات الأجنبية وتيسير تدريس العلوم", "فرنسة المجتمع", "إلغاء الترجمة"], a: 1 },
+        { q: "التعليم غير النظامي موجه لـ:", o: ["المتفوقين", "الأطفال المنقطعين أو غير الممدرسين", "طلبة الجامعة", "التعليم الخصوصي"], a: 1 },
+        { q: "علامة الجودة في المدارس الرائدة تتطلب:", o: ["صباغة الجدران فقط", "تحقيق معايير محددة في التعلمات والتجهيز", "عدد تلاميذ قليل", "موقعاً جغرافياً ممتازاً"], a: 1 },
+        { q: "الغاية من التربية على القيم:", o: ["الحفظ", "ترسيخ السلوك المدني والمواطنة", "الخوف من العقاب", "الحصول على نقط"], a: 1 },
+        { q: "من تحديات تنزيل المشاريع الإصلاحية:", o: ["وفرة الموارد", "تعبئة الفاعلين واستدامة التمويل", "سهولة التنفيذ", "قلة التلاميذ"], a: 1 }
+    ];
+
+    /* ================= LOGIC ================= */
+    let totalScore = 0;
+    
+    // Game Flow: Phase 1 (Milestones) -> Phase 2 (Projects) -> Phase 3 (QCM)
+    let currentPhase = 1; 
+    let itemIndex = 0;
+    let subStep = 1; // Used for multi-step questions
+    
+    let qcmIndex = 0;
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function shuffleArray(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+    function updateScore() {
+        document.getElementById('score').innerText = totalScore;
+    }
+
+    function startGame() {
+        totalScore = 0;
+        currentPhase = 1;
+        itemIndex = 0;
+        subStep = 1;
+        qcmIndex = 0;
+        updateScore();
+        
+        // Randomize QCM only
+        shuffleArray(qcmData);
+
+        loadGameRound();
+        showScreen('screen-game');
+    }
+
+    function loadGameRound() {
+        const titleEl = document.getElementById('g-title');
+        const phaseTag = document.getElementById('g-phase-tag');
+        const descEl = document.getElementById('g-desc');
+        const labelEl = document.getElementById('g-step-label');
+        const optionsDiv = document.getElementById('g-options');
+        const feedbackEl = document.getElementById('g-feedback');
+        const nextBtn = document.getElementById('g-next-btn');
+        const progressBar = document.getElementById('progress');
+
+        feedbackEl.innerText = "";
+        nextBtn.style.display = "none";
+        optionsDiv.innerHTML = "";
+        descEl.style.display = "none";
+
+        let correctAns = "";
+        let distractors = [];
+        let progressPercent = 0;
+
+        // PHASE 1: Milestones
+        if (currentPhase === 1) {
+            const data = milestones[itemIndex];
+            titleEl.innerText = data.title;
+            phaseTag.innerText = "المحطة التاريخية";
+            
+            let totalSteps = milestones.length * 2;
+            let current = (itemIndex * 2) + (subStep - 1);
+            progressPercent = (current / totalSteps) * 30;
+
+            if (subStep === 1) {
+                labelEl.innerText = "ما هو التركيز الأساسي (شعار) هذه المرحلة؟";
+                correctAns = data.focus;
+                distractors = milestones.filter((_, i) => i !== itemIndex).map(m => m.focus);
+            } else {
+                descEl.innerHTML = `<strong>التركيز:</strong> ${data.focus}`;
+                descEl.style.display = "block";
+                labelEl.innerText = "ما هو الهدف الاستراتيجي لهذه المحطة؟";
+                correctAns = data.goal;
+                distractors = milestones.filter((_, i) => i !== itemIndex).map(m => m.goal);
+            }
+        } 
+        // PHASE 2: Projects
+        else if (currentPhase === 2) {
+            const data = projects[itemIndex];
+            titleEl.innerText = data.name;
+            phaseTag.innerText = "المشروع الحالي";
+
+            let totalSteps = projects.length * 3;
+            let current = (itemIndex * 3) + (subStep - 1);
+            progressPercent = 30 + ((current / totalSteps) * 30);
+
+            if (subStep === 1) {
+                labelEl.innerText = "ما هي الفكرة الجوهرية لهذا المشروع؟";
+                correctAns = data.idea;
+                distractors = projects.filter((_, i) => i !== itemIndex).map(p => p.idea);
+            } else if (subStep === 2) {
+                descEl.innerHTML = `<strong>الفكرة:</strong> ${data.idea}`;
+                descEl.style.display = "block";
+                labelEl.innerText = "ما هو الهدف الرئيسي؟";
+                correctAns = data.goal;
+                distractors = projects.filter((_, i) => i !== itemIndex).map(p => p.goal);
+            } else {
+                descEl.innerHTML = `<strong>الفكرة:</strong> ${data.idea}<br><strong>الهدف:</strong> ${data.goal}`;
+                descEl.style.display = "block";
+                labelEl.innerText = "ما هي أبرز مكونات التنزيل؟";
+                correctAns = data.component;
+                distractors = projects.filter((_, i) => i !== itemIndex).map(p => p.component);
+            }
+        }
+
+        progressBar.style.width = `${progressPercent}%`;
+
+        shuffleArray(distractors);
+        let options = [correctAns, distractors[0], distractors[1]];
+        shuffleArray(options);
+        createButtons(optionsDiv, options, correctAns);
+    }
+
+    function nextGameStep() {
+        if (currentPhase === 1) {
+            if (subStep === 1) subStep = 2;
+            else {
+                subStep = 1;
+                itemIndex++;
+                if (itemIndex >= milestones.length) {
+                    currentPhase = 2;
+                    itemIndex = 0;
+                }
+            }
+        } else if (currentPhase === 2) {
+            if (subStep < 3) subStep++;
+            else {
+                subStep = 1;
+                itemIndex++;
+                if (itemIndex >= projects.length) {
+                    startQCMPhase();
+                    return;
+                }
+            }
+        }
+        loadGameRound();
+    }
+
+    function startQCMPhase() {
+        currentPhase = 3; // Set phase to 3 for QCM
+        showScreen('screen-qcm');
+        document.getElementById('section-title').innerText = "المرحلة 3: اختبار QCM";
+        loadQCMRound();
+    }
+
+    function loadQCMRound() {
+        const data = qcmData[qcmIndex];
+        const optionsDiv = document.getElementById('qcm-options');
+        const feedbackEl = document.getElementById('qcm-feedback');
+        const nextBtn = document.getElementById('qcm-next-btn');
+        const progressBar = document.getElementById('progress');
+
+        document.getElementById('qcm-counter').innerText = `سؤال ${qcmIndex + 1} / ${qcmData.length}`;
+        document.getElementById('qcm-text').innerText = data.q;
+        feedbackEl.innerText = "";
+        nextBtn.style.display = "none";
+        optionsDiv.innerHTML = "";
+
+        // Update button text based on whether it's the last question
+        if (qcmIndex === qcmData.length - 1) {
+            nextBtn.innerText = "عرض النتيجة";
+        } else {
+            nextBtn.innerText = "السؤال التالي";
+        }
+
+        let progressPercent = 60 + ((qcmIndex / qcmData.length) * 40);
+        progressBar.style.width = `${progressPercent}%`;
+
+        let options = [...data.o];
+        let correctTxt = data.o[data.a];
+        createButtons(optionsDiv, options, correctTxt);
+    }
+
+    function nextQCMStep() {
+        qcmIndex++;
+        if (qcmIndex < qcmData.length) {
+            loadQCMRound();
+        } else {
+            finishExam();
+        }
+    }
+
+    function createButtons(container, optionsList, correctText) {
+        optionsList.forEach(opt => {
+            if(!opt) return;
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = function() { checkAnswer(this, opt, correctText, container); };
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(btn, selected, correct, container) {
+        const allBtns = container.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.disabled = true);
+
+        const feedbackEl = currentPhase === 3 ? document.getElementById('qcm-feedback') : document.getElementById('g-feedback');
+        const nextBtn = currentPhase === 3 ? document.getElementById('qcm-next-btn') : document.getElementById('g-next-btn');
+
+        if (selected === correct) {
+            btn.classList.add('correct');
+            totalScore += 10;
+            updateScore();
+            feedbackEl.innerText = "✅ صحيح!";
+            feedbackEl.style.color = "#27ae60";
+        } else {
+            btn.classList.add('wrong');
+            allBtns.forEach(b => {
+                if (b.innerText === correct) b.classList.add('correct');
+            });
+            feedbackEl.innerText = "❌ خطأ!";
+            feedbackEl.style.color = "#c0392b";
+        }
+        nextBtn.style.display = "block";
+    }
+
+    function finishExam() {
+        showScreen('screen-result');
+        document.getElementById('progress').style.width = "100%";
+        document.getElementById('final-score').innerText = totalScore;
+        
+        let gameScore = (milestones.length * 2 * 10) + (projects.length * 3 * 10);
+        let qcmScore = qcmData.length * 10;
+        let maxScore = gameScore + qcmScore;
+        
+        const percentage = (totalScore / maxScore) * 100;
+        const msgEl = document.getElementById('final-msg');
+
+        if (percentage >= 85) {
+            msgEl.innerText = "أداء ممتاز! ضبطت الإصلاحات بشكل رائع 🎓";
+            msgEl.style.color = "#27ae60";
+        } else if (percentage >= 50) {
+            msgEl.innerText = "جيد، ولكن راجع تواريخ وخصائص المشاريع 📅";
+            msgEl.style.color = "#f1c40f";
+        } else {
+            msgEl.innerText = "التواريخ والمشاريع تخلطو ليك، عاود المحاولة! 💪";
+            msgEl.style.color = "#c0392b";
+        }
+    }
+</script>
+
+</body>
+</html>

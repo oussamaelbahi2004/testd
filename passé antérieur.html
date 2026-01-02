@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passé Antérieur - Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* THÈME MIDNIGHT PRESTIGE (Littéraire & Rare) */
+            --primary: #2c3e50; /* Midnight Blue */
+            --secondary: #f1c40f; /* Gold */
+            --text: #2c3e50;
+            --bg-gradient: linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%);
+            
+            /* LEVELS */
+            --green: #27ae60;
+            --orange: #d35400;
+            --red: #8e44ad;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- NAVIGATION MENU STYLES --- */
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #bdc3c7;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            background: var(--secondary);
+            color: var(--primary);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Style bouton actif (Page actuelle) */
+        .nav-btn.active {
+            background: var(--primary);
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* Style bouton Rojo3 */
+        .nav-btn.retour {
+            background: #000;
+            color: white;
+            border: 1px solid #333;
+        }
+        .nav-btn.retour:hover {
+            background: #333;
+        }
+        /* --- END MENU STYLES --- */
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border-top: 5px solid var(--secondary);
+        }
+
+        /* HEADER */
+        header { text-align: center; margin-bottom: 40px; }
+        
+        h1 {
+            font-family: 'Merriweather', serif;
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin: 0;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            font-family: 'Merriweather', serif;
+            color: var(--primary);
+            border-left: 5px solid var(--secondary);
+            padding-left: 15px;
+            margin-top: 50px;
+            font-size: 1.5rem;
+        }
+
+        /* INFO BOX */
+        .info-card {
+            background: #fdfefe;
+            border: 1px solid #ecf0f1;
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .btn-translate {
+            background: var(--primary);
+            border: none;
+            color: var(--secondary);
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            float: right;
+            transition: transform 0.2s;
+            font-weight: bold;
+        }
+        .btn-translate:hover { transform: scale(1.05); background: #34495e; }
+
+        .ar-text {
+            display: none;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed #bdc3c7;
+            direction: rtl;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* CARDS */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .verb-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #bdc3c7;
+        }
+        .verb-card h3 {
+            text-align: center; color: var(--primary); margin-top: 0;
+            border-bottom: 2px solid #bdc3c7; padding-bottom: 10px; font-family: 'Merriweather', serif;
+        }
+        .verb-card ul { list-style: none; padding: 0; margin: 0; }
+        .verb-card li { padding: 8px 0; border-bottom: 1px dashed #ccc; display: flex; justify-content: space-between; }
+
+        /* TABLE */
+        .legend {
+            display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;
+        }
+        .badge {
+            padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; color: white; font-weight: 600;
+        }
+        .badge-green { background: var(--green); }
+        .badge-orange { background: var(--orange); }
+        .badge-red { background: var(--red); }
+
+        .controls { display: flex; justify-content: flex-end; margin-bottom: 15px; }
+        .btn-toggle {
+            background: var(--primary); color: var(--secondary); border: none; padding: 10px 20px;
+            border-radius: 4px; cursor: pointer; font-weight: 600; transition: 0.3s;
+        }
+        .btn-toggle:hover { background: #34495e; }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #bdc3c7;
+        }
+
+        table { width: 100%; border-collapse: collapse; background: white; }
+        
+        th { background: var(--primary); color: var(--secondary); padding: 15px; text-align: left; white-space: nowrap; font-family: 'Merriweather', serif; }
+        
+        td { padding: 12px 15px; border-bottom: 1px solid #ecf0f1; color: #2c3e50; vertical-align: middle; }
+        
+        /* Highlight PP Column */
+        td.pp-col { font-weight: bold; color: var(--orange); background-color: #fdfefe; }
+        
+        tr:nth-child(even) { background-color: #f4f6f7; } 
+
+        /* BLUR EFFECT */
+        .blur-effect {
+            filter: blur(5px); user-select: none; cursor: help; transition: filter 0.3s ease;
+        }
+        .blur-effect:hover { filter: blur(0); }
+        .revealed { filter: blur(0) !important; }
+
+        /* GAME SECTION */
+        .game-zone {
+            margin-top: 60px;
+            background: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
+            color: var(--secondary);
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 2px solid var(--secondary);
+        }
+
+        .game-input {
+            padding: 15px; font-size: 1.2rem; border-radius: 4px; border: none; width: 60%;
+            text-align: center; outline: none; margin-bottom: 20px; background: #ecf0f1; color: #2c3e50;
+        }
+
+        .btn-game {
+            background: var(--secondary); color: var(--primary); border: none; padding: 15px 40px;
+            border-radius: 4px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .btn-game:hover { transform: scale(1.05); background: #fff; }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.8rem; }
+            .game-input { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-menu">
+    <a href="Présent de l'indicatif.html" class="nav-btn">Présent</a>
+    <a href="passé simple.html" class="nav-btn">Passé Simple</a>
+    <a href="L'Imparfait.html" class="nav-btn">Imparfait</a>
+    <a href="passe compose.html" class="nav-btn">Passé Composé</a>
+    <a href="plus-que-parfait.html" class="nav-btn">Plus-que-parfait</a>
+    <a href="futur simple.html" class="nav-btn">Futur Simple</a>
+    <a href="Futur Antérieur.html" class="nav-btn">Futur Antérieur</a>
+    <a href="passé antérieur.html" class="nav-btn active">Passé Antérieur</a> <a href="subjonctif presont.html" class="nav-btn">Subjonctif</a>
+    <a href="index.html" class="nav-btn retour">رجوع</a>
+</div>
+
+<div class="container">
+    <header>
+        <h1>Le Passé Antérieur</h1>
+        <p style="color: #7f8c8d; margin-top: 10px;">L'immédiateté dans le passé lointain</p>
+    </header>
+
+    <div class="info-card">
+        <button class="btn-translate" onclick="toggleTraduction()">🌐 Traduction</button>
+        <h3>📌 La Règle (Le Partenaire du Passé Simple)</h3>
+        <p>Il exprime une action qui s'est produite <strong>juste avant</strong> une autre action au passé simple.</p>
+        <p><strong>Formule :</strong> Auxiliaire (Être/Avoir) au <strong>PASSÉ SIMPLE</strong> + Participe Passé.</p>
+        <p><em>Marqueurs : Dès que, Aussitôt que, Quand, Lorsque.</em></p>
+        <p><em>Exemple : Dès qu'il <strong>eut fini</strong>, il partit.</em></p>
+        
+        <div id="ar-text" class="ar-text">
+            <strong>التعريف:</strong> هو زمن أدبي (بحال Passé Simple). كيعبر على حدث وقع وسالا مباشرة قبل حدث آخر. ديما كيجي مور "Dès que" أو "Quand".<br>
+            <strong>القاعدة:</strong> كنصرفو المساعد (Avoir/Être) فـ <strong>Passé Simple</strong> (eus/fus) وكنزيدو Participe Passé.<br>
+            <strong>مثال:</strong> "غير هو سالا (Passé Antérieur)، هو خرج (Passé Simple)".
+        </div>
+    </div>
+
+    <h2>1. Rappel : Les Auxiliaires au Passé Simple</h2>
+    <div class="grid-cards">
+        <div class="verb-card">
+            <h3>ÊTRE (Passé Simple)</h3>
+            <ul>
+                <li>Je <strong>fus</strong></li>
+                <li>Tu <strong>fus</strong></li>
+                <li>Il <strong>fut</strong></li>
+                <li>Nous <strong>fûmes</strong></li>
+                <li>Vous <strong>fûtes</strong></li>
+                <li>Ils <strong>furent</strong></li>
+            </ul>
+        </div>
+        <div class="verb-card">
+            <h3>AVOIR (Passé Simple)</h3>
+            <ul>
+                <li>J' <strong>eus</strong></li>
+                <li>Tu <strong>eus</strong></li>
+                <li>Il <strong>eut</strong></li>
+                <li>Nous <strong>eûmes</strong></li>
+                <li>Vous <strong>eûtes</strong></li>
+                <li>Ils <strong>eurent</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>2. Top 30 Verbes (Avec Participe Passé)</h2>
+    
+    <div class="legend">
+        <span class="badge badge-green">🟢 Auxiliaire AVOIR (Normal)</span>
+        <span class="badge badge-orange">🟡 Auxiliaire ÊTRE (Accord)</span>
+        <span class="badge badge-red">🔴 Auxiliaire AVOIR (Irrégulier)</span>
+    </div>
+
+    <div class="controls">
+        <button class="btn-toggle" onclick="toggleAnswers()">👁️ Masquer les réponses</button>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">Verbe</th>
+                    <th width="15%">Participe Passé</th>
+                    <th width="23%">J' / Je ... (eus/fus)</th>
+                    <th width="23%">Nous ... (eûmes/fûmes)</th>
+                    <th width="23%">Ils / Elles ... (eurent/furent)</th>
+                </tr>
+            </thead>
+            <tbody id="verb-table">
+                </tbody>
+        </table>
+    </div>
+
+    <div class="game-zone">
+        <div style="margin-bottom:10px; opacity:0.9;">Score: <span id="score">0</span></div>
+        <h2 style="color:#f1c40f; margin-top:0; border:none; font-family:'Merriweather',serif;" id="q-text">Prêt ?</h2>
+        <p style="font-size: 0.9rem; margin-bottom: 20px; color:#bdc3c7;">(Dès que...)</p>
+        
+        <input type="text" id="ans-input" class="game-input" placeholder="eus fini / fus parti..." autocomplete="off">
+        <br>
+        <button class="btn-game" onclick="check()">VALIDER</button>
+        <div style="margin-top:15px; font-weight:bold; height:30px;" id="fb-msg"></div>
+    </div>
+
+</div>
+
+<script>
+    /* --- DATA BASE (Verbs sorted: Green -> Orange -> Red) --- */
+    const verbs = [
+        // --- 🟢 AVOIR (Regular PP) ---
+        { v: "Manger", pp: "mangé", je: "eus mangé", nous: "eûmes mangé", ils: "eurent mangé", l: "green" },
+        { v: "Finir", pp: "fini", je: "eus fini", nous: "eûmes fini", ils: "eurent fini", l: "green" },
+        { v: "Parler", pp: "parlé", je: "eus parlé", nous: "eûmes parlé", ils: "eurent parlé", l: "green" },
+        { v: "Choisir", pp: "choisi", je: "eus choisi", nous: "eûmes choisi", ils: "eurent choisi", l: "green" },
+        { v: "Chanter", pp: "chanté", je: "eus chanté", nous: "eûmes chanté", ils: "eurent chanté", l: "green" },
+        { v: "Vendre", pp: "vendu", je: "eus vendu", nous: "eûmes vendu", ils: "eurent vendu", l: "green" },
+        { v: "Attendre", pp: "attendu", je: "eus attendu", nous: "eûmes attendu", ils: "eurent attendu", l: "green" },
+        { v: "Répondre", pp: "répondu", je: "eus répondu", nous: "eûmes répondu", ils: "eurent répondu", l: "green" },
+        { v: "Entendre", pp: "entendu", je: "eus entendu", nous: "eûmes entendu", ils: "eurent entendu", l: "green" },
+        { v: "Réussir", pp: "réussi", je: "eus réussi", nous: "eûmes réussi", ils: "eurent réussi", l: "green" },
+
+        // --- 🟡 ÊTRE (Accord du participe) ---
+        { v: "Aller", pp: "allé(e)", je: "fus allé(e)", nous: "fûmes allés", ils: "furent allés", l: "orange" },
+        { v: "Partir", pp: "parti(e)", je: "fus parti(e)", nous: "fûmes partis", ils: "furent partis", l: "orange" },
+        { v: "Venir", pp: "venu(e)", je: "fus venu(e)", nous: "fûmes venus", ils: "furent venus", l: "orange" },
+        { v: "Sortir", pp: "sorti(e)", je: "fus sorti(e)", nous: "fûmes sortis", ils: "furent sortis", l: "orange" },
+        { v: "Naître", pp: "né(e)", je: "fus né(e)", nous: "fûmes nés", ils: "furent nés", l: "orange" },
+        { v: "Mourir", pp: "mort(e)", je: "fus mort(e)", nous: "fûmes morts", ils: "furent morts", l: "orange" },
+        { v: "Rester", pp: "resté(e)", je: "fus resté(e)", nous: "fûmes restés", ils: "furent restés", l: "orange" },
+        { v: "Tomber", pp: "tombé(e)", je: "fus tombé(e)", nous: "fûmes tombés", ils: "furent tombés", l: "orange" },
+
+        // --- 🔴 AVOIR (Irregular PP) ---
+        { v: "Faire", pp: "fait", je: "eus fait", nous: "eûmes fait", ils: "eurent fait", l: "red" }, 
+        { v: "Dire", pp: "dit", je: "eus dit", nous: "eûmes dit", ils: "eurent dit", l: "red" },
+        { v: "Prendre", pp: "pris", je: "eus pris", nous: "eûmes pris", ils: "eurent pris", l: "red" },
+        { v: "Mettre", pp: "mis", je: "eus mis", nous: "eûmes mis", ils: "eurent mis", l: "red" },
+        { v: "Voir", pp: "vu", je: "eus vu", nous: "eûmes vu", ils: "eurent vu", l: "red" },
+        { v: "Boire", pp: "bu", je: "eus bu", nous: "eûmes bu", ils: "eurent bu", l: "red" },
+        { v: "Lire", pp: "lu", je: "eus lu", nous: "eûmes lu", ils: "eurent lu", l: "red" },
+        { v: "Écrire", pp: "écrit", je: "eus écrit", nous: "eûmes écrit", ils: "eurent écrit", l: "red" },
+        { v: "Avoir", pp: "eu", je: "eus eu", nous: "eûmes eu", ils: "eurent eu", l: "red" },
+        { v: "Être", pp: "été", je: "eus été", nous: "eûmes été", ils: "eurent été", l: "red" },
+        { v: "Pouvoir", pp: "pu", je: "eus pu", nous: "eûmes pu", ils: "eurent pu", l: "red" },
+        { v: "Vouloir", pp: "voulu", je: "eus voulu", nous: "eûmes voulu", ils: "eurent voulu", l: "red" }
+    ];
+
+    /* --- LOGIC --- */
+
+    function toggleTraduction() {
+        const arDiv = document.getElementById("ar-text");
+        arDiv.style.display = (arDiv.style.display === "block") ? "none" : "block";
+    }
+
+    const tbody = document.getElementById("verb-table");
+    
+    function getBadge(level) {
+        if(level === 'green') return '<span style="color:#27ae60; font-size:1.2rem;">●</span>';
+        if(level === 'orange') return '<span style="color:#d35400; font-size:1.2rem;">●</span>';
+        return '<span style="color:#8e44ad; font-size:1.2rem;">●</span>';
+    }
+
+    verbs.forEach(v => {
+        let row = `<tr>
+            <td style="font-weight:600;">${getBadge(v.l)} ${v.v}</td>
+            <td class="pp-col">${v.pp}</td>
+            <td class="conjugation-cell">${v.je}</td>
+            <td class="conjugation-cell">${v.nous}</td>
+            <td class="conjugation-cell">${v.ils}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+    });
+
+    // Blur Effect
+    let isHidden = false;
+    function toggleAnswers() {
+        const cells = document.querySelectorAll('.conjugation-cell');
+        const btn = document.querySelector('.btn-toggle');
+        isHidden = !isHidden;
+        
+        btn.innerText = isHidden ? "👁️ Afficher les réponses" : "👁️ Masquer les réponses";
+
+        cells.forEach(cell => {
+            if(isHidden) {
+                cell.classList.add('blur-effect');
+                cell.classList.remove('revealed');
+            } else {
+                cell.classList.remove('blur-effect');
+                cell.classList.add('revealed');
+            }
+        });
+    }
+
+    // GAME LOGIC
+    let score = 0;
+    let currentItem = null;
+    let currentKey = "";
+
+    function nextQ() {
+        currentItem = verbs[Math.floor(Math.random() * verbs.length)];
+        let keys = ['je', 'nous', 'ils'];
+        currentKey = keys[Math.floor(Math.random() * keys.length)];
+        
+        let phrase = "";
+        if(currentKey === 'je') phrase = "Dès que je/j' ...";
+        if(currentKey === 'nous') phrase = "Dès que nous ...";
+        if(currentKey === 'ils') phrase = "Dès qu'ils ...";
+
+        document.getElementById("q-text").innerHTML = `${phrase} <br> <span style="color:#f1c40f; font-size:2rem;">(${currentItem.v})</span>`;
+        document.getElementById("ans-input").value = "";
+        document.getElementById("fb-msg").innerText = "";
+        document.getElementById("ans-input").focus();
+    }
+
+    function check() {
+        let user = document.getElementById("ans-input").value.trim().toLowerCase();
+        let correct = currentItem[currentKey].toLowerCase();
+        
+        // Tolérance pour les parenthèses
+        let cleanCorrect = correct.replace(/\(e\)/g, "").replace(/\(s\)/g, ""); 
+        
+        let fb = document.getElementById("fb-msg");
+
+        if(user === correct || user === cleanCorrect || user === correct.replace(/\(e\)/,"e")) {
+            score++;
+            document.getElementById("score").innerText = score;
+            fb.innerText = "Excellent ! ⚜️";
+            fb.style.color = "#27ae60"; // Green
+            setTimeout(nextQ, 1000);
+        } else {
+            fb.innerText = `Non, c'est : ${correct}`;
+            fb.style.color = "#e74c3c"; // Red
+            setTimeout(nextQ, 2500);
+        }
+    }
+
+    document.getElementById("ans-input").addEventListener("keypress", (e) => {
+        if(e.key === "Enter") check();
+    });
+
+    nextQ();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 9: Le Système Respiratoire (Complet)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #eef9fd;
+            --text-color: #2c3e50;
+            
+            /* Couleurs Spécifiques */
+            --c-intro: #34495e;    /* Intro */
+            --c-anat: #2980b9;     /* Anatomie */
+            --c-lung: #e74c3c;     /* Poumons */
+            --c-alv: #16a085;      /* Alvéoles */
+            --c-mech: #d35400;     /* Mécanique */
+            --c-freq: #8e44ad;     /* Fréquence (Nouveau) */
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px;
+            line-height: 1.8;
+        }
+
+        .container { max-width: 850px; margin: 0 auto; }
+
+        h1 {
+            text-align: center;
+            color: #2980b9;
+            border-bottom: 3px solid #2980b9;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+            font-weight: 800;
+        }
+
+        h2 {
+            margin-top: 60px;
+            font-size: 1.6em;
+            color: #444;
+            border-left: 8px solid;
+            padding-left: 15px;
+            background: #fff;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            text-transform: uppercase;
+        }
+
+        /* BLOCS */
+        .block {
+            background: white;
+            padding: 25px 30px;
+            padding-bottom: 50px; 
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            cursor: pointer;
+            border-left: 5px solid transparent;
+            position: relative;
+            border: 1px solid #eee;
+            transition: all 0.2s;
+        }
+
+        .block:hover { transform: translateX(5px); background-color: #fbfeff; }
+
+        /* BOUTON TRADUCTION */
+        .block::after {
+            content: 'أنقر للترجمة ⇄';
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.75em;
+            color: #fff;
+            background-color: #2980b9;
+            padding: 2px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        /* IMAGES */
+        .img-container {
+            margin: 30px 0;
+            text-align: center;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            max-height: 400px;
+            border-radius: 5px;
+            cursor: zoom-in;
+            transition: opacity 0.3s;
+        }
+        .img-container img:hover { opacity: 0.9; }
+        .img-caption { font-size: 0.85em; color: #7f8c8d; margin-top: 10px; font-style: italic; }
+
+        /* MODAL ZOOM */
+        #myModal { display: none; position: fixed; z-index: 1000; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+        #img01 { margin: auto; display: block; width: 90%; max-width: 1000px; max-height: 90vh; object-fit: contain; border-radius: 5px; }
+        .close { position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; }
+
+        /* TEXTES */
+        .fr h3, .ar h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.2em; text-transform: uppercase; letter-spacing: 0.5px; }
+        .fr ul, .ar ul { padding-left: 20px; color: #555; }
+        .ar { display: none; font-family: 'Cairo', sans-serif; direction: rtl; text-align: right; color: #b03a2e; }
+        .ar h3 { color: #c0392b; }
+        .swapped .fr { display: none; }
+        .swapped .ar { display: block; }
+        .swapped { background-color: #fff; border-color: #333; }
+        .swapped::after { content: 'إضغط للرجوع ↩'; background-color: #333; }
+
+        /* COULEURS */
+        .sec-intro { border-color: var(--c-intro); } .cat-intro { border-left-color: var(--c-intro); }
+        .sec-anat { border-color: var(--c-anat); } .cat-anat { border-left-color: var(--c-anat); }
+        .sec-lung { border-color: var(--c-lung); } .cat-lung { border-left-color: var(--c-lung); }
+        .sec-alv { border-color: var(--c-alv); } .cat-alv { border-left-color: var(--c-alv); }
+        .sec-mech { border-color: var(--c-mech); } .cat-mech { border-left-color: var(--c-mech); }
+        .sec-freq { border-color: var(--c-freq); } .cat-freq { border-left-color: var(--c-freq); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>IX. LE SYSTÈME RESPIRATOIRE</h1>
+
+    <h2 class="sec-intro">1. Rôle et Fonction</h2>
+    <div class="block cat-intro">
+        <div class="fr">
+            <h3>RESPIRATION ET ÉCHANGES</h3>
+            <p>Le système respiratoire a pour but d'assurer les échanges gazeux entre le sang et l'air ambiant :</p>
+            <ul>
+                <li><strong>Apport d'Oxygène O2 :</strong> Indispensable aux cellules pour produire de l'énergie (ATP).</li>
+                <li><strong>Élimination du Dioxyde de Carbone CO2 :</strong> Déchet toxique produit par les cellules.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>التنفس والتبادلات</h3>
+            <p>يهدف الجهاز التنفسي إلى ضمان التبادلات الغازية بين الدم والهواء المحيط:</p>
+            <ul>
+                <li><strong>جلب الأكسجين O2:</strong> ضروري للخلايا لإنتاج الطاقة (ATP).</li>
+                <li><strong>طرح ثنائي أكسيد الكربون CO2:</strong> فضلات سامة تنتجها الخلايا.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-anat">2. Anatomie (Le Trajet de l'Air)</h2>
+    
+    <div class="block cat-anat">
+        <div class="fr">
+            <h3>VOIES AÉRIENNES SUPÉRIEURES</h3>
+            <ul>
+                <li><strong>Nez / Fosses Nasales :</strong> Filtrent, réchauffent et humidifient l'air.</li>
+                <li><strong>Pharynx :</strong> Carrefour entre les voies respiratoires et digestives.</li>
+                <li><strong>Larynx :</strong> Contient les cordes vocales (Organe de la phonation).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>المسالك الهوائية العلوية</h3>
+            <ul>
+                <li><strong>الأنف / الحفر الأنفية:</strong> تصفي، تدفئ وترطب الهواء.</li>
+                <li><strong>البلعوم (Pharynx):</strong> ملتقى الطرق بين المسالك التنفسية والهضمية.</li>
+                <li><strong>الحنجرة (Larynx):</strong> تحتوي على الحبال الصوتية (عضو التصويت).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-anat">
+        <div class="fr">
+            <h3>VOIES AÉRIENNES INFÉRIEURES</h3>
+            <ul>
+                <li><strong>Trachée :</strong> Tube flexible maintenu ouvert par des anneaux de cartilage. Elle conduit l'air vers les poumons.</li>
+                <li><strong>Bronches :</strong> La trachée se divise en deux bronches principales (droite et gauche).</li>
+                <li><strong>Bronchioles :</strong> Les bronches se ramifient en tubes de plus en plus fins à l'intérieur des poumons.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>المسالك الهوائية السفلية</h3>
+            <ul>
+                <li><strong>الرغامى (Trachée):</strong> أنبوب مرن يبقى مفتوحاً بفضل حلقات غضروفية. ينقل الهواء نحو الرئتين.</li>
+                <li><strong>القصبات (Bronches):</strong> تنقسم الرغامى إلى قصبتين رئيسيتين (يمنى ويسرى).</li>
+                <li><strong>القصيبات (Bronchioles):</strong> تتفرع القصبات إلى أنابيب دقيقة جداً داخل الرئتين.</li>
+            </ul>
+        </div>
+    </div>
+
+  
+ 
+    </div>
+
+
+    <h2 class="sec-lung">3. Les Poumons</h2>
+    <div class="block cat-lung">
+        <div class="fr">
+            <h3>STRUCTURE</h3>
+            <ul>
+                <li>Organes spongieux et élastiques protégés par la cage thoracique.</li>
+                <li><strong>Poumon Droit :</strong> Plus gros, divisé en 3 lobes.</li>
+                <li><strong>Poumon Gauche :</strong> Plus petit (pour laisser place au cœur), divisé en 2 lobes.</li>
+                <li><strong>La Plèvre :</strong> Double membrane qui entoure les poumons et leur permet de glisser contre les côtes lors de la respiration.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>البنية</h3>
+            <ul>
+                <li>أعضاء إسفنجية ومرنة محمية بالقفص الصدري.</li>
+                <li><strong>الرئة اليمنى:</strong> أكبر، مقسمة إلى 3 فصوص.</li>
+                <li><strong>الرئة اليسرى:</strong> أصغر (لتترك مكاناً للقلب)، مقسمة إلى فصين.</li>
+                <li><strong>الجنبة (Plèvre):</strong> غشاء مزدوج يحيط بالرئتين ويسمح لهما بالانزلاق ضد الأضلاع أثناء التنفس.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-alv">4. Les Alvéoles (Lieu d'échange)</h2>
+    
+    <div class="block cat-alv">
+        <div class="fr">
+            <h3>HÉMATOSE (Échanges Gazeux)</h3>
+            <p>Les bronchioles se terminent par des sacs microscopiques appelés <strong>Alvéoles Pulmonaires</strong>.</p>
+            <ul>
+                <li>Elles sont entourées de capillaires sanguins très fins.</li>
+                <li>C'est ici que l'oxygène passe de l'air vers le sang, et le CO2 passe du sang vers l'air.</li>
+                <li>Surface d'échange immense (environ 70 à 100 m² !).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>التنقية الدموية (التبادلات الغازية)</h3>
+            <p>تنتهي القصيبات بأكياس مجهرية تسمى <strong>الأسناخ الرئوية</strong>.</p>
+            <ul>
+                <li>هي محاطة بشعيرات دموية دقيقة جداً.</li>
+                <li>هنا يمر الأكسجين من الهواء إلى الدم، ويمر الـ CO2 من الدم إلى الهواء.</li>
+                <li>مساحة تبادل هائلة (حوالي 70 إلى 100 متر مربع!).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="img-container">
+        
+
+
+
+        <img src="https://i.pinimg.com/1200x/b6/be/fe/b6befe093fbaac2a769678f04d3bfd61.jpg" alt="Alvéoles">
+        <div class="img-caption">Structure des alvéoles et échanges gazeux (Cliquez pour zoomer)</div>
+    </div>
+
+   
+    <h2 class="sec-mech">5. Mécanique Ventilatoire</h2>
+    <div class="block cat-mech">
+        <div class="fr">
+            <h3>LE DIAPHRAGME</h3>
+            <p>C'est le muscle principal de la respiration, situé sous les poumons.</p>
+            <ul>
+                <li><strong>Inspiration (Active) :</strong> Le diaphragme se contracte et descend. Le volume du thorax augmente, l'air entre.</li>
+                <li><strong>Expiration (Passive) :</strong> Le diaphragme se relâche et remonte. Le volume diminue, l'air sort.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الحجاب الحاجز</h3>
+            <p>هو العضلة الرئيسية للتنفس، يوجد تحت الرئتين.</p>
+            <ul>
+                <li><strong>الشهيق (نشيط):</strong> يتقلص الحجاب الحاجز وينزل. يزداد حجم الصدر، فيدخل الهواء.</li>
+                <li><strong>الزفير (سلبي):</strong> يرتخي الحجاب الحاجز ويصعد. ينقص الحجم، فيخرج الهواء.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-freq">6. Fréquence Respiratoire (Rythme)</h2>
+    <div class="block cat-freq">
+        <div class="fr">
+            <h3>VALEURS NORMALES (Au repos)</h3>
+            <p>Nombre de cycles (mouvements) par minute :</p>
+            <ul>
+                <li><strong>Nouveau-né :</strong> 40 – 45 mvts/min.</li>
+                <li><strong>Enfant :</strong> 20 – 25 mvts/min.</li>
+                <li><strong>Adulte :</strong> 12 – 20 mvts/min.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>القيم العادية (في حالة راحة)</h3>
+            <p>عدد الحركات في الدقيقة:</p>
+            <ul>
+                <li><strong>حديث الولادة:</strong> 40 – 45 حركة/دقيقة.</li>
+                <li><strong>الطفل:</strong> 20 – 25 حركة/دقيقة.</li>
+                <li><strong>البالغ:</strong> 12 – 20 حركة/دقيقة.</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<div id="myModal">
+  <span class="close">&times;</span>
+  <img id="img01">
+</div>
+
+<script>
+    document.querySelectorAll('.block').forEach(block => {
+        block.addEventListener('click', (e) => {
+            if(!e.target.closest('.img-container')) {
+                block.classList.toggle('swapped');
+            }
+        });
+    });
+
+    const modal = document.getElementById("myModal");
+    const modalImg = document.getElementById("img01");
+    const span = document.getElementsByClassName("close")[0];
+
+    document.querySelectorAll('.img-container img').forEach(img => {
+        img.addEventListener('click', function(){
+            modal.style.display = "flex";
+            modalImg.src = this.src;
+        });
+    });
+
+    span.onclick = function() { modal.style.display = "none"; }
+    modal.onclick = function(event) { if (event.target === modal) modal.style.display = "none"; }
+</script>
+
+</body>
+</html>

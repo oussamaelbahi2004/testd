@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إصلاحات منظومة التربية (مصحح)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #1976d2;      /* أزرق */
+            --secondary: #00796b;    /* تركواز */
+            --bg: #f5f5f5;           
+            --text: #333;         
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #0d47a1);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .back-button-header {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button-header:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-buttons-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e3f2fd;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+            margin: 10px;
+            display: inline-block;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+        }
+
+        header h1 { margin: 0; font-size: 2em; font-weight: 800; }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+
+        /* القائمة الجانبية */
+        .sidebar {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        .nav-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f0f0f0;
+            border: none;
+            border-right: 4px solid transparent;
+            text-align: right;
+            font-size: 1em;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            color: #444;
+            border-radius: 4px;
+        }
+
+        .nav-btn:hover { background-color: #e3f2fd; color: var(--primary); }
+        .nav-btn.active {
+            border-right-color: var(--secondary);
+            background-color: #e0f2f1;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        /* منطقة العرض */
+        .content-area {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-height: 500px;
+        }
+
+        .section-title {
+            color: var(--primary);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        /* تصميم الكرونولوجيا */
+        .timeline-box {
+            border-right: 3px solid var(--primary);
+            padding-right: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .timeline-box::before {
+            content: '●';
+            color: var(--primary);
+            position: absolute;
+            right: -11px;
+            top: 0;
+            font-size: 1.2em;
+            background: white;
+        }
+        .date-badge {
+            background: var(--primary);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        /* تصميم المشاريع */
+        .project-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-top: 4px solid var(--secondary);
+        }
+        .project-title { color: #333; margin-top: 0; font-weight: 800; }
+        .label { font-weight: bold; color: var(--secondary); display: block; margin-top: 10px; }
+
+        /* الجدول */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9em; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background: #f5f5f5; color: #333; }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <button class="back-button-header" onclick="window.location.href='index.html'">
+        ← رجوع
+    </button>
+    <h1>محطات الإصلاح والمشاريع (مصحح)</h1>
+</header>
+
+<div class="container">
+    <aside class="sidebar">
+        <button class="nav-btn active" onclick="renderTimeline()">1. محطات الإصلاح</button>
+        <button class="nav-btn" onclick="renderProjects()">2. المشاريع الحالية</button>
+        <button class="nav-btn" onclick="renderSummary()">★ جدول التلخيص</button>
+    </aside>
+
+    <main id="display" class="content-area">
+        </main>
+    
+    <div class="nav-buttons-container">
+        <button class="nav-button" onclick="window.location.href='SEMA7TATISLA7GAME.html'">
+            ابدأ التمارين التفاعلية →
+        </button>
+    </div>
+</div>
+
+<script>
+    // البيانات (Data)
+    const timeline = [
+        { date: "1956-1980", title: "مرحلة التأسيس (ما بعد الاستقلال)", desc: "ركزت على المبادئ الأربعة: التعميم، التوحيد، المغربة، والتعريب." },
+        { date: "1980-1990", title: "مرحلة التقويم الهيكلي", desc: "ترشيد النفقات بضغط دولي، مما أدى لظهور مشاكل الجودة والهدر." },
+        { date: "2000", title: "الميثاق الوطني للتربية والتكوين", desc: "وثيقة مرجعية كبرى أدخلت 'بيداغوجيا الكفايات' وأقرت اللمركزية." },
+        { date: "2009-2012", title: "البرنامج الاستعجالي", desc: "محاولة لتسريع وتيرة الإصلاح وتوفير الموارد المالية والبشرية." },
+        { date: "2015-2030", title: "الرؤية الاستراتيجية", desc: "شعارها: مدرسة الإنصاف والجودة والارتقاء. (المجلس الأعلى للتربية)." },
+        { date: "2019", title: "القانون الإطار 51.17", desc: "تحويل الرؤية الاستراتيجية إلى قانون ملزم للدولة لضمان استمرارية الإصلاح." }
+    ];
+
+    const projects = [
+        {
+            title: "المدارس الرائدة (Ecoles Pionnières)",
+            goal: "تحسين التعلمات الأساس وتجاوز التعثرات.",
+            details: "تعتمد على تكوين الأستاذ، توفير تجهيزات رقمية، والمواكبة القريبة من المفتشين. تطبق مقاربة TaRL للدعم."
+        },
+        {
+            title: "مقاربة TaRL (التدريس وفق المستوى المناسب)",
+            goal: "معالجة التعثرات في القراءة والحساب.",
+            details: "لا تعتمد على المستوى الدراسي للتلميذ بل مستواه الفعلي (مبتدئ، حرف، كلمة...). يتم تفييء التلاميذ وتقديم دعم مكثف."
+        },
+        {
+            title: "تعميم التعليم الأولي (Preschool)",
+            goal: "تحقيق تكافؤ الفرص منذ الصغر.",
+            details: "بناء حجرات، تكوين المربيات، واعتماد إطار منهجي موحد يركز على اللعب والأنشطة الحس-حركية."
+        },
+        {
+            title: "محاربة الهدر المدرسي",
+            goal: "الحد من الانقطاع عن الدراسة.",
+            details: "يشمل الدعم الاجتماعي: برنامج تيسير (دعم مالي)، النقل المدرسي، وتجويد الداخليات والمطاعم."
+        }
+    ];
+
+    // دوال العرض (Functions)
+    function renderTimeline() {
+        let html = '<h2 class="section-title">كرونولوجيا الإصلاح التربوي</h2>';
+        timeline.forEach(item => {
+            html += `
+                <div class="timeline-box">
+                    <span class="date-badge">${item.date}</span>
+                    <h3 style="margin:5px 0; color:#333;">${item.title}</h3>
+                    <p style="margin:0; color:#666;">${item.desc}</p>
+                </div>
+            `;
+        });
+        document.getElementById('display').innerHTML = html;
+        setActive(0);
+    }
+
+    function renderProjects() {
+        let html = '<h2 class="section-title">المشاريع الإصلاحية الحالية</h2>';
+        projects.forEach(p => {
+            html += `
+                <div class="project-card">
+                    <h3 class="project-title">${p.title}</h3>
+                    <span class="label">🎯 الهدف:</span> ${p.goal}
+                    <span class="label">📝 التفاصيل والمكونات:</span> ${p.details}
+                </div>
+            `;
+        });
+        document.getElementById('display').innerHTML = html;
+        setActive(1);
+    }
+
+    function renderSummary() {
+        let html = '<h2 class="section-title">جدول التلخيص الشامل</h2>';
+        html += '<table><thead><tr><th>المشروع / المحطة</th><th>الفكرة الأساسية / الهدف</th></tr></thead><tbody>';
+        
+        // دمج البيانات في جدول واحد
+        html += '<tr><td colspan="2" style="background:#e3f2fd; font-weight:bold; text-align:center;">أهم المشاريع الحالية</td></tr>';
+        projects.forEach(p => {
+            html += `<tr><td><strong>${p.title}</strong></td><td>${p.goal}</td></tr>`;
+        });
+
+        html += '<tr><td colspan="2" style="background:#e3f2fd; font-weight:bold; text-align:center;">أهم محطات التاريخ</td></tr>';
+        timeline.forEach(t => {
+            html += `<tr><td><strong>${t.date}</strong></td><td>${t.title}</td></tr>`;
+        });
+
+        html += '</tbody></table>';
+        document.getElementById('display').innerHTML = html;
+        setActive(2);
+    }
+
+    function setActive(index) {
+        const btns = document.querySelectorAll('.nav-btn');
+        btns.forEach((btn, i) => {
+            if (i === index) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+    }
+
+    // التشغيل عند التحميل
+    window.onload = function() {
+        renderTimeline();
+    };
+</script>
+
+</body>
+</html>

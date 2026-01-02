@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 1: La Matière Vivante (Complet)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdfdfd;
+            --text-color: #2c3e50;
+            --main-color: #2980b9; /* Bleu principal */
+            --accent-color: #e67e22; /* Orange pour l'organique */
+            --mineral-color: #16a085; /* Vert pour le minéral */
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px;
+            line-height: 1.8;
+        }
+
+        .container { max-width: 850px; margin: 0 auto; }
+
+        h1 {
+            text-align: center;
+            color: var(--main-color);
+            border-bottom: 3px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+            font-weight: 800;
+        }
+
+        h2 {
+            margin-top: 50px;
+            font-size: 1.5em;
+            color: #444;
+            border-left: 6px solid;
+            padding-left: 15px;
+            background: #fff;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            text-transform: uppercase;
+        }
+
+        /* تنسيق البلوكات */
+        .block {
+            background: white;
+            padding: 25px 30px;
+            padding-bottom: 50px; /* مساحة لزر الترجمة */
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            cursor: pointer;
+            border-left: 5px solid transparent;
+            position: relative;
+            border: 1px solid #eee;
+            transition: all 0.2s;
+        }
+
+        .block:hover {
+            transform: translateX(5px);
+            background-color: #fafafa;
+        }
+
+        .block::after {
+            content: 'أنقر للترجمة ⇄';
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.75em;
+            color: #888;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            padding: 2px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        /* Textes */
+        .fr h3, .ar h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.2em; text-transform: uppercase; letter-spacing: 0.5px; }
+        .fr ul, .ar ul { padding-left: 20px; color: #555; }
+        .fr li, .ar li { margin-bottom: 8px; }
+        .fr strong, .ar strong { color: #d35400; }
+
+        .ar { display: none; font-family: 'Cairo', sans-serif; direction: rtl; text-align: right; color: #b03a2e; }
+        .ar h3 { color: #c0392b; }
+        .ar ul { padding-right: 20px; padding-left: 0; }
+
+        /* Logic Swap */
+        .swapped .fr { display: none; }
+        .swapped .ar { display: block; }
+        .swapped { background-color: #fffbf0; border-color: #f0e6ce; }
+        .swapped::after { content: 'إضغط للرجوع ↩'; color: #d35400; border-color: #d35400; }
+
+        /* Couleurs Sections */
+        .sec-carac { border-color: var(--main-color); } .cat-carac { border-left-color: var(--main-color); }
+        .sec-min { border-color: var(--mineral-color); } .cat-min { border-left-color: var(--mineral-color); }
+        .sec-org { border-color: var(--accent-color); } .cat-org { border-left-color: var(--accent-color); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>I. LA MATIÈRE VIVANTE (Complet)</h1>
+
+    <h2 class="sec-carac">1. Caractéristiques des Êtres Vivants</h2>
+    
+    <div class="block cat-carac">
+        <div class="fr">
+            <h3>LES FONCTIONS VITALES</h3>
+            <p>Pour être considéré comme "vivant", un organisme doit réaliser 3 fonctions principales :</p>
+            <ul>
+                <li><strong>Relation :</strong> Capacité à percevoir les changements de l'environnement (stimuli) et à y réagir (mouvement, sensibilité).</li>
+                <li><strong>Nutrition :</strong> Échange de matière et d'énergie avec le milieu extérieur (Métabolisme = Anabolisme + Catabolisme).</li>
+                <li><strong>Reproduction :</strong> Capacité de transmettre la vie et d'assurer la continuité de l'espèce.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الوظائف الحيوية</h3>
+            <p>لكي يُعتبر الكائن "حياً"، يجب أن يقوم بـ 3 وظائف رئيسية:</p>
+            <ul>
+                <li><strong>الربط:</strong> القدرة على إدراك تغيرات الوسط (المنبهات) والتفاعل معها (الحركة، الحساسية).</li>
+                <li><strong>الاقتيات:</strong> تبادل المادة والطاقة مع الوسط الخارجي (الاستقلاب = البناء + الهدم).</li>
+                <li><strong>التوالد:</strong> القدرة على نقل الحياة وضمان استمرار النوع.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-carac">
+        <div class="fr">
+            <h3>L'ORGANISATION ET L'HOMÉOSTASIE</h3>
+            <ul>
+                <li><strong>Organisation cellulaire :</strong> Tout être vivant est constitué d'au moins une cellule (Unité structurelle).</li>
+                <li><strong>Homéostasie :</strong> Capacité de maintenir le milieu intérieur stable (Température, pH, composition) malgré les variations extérieures.</li>
+                <li><strong>Croissance :</strong> Augmentation de la taille et de la masse cellulaire.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>التنظيم والتوازن الداخلي</h3>
+            <ul>
+                <li><strong>التنظيم الخلوي:</strong> كل كائن حي يتكون على الأقل من خلية واحدة (وحدة بنيوية).</li>
+                <li><strong>التوازن الداخلي (Homéostasie):</strong> القدرة على الحفاظ على استقرار الوسط الداخلي (الحرارة، pH، التركيب) رغم التغيرات الخارجية.</li>
+                <li><strong>النمو:</strong> الزيادة في القد والكتلة الخلوية.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-min">2. Constituants Minéraux (Inorganiques)</h2>
+
+    <div class="block cat-min">
+        <div class="fr">
+            <h3>L'EAU ($H_2O$)</h3>
+            <p>Constituant le plus abondant (65% à 70% du corps humain). Elle est répartie en deux compartiments :</p>
+            <ul>
+                <li><strong>Intracellulaire :</strong> L'eau à l'intérieur des cellules (Cytosol).</li>
+                <li><strong>Extracellulaire :</strong> L'eau dans le sang (Plasma) et entre les cellules (Lymphe).</li>
+                <li><strong>Rôles :</strong> Solvant universel, transport des molécules, régulation thermique, et participation aux réactions d'hydrolyse.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الماء ($H_2O$)</h3>
+            <p>المكون الأكثر وفرة (65% إلى 70% من جسم الإنسان). يتوزع في حيزين:</p>
+            <ul>
+                <li><strong>داخل خلوي:</strong> الماء داخل الخلايا (السيتوزول).</li>
+                <li><strong>خارج خلوي:</strong> الماء في الدم (البلازما) وبين الخلايا (اللمف).</li>
+                <li><strong>الأدوار:</strong> مذيب شامل، نقل الجزيئات، تنظيم الحرارة، والمشاركة في تفاعلات الحلمأة.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-min">
+        <div class="fr">
+            <h3>LES SELS MINÉRAUX</h3>
+            <p>Ce sont des ions indispensables, classés selon la quantité nécessaire :</p>
+            <ul>
+                <li><strong>Macro-éléments (Besoin important) :</strong> Calcium (Os), Phosphore (ADN), Sodium et Potassium (Influx nerveux), Magnésium.</li>
+                <li><strong>Oligo-éléments (Traces) :</strong> Fer (Hémoglobine), Iode (Thyroïde), Zinc, Cuivre.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الأملاح المعدنية</h3>
+            <p>هي أيونات ضرورية، تصنف حسب الكمية المطلوبة:</p>
+            <ul>
+                <li><strong>عناصر كبرى (حاجيات كبيرة):</strong> الكالسيوم (العظام)، الفوسفور (ADN)، الصوديوم والبوتاسيوم (السيالة العصبية)، المغنيزيوم.</li>
+                <li><strong>عناصر نادرة (آثار):</strong> الحديد (الخضاب الدموي)، اليود (الدرقية)، الزنك، النحاس.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-org">3. Constituants Organiques (Carbone)</h2>
+
+    <div class="block cat-org">
+        <div class="fr">
+            <h3>3.1 LES GLUCIDES (Sucres)</h3>
+            <p>Composés de C, H, O. <strong>Source d'énergie</strong> principale.</p>
+            <ul>
+                <li><strong>Monosaccharides :</strong> Glucose, Fructose.</li>
+                <li><strong>Disaccharides :</strong> Saccharose, Lactose.</li>
+                <li><strong>Polysaccharides :</strong> Amidon (Plantes), Glycogène (Animaux), Cellulose (Paroi).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>3.1 السكريات (Glucides)</h3>
+            <p>تتكون من C, H, O. <strong>مصدر الطاقة</strong> الرئيسي.</p>
+            <ul>
+                <li><strong>أحادية:</strong> غليكوز، فريكتوز.</li>
+                <li><strong>ثنائية:</strong> سكاروز، لاكتوز.</li>
+                <li><strong>عديدة:</strong> النشا (نبات)، الغليكوجين (حيوان)، السيليلوز (جدار).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-org">
+        <div class="fr">
+            <h3>3.2 LES LIPIDES (Graisses)</h3>
+            <p>Insolubles dans l'eau. Riches en énergie.</p>
+            <ul>
+                <li><strong>Triglycérides :</strong> Réserves d'énergie.</li>
+                <li><strong>Phospholipides :</strong> Membrane cellulaire.</li>
+                <li><strong>Stéroïdes :</strong> Cholestérol, Hormones.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>3.2 الدهنيات (Lipides)</h3>
+            <p>غير قابلة للذوبان في الماء. غنية بالطاقة.</p>
+            <ul>
+                <li><strong>ثلاثي الغليسريد:</strong> مخزون الطاقة.</li>
+                <li><strong>الفوسفودهنيات:</strong> غشاء الخلية.</li>
+                <li><strong>الستيرويدات:</strong> الكوليسترول، الهرمونات.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-org">
+        <div class="fr">
+            <h3>3.3 LES PROTIDES (Protéines)</h3>
+            <p>Chaînes d'Acides Aminés (C, H, O, N). Fonctions variées.</p>
+            <ul>
+                <li><strong>Structure :</strong> Kératine, Collagène.</li>
+                <li><strong>Fonction :</strong> Enzymes, Hémoglobine, Anticorps, Insuline.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>3.3 البروتينات (Protides)</h3>
+            <p>سلاسل من الأحماض الأمينية (C, H, O, N). وظائف متنوعة.</p>
+            <ul>
+                <li><strong>بنيوية:</strong> كيراتين، كولاجين.</li>
+                <li><strong>وظيفية:</strong> إنزيمات، خضاب دموي، مضادات أجسام، أنسولين.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-org">
+        <div class="fr">
+            <h3>3.4 LES ACIDES NUCLÉIQUES</h3>
+            <p>Information génétique (Nucléotides).</p>
+            <ul>
+                <li><strong>ADN :</strong> Double hélice, support de l'hérédité.</li>
+                <li><strong>ARN :</strong> Simple brin, synthèse des protéines.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>3.4 الأحماض النووية</h3>
+            <p>الخبر الوراثي (نيكليوتيدات).</p>
+            <ul>
+                <li><strong>ADN:</strong> لولب مضاعف، دعامة الوراثة.</li>
+                <li><strong>ARN:</strong> خيط مفرد، تركيب البروتينات.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-org">3.5 Les Vitamines (Micronutriments)</h2>
+
+    <div class="block cat-org">
+        <div class="fr">
+            <h3>DÉFINITION & RÔLE</h3>
+            <p>Substances organiques indispensables en très petite quantité (l'organisme ne sait pas les fabriquer). Elles ne fournissent pas d'énergie.</p>
+            <ul>
+                <li><strong>Rôles :</strong> Coenzymes (aident les réactions chimiques), croissance, vision, immunité.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>التعريف والدور</h3>
+            <p>مواد عضوية ضرورية بكميات صغيرة جداً (الجسم لا يعرف صنعها). لا توفر الطاقة.</p>
+            <ul>
+                <li><strong>الأدوار:</strong> مرافقات إنزيمية (تساعد التفاعلات الكيميائية)، النمو، الرؤية، المناعة.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-org">
+        <div class="fr">
+            <h3>CLASSIFICATION DES VITAMINES</h3>
+            <ul>
+                <li><strong>Hydrosolubles (Solubles dans l'eau) :</strong> Vitamine C et groupe B. Non stockées (éliminées dans l'urine). Il faut en consommer régulièrement.</li>
+                <li><strong>Liposolubles (Solubles dans les graisses) :</strong> Vitamines A, D, E, K. Stockées dans le foie et les graisses.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>تصنيف الفيتامينات</h3>
+            <ul>
+                <li><strong>ذائبة في الماء (Hydrosolubles):</strong> فيتامين C ومجموعة B. لا تخزن (تطرح في البول). يجب استهلاكها بانتظام.</li>
+                <li><strong>ذائبة في الدهون (Liposolubles):</strong> فيتامينات A, D, E, K. تخزن في الكبد والدهون.</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.querySelectorAll('.block').forEach(block => {
+        block.addEventListener('click', () => {
+            block.classList.toggle('swapped');
+        });
+    });
+</script>
+
+</body>
+</html>

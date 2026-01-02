@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 6: Les Virus (Image Corrigée)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fff5f5;
+            --text-color: #2c3e50;
+            --c-def: #c0392b;
+            --c-struct: #e74c3c;
+            --c-cycle: #d35400;
+            --c-ex: #8e44ad;
+        }
+
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 30px; line-height: 1.8; }
+        .container { max-width: 850px; margin: 0 auto; }
+
+        h1 { text-align: center; color: #c0392b; border-bottom: 3px solid #c0392b; padding-bottom: 15px; margin-bottom: 40px; font-weight: 800; }
+        h2 { margin-top: 60px; font-size: 1.6em; color: #444; border-left: 8px solid; padding-left: 15px; background: #fff; padding: 10px 15px; border-radius: 0 5px 5px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.03); text-transform: uppercase; }
+
+        /* BLOCS */
+        .block { background: white; padding: 25px 30px; padding-bottom: 50px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor: pointer; border-left: 5px solid transparent; position: relative; border: 1px solid #eee; transition: all 0.2s; }
+        .block:hover { transform: translateX(5px); background-color: #fff0f0; }
+        .block::after { content: 'أنقر للترجمة ⇄'; position: absolute; bottom: 10px; right: 15px; font-size: 0.75em; color: #fff; background-color: #c0392b; padding: 2px 12px; border-radius: 15px; font-weight: bold; }
+
+        /* IMAGE CONTAINER */
+        .img-container { margin: 30px 0; text-align: center; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .img-container img { max-width: 100%; height: auto; max-height: 500px; border-radius: 5px; cursor: zoom-in; transition: opacity 0.3s; }
+        .img-container img:hover { opacity: 0.9; }
+        .img-caption { font-size: 0.85em; color: #7f8c8d; margin-top: 10px; font-style: italic; }
+
+        /* MODAL ZOOM */
+        #myModal { display: none; position: fixed; z-index: 1000; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+        #img01 { margin: auto; display: block; width: 90%; max-width: 1000px; max-height: 90vh; object-fit: contain; border-radius: 5px; }
+        .close { position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; }
+
+        /* TEXTES & LOGIC */
+        .fr h3, .ar h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.2em; text-transform: uppercase; letter-spacing: 0.5px; }
+        .fr ul, .ar ul { padding-left: 20px; color: #555; }
+        .ar { display: none; font-family: 'Cairo', sans-serif; direction: rtl; text-align: right; color: #b03a2e; }
+        .swapped .fr { display: none; }
+        .swapped .ar { display: block; }
+        .swapped { background-color: #fff; border-color: #333; }
+        .swapped::after { content: 'إضغط للرجوع ↩'; background-color: #333; }
+
+        /* COULEURS */
+        .sec-def { border-color: var(--c-def); } .cat-def { border-left-color: var(--c-def); }
+        .sec-struct { border-color: var(--c-struct); } .cat-struct { border-left-color: var(--c-struct); }
+        .sec-cycle { border-color: var(--c-cycle); } .cat-cycle { border-left-color: var(--c-cycle); }
+        .sec-ex { border-color: var(--c-ex); } .cat-ex { border-left-color: var(--c-ex); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>VI. LES VIRUS (Les Acellulaires)</h1>
+
+    <h2 class="sec-def">1. Définition et Nature</h2>
+    <div class="block cat-def">
+        <div class="fr">
+            <h3>NI VIVANT, NI INERTE</h3>
+            <p>Les virus sont des entités biologiques particulières :</p>
+            <ul>
+                <li><strong>Acellulaires :</strong> Ils ne sont pas composés de cellules.</li>
+                <li><strong>Parasites Obligatoires :</strong> Doivent infecter une cellule pour se reproduire.</li>
+                <li><strong>Taille :</strong> Nanométrique (10-400 nm).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>لا حي ولا جامد</h3>
+            <p>الفيروسات هي كيانات بيولوجية خاصة:</p>
+            <ul>
+                <li><strong>لا خلوية:</strong> لا تتكون من خلايا.</li>
+                <li><strong>طفيليات إجبارية:</strong> يجب أن تصيب خلية لتتكاثر.</li>
+                <li><strong>القد:</strong> نانومتري (10-400 نانومتر).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-struct">2. Structure du Virion</h2>
+    <div class="block cat-struct">
+        <div class="fr">
+            <h3>COMPOSITION</h3>
+            <ul>
+                <li><strong>Génome :</strong> ADN ou ARN (Information génétique).</li>
+                <li><strong>Capside :</strong> Coque protéique protégeant le génome.</li>
+                <li><strong>Enveloppe (Parfois) :</strong> Membrane lipidique avec des spicules.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>التركيب</h3>
+            <ul>
+                <li><strong>الجينوم:</strong> ADN أو ARN (الخبر الوراثي).</li>
+                <li><strong>الكبسيدة:</strong> غلاف بروتيني يحمي الجينوم.</li>
+                <li><strong>الغلاف (أحياناً):</strong> غشاء دهني به أشواك.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-struct">3. Classification</h2>
+    <div class="block cat-struct">
+        <div class="fr">
+            <h3>CRITÈRES</h3>
+            <ul>
+                <li>Selon l'acide nucléique (ADN / ARN).</li>
+                <li>Selon la forme (Sphérique, Hélicoïdale, Complexe).</li>
+                <li>Selon l'enveloppe (Nu / Enveloppé).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>المعايير</h3>
+            <ul>
+                <li>حسب الحمض النووي (ADN / ARN).</li>
+                <li>حسب الشكل (كروي، لولبي، معقد).</li>
+                <li>حسب الغلاف (عاري / مغلف).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-cycle">4. Reproduction (Cycle Viral)</h2>
+    <div class="block cat-cycle">
+        <div class="fr">
+            <h3>LES ÉTAPES CLÉS</h3>
+            <ol>
+                <li><strong>Attachement :</strong> Fixation sur la cellule.</li>
+                <li><strong>Pénétration :</strong> Entrée du génome viral.</li>
+                <li><strong>Réplication :</strong> La cellule fabrique les pièces du virus.</li>
+                <li><strong>Assemblage :</strong> Construction des nouveaux virus.</li>
+                <li><strong>Libération :</strong> Sortie (souvent par éclatement de la cellule).</li>
+            </ol>
+        </div>
+        <div class="ar">
+            <h3>المراحل الأساسية</h3>
+            <ol>
+                <li><strong>الالتصاق:</strong> التثبيت على الخلية.</li>
+                <li><strong>الاختراق:</strong> دخول الجينوم الفيروسي.</li>
+                <li><strong>التضاعف:</strong> الخلية تصنع أجزاء الفيروس.</li>
+                <li><strong>التجميع:</strong> بناء الفيروسات الجديدة.</li>
+                <li><strong>التحرير:</strong> الخروج (غالباً بانفجار الخلية).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="img-container">
+        <img src="https://beswic.be/sites/default/files/Agents%20biologiques/Les%20diff%C3%A9rentes%20%C3%A9tapes%20du%20processus.png" alt="Cycle Lytique">
+       
+    </div>
+
+    <h2 class="sec-ex">5. Types Particuliers</h2>
+    <div class="block cat-ex">
+        <div class="fr">
+            <ul>
+                <li><strong>Bactériophages :</strong> Virus infectant les bactéries.</li>
+                <li><strong>Rétrovirus :</strong> Virus à ARN avec Transcriptase Inverse (ex: VIH).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <ul>
+                <li><strong>لاقمات البكتيريا:</strong> فيروسات تصيب البكتيريا.</li>
+                <li><strong>الفيروسات القهقرية:</strong> فيروسات ARN ذات النسخ العكسي (مثال: السيدا).</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<div id="myModal">
+  <span class="close">&times;</span>
+  <img id="img01">
+</div>
+
+<script>
+    document.querySelectorAll('.block').forEach(block => {
+        block.addEventListener('click', (e) => {
+            if(!e.target.closest('.img-container')) {
+                block.classList.toggle('swapped');
+            }
+        });
+    });
+
+    const modal = document.getElementById("myModal");
+    const modalImg = document.getElementById("img01");
+    const span = document.getElementsByClassName("close")[0];
+
+    document.querySelectorAll('.img-container img').forEach(img => {
+        img.addEventListener('click', function(){
+            modal.style.display = "flex";
+            modalImg.src = this.src;
+        });
+    });
+
+    span.onclick = function() { modal.style.display = "none"; }
+    modal.onclick = function(event) { if (event.target === modal) modal.style.display = "none"; }
+</script>
+
+</body>
+</html>

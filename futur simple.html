@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Futur Simple - Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* THÈME FUTURISTE (BLEU & CYAN) */
+            --primary: #005bea;
+            --secondary: #00c6fb;
+            --text: #2d3436;
+            --card-bg: #ffffff;
+            
+            /* NIVEAUX DE DIFFICULTÉ */
+            --green: #00b894; /* Réguliers */
+            --orange: #e17055; /* Modifications légères */
+            --red: #d63031;    /* Irréguliers */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); /* Fond doux */
+            color: var(--text);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column; /* Pour aligner le menu et le contenu */
+            align-items: center;
+        }
+
+        /* --- NAVIGATION MENU STYLES --- */
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.85);
+            color: var(--text);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Style bouton actif (Page actuelle) */
+        .nav-btn.active {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 91, 234, 0.3);
+        }
+
+        /* Style bouton Rojo3 */
+        .nav-btn.retour {
+            background: #2d3436;
+            color: white;
+        }
+        .nav-btn.retour:hover {
+            background: #000;
+            color: white;
+        }
+        /* --- END MENU STYLES --- */
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        /* HEADER */
+        header { text-align: center; margin-bottom: 40px; }
+        
+        h1 {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            margin: 0;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            color: var(--primary);
+            border-left: 5px solid var(--secondary);
+            padding-left: 15px;
+            margin-top: 50px;
+            font-size: 1.5rem;
+        }
+
+        /* DEFINITION BOX */
+        .info-card {
+            background: #f0f9ff;
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .btn-translate {
+            background: linear-gradient(45deg, #005bea, #00c6fb);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            float: right;
+            box-shadow: 0 4px 10px rgba(0,91,234,0.3);
+            transition: transform 0.2s;
+        }
+        .btn-translate:hover { transform: scale(1.05); }
+
+        .ar-text {
+            display: none;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed #ccc;
+            direction: rtl;
+            color: #2d3436;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* AUXILIARIES */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .verb-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        .verb-card h3 {
+            text-align: center; color: var(--primary); margin-top: 0;
+            border-bottom: 2px solid #f1f2f6; padding-bottom: 10px;
+        }
+        .verb-card ul { list-style: none; padding: 0; margin: 0; }
+        .verb-card li { padding: 8px 0; border-bottom: 1px dashed #eee; display: flex; justify-content: space-between; }
+
+        /* LEGEND & CONTROLS */
+        .legend {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: white;
+            font-weight: 600;
+        }
+        .badge-green { background: var(--green); }
+        .badge-orange { background: var(--orange); }
+        .badge-red { background: var(--red); }
+
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+
+        .btn-toggle {
+            background: var(--text);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .btn-toggle:hover { background: #000; }
+
+        /* TABLE */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        table { width: 100%; border-collapse: collapse; background: white; }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f1f2f6;
+            color: #555;
+            vertical-align: middle;
+        }
+
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        tr:hover { background-color: #eef2f3; }
+
+        /* BLUR EFFECT */
+        .blur-effect {
+            filter: blur(6px);
+            user-select: none;
+            cursor: help;
+            transition: filter 0.3s ease;
+        }
+        .blur-effect:hover { filter: blur(0); }
+        .revealed { filter: blur(0) !important; }
+
+        /* GAME SECTION */
+        .game-zone {
+            margin-top: 60px;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .game-input {
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            border: none;
+            width: 60%;
+            text-align: center;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        .btn-game {
+            background: var(--secondary);
+            color: #fff;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-game:hover { transform: scale(1.05); background: var(--primary); }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.8rem; }
+            .game-input { width: 100%; }
+            .legend { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-menu">
+    <a href="Présent de l'indicatif.html" class="nav-btn">Présent</a>
+    <a href="passé simple.html" class="nav-btn">Passé Simple</a>
+    <a href="L'Imparfait.html" class="nav-btn">Imparfait</a>
+    <a href="passe compose.html" class="nav-btn">Passé Composé</a>
+    <a href="plus-que-parfait.html" class="nav-btn">Plus-que-parfait</a>
+    <a href="futur simple.html" class="nav-btn">Futur Simple</a>
+    <a href="Futur Antérieur.html" class="nav-btn">Futur Antérieur</a>
+    <a href="passé antérieur.html" class="nav-btn active">Passé Antérieur</a> <a href="subjonctif presont.html" class="nav-btn">Subjonctif</a>
+    <a href="index.html" class="nav-btn retour">رجوع</a>
+</div>
+
+<div class="container">
+    <header>
+        <h1>Le Futur Simple</h1>
+        <p style="color: #666; margin-top: 10px;">Projets, Prévisions & Promesses</p>
+    </header>
+
+    <div class="info-card">
+        <button class="btn-translate" onclick="toggleTraduction()">🌐 Traduction</button>
+        <h3>📌 La Règle d'Or</h3>
+        <p>Le futur simple exprime une action qui se passera plus tard.<br>
+        <strong>Formule :</strong> Infinitif + Terminaisons (<strong>ai, as, a, ons, ez, ont</strong>).</p>
+        <p><em>Exemple : Manger -> Je manger<strong>ai</strong>.</em></p>
+        
+        <div id="ar-text" class="ar-text">
+            <strong>التعريف:</strong> كنستعملوه باش نهضرو على شي حاجة غتوقع من بعد (مشاريع، توقعات، وعود).<br>
+            <strong>القاعدة:</strong> كنخلو الفعل صحيح (Infinitif) وكنزيدو نهايات فعل Avoir: (ai, as, a, ons, ez, ont).<br>
+            <strong>ملاحظة:</strong> الأفعال اللي كتسالي بـ "re" كنحيدو "e" عاد كنزيدو النهايات (Prendre -> Je prendrai).
+        </div>
+    </div>
+
+    <h2>1. Les Auxiliaires (Irréguliers)</h2>
+    <div class="grid-cards">
+        <div class="verb-card">
+            <h3>ÊTRE (Ser-)</h3>
+            <ul>
+                <li><span>Je</span> <strong>serai</strong></li>
+                <li><span>Tu</span> <strong>seras</strong></li>
+                <li><span>Il</span> <strong>sera</strong></li>
+                <li><span>Nous</span> <strong>serons</strong></li>
+                <li><span>Vous</span> <strong>serez</strong></li>
+                <li><span>Ils</span> <strong>seront</strong></li>
+            </ul>
+        </div>
+        <div class="verb-card">
+            <h3>AVOIR (Aur-)</h3>
+            <ul>
+                <li><span>J'</span> <strong>aurai</strong></li>
+                <li><span>Tu</span> <strong>auras</strong></li>
+                <li><span>Il</span> <strong>aura</strong></li>
+                <li><span>Nous</span> <strong>aurons</strong></li>
+                <li><span>Vous</span> <strong>aurez</strong></li>
+                <li><span>Ils</span> <strong>auront</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>2. Top 40 Verbes (Classés par Difficulté)</h2>
+    
+    <div class="legend">
+        <span class="badge badge-green">🟢 Niveau 1 : Réguliers (Infinitif + Fin)</span>
+        <span class="badge badge-orange">🟡 Niveau 2 : Attention Orthographe</span>
+        <span class="badge badge-red">🔴 Niveau 3 : Radical Change (Irréguliers)</span>
+    </div>
+
+    <div class="controls">
+        <button class="btn-toggle" onclick="toggleAnswers()">👁️ Masquer les réponses</button>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">Verbe</th>
+                    <th width="26%">Je / J' ... (Demain)</th>
+                    <th width="26%">Nous ...</th>
+                    <th width="26%">Ils / Elles ...</th>
+                </tr>
+            </thead>
+            <tbody id="verb-table">
+                </tbody>
+        </table>
+    </div>
+
+    <div class="game-zone">
+        <div style="margin-bottom:10px; opacity:0.8;">Score: <span id="score">0</span></div>
+        <h2 style="color:#fff; margin-top:0; border:none;" id="q-text">Prêt ?</h2>
+        
+        <input type="text" id="ans-input" class="game-input" placeholder="Conjugaison..." autocomplete="off">
+        <br>
+        <button class="btn-game" onclick="check()">LANCER</button>
+        <div style="margin-top:15px; font-weight:bold; height:30px;" id="fb-msg"></div>
+    </div>
+
+</div>
+
+<script>
+    /* --- DATA BASE (Verbs sorted by Level) --- */
+    const verbs = [
+        // --- 🟢 NIVEAU 1 : Réguliers (Infinitif + terminaisons) ---
+        { v: "Manger", je: "mangerai", nous: "mangerons", ils: "mangeront", level: "green" },
+        { v: "Finir", je: "finirai", nous: "finirons", ils: "finiront", level: "green" },
+        { v: "Parler", je: "parlerai", nous: "parlerons", ils: "parleront", level: "green" },
+        { v: "Partir", je: "partirai", nous: "partirons", ils: "partiront", level: "green" },
+        { v: "Sortir", je: "sortirai", nous: "sortirons", ils: "sortiront", level: "green" },
+        { v: "Dormir", je: "dormirai", nous: "dormirons", ils: "dormiront", level: "green" },
+        { v: "Écrire", je: "écrirai", nous: "écrirons", ils: "écriront", level: "green" }, // re enlevé
+        { v: "Lire", je: "lirai", nous: "lirons", ils: "liront", level: "green" }, // re enlevé
+        { v: "Dire", je: "dirai", nous: "dirons", ils: "diront", level: "green" }, // re enlevé
+        { v: "Mettre", je: "mettrai", nous: "mettrons", ils: "mettront", level: "green" }, // re enlevé
+        { v: "Prendre", je: "prendrai", nous: "prendrons", ils: "prendront", level: "green" }, // re enlevé
+        { v: "Attendre", je: "attendrai", nous: "attendrons", ils: "attendront", level: "green" }, // re enlevé
+        { v: "Boire", je: "boirai", nous: "boirons", ils: "boiront", level: "green" }, // re enlevé
+        { v: "Connaître", je: "connaîtrai", nous: "connaîtrons", ils: "connaîtront", level: "green" }, // re enlevé
+        { v: "Vivre", je: "vivrai", nous: "vivrons", ils: "vivront", level: "green" }, // re enlevé
+        { v: "Répondre", je: "répondrai", nous: "répondrons", ils: "répondront", level: "green" },
+        { v: "Suivre", je: "suivrai", nous: "suivrons", ils: "suivront", level: "green" },
+        { v: "Naître", je: "naîtrai", nous: "naîtrons", ils: "naîtront", level: "green" },
+
+        // --- 🟡 NIVEAU 2 : Modifications Orthographiques ---
+        { v: "Appeler", je: "appellerai", nous: "appellerons", ils: "appelleront", level: "orange" }, // ll
+        { v: "Jeter", je: "jetterai", nous: "jetterons", ils: "jetteront", level: "orange" }, // tt
+        { v: "Payer", je: "paierai", nous: "paierons", ils: "paieront", level: "orange" }, // y -> i
+        { v: "Essuyer", je: "essuierai", nous: "essuierons", ils: "essuieront", level: "orange" }, // y -> i
+        { v: "Acheter", je: "achèterai", nous: "achèterons", ils: "achèteront", level: "orange" }, // è
+        { v: "Employer", je: "emploierai", nous: "emploierons", ils: "emploieront", level: "orange" }, // y -> i
+
+        // --- 🔴 NIVEAU 3 : Irréguliers (Radical Change) ---
+        { v: "Aller", je: "irai", nous: "irons", ils: "iront", level: "red" }, // ir-
+        { v: "Faire", je: "ferai", nous: "ferons", ils: "feront", level: "red" }, // fer-
+        { v: "Venir", je: "viendrai", nous: "viendrons", ils: "viendront", level: "red" }, // viendr-
+        { v: "Tenir", je: "tiendrai", nous: "tiendrons", ils: "tiendront", level: "red" }, // tiendr-
+        { v: "Voir", je: "verrai", nous: "verrons", ils: "verront", level: "red" }, // verr-
+        { v: "Pouvoir", je: "pourrai", nous: "pourrons", ils: "pourront", level: "red" }, // pourr-
+        { v: "Courir", je: "courrai", nous: "courrons", ils: "courront", level: "red" }, // courr-
+        { v: "Mourir", je: "mourrai", nous: "mourrons", ils: "mourront", level: "red" }, // mourr-
+        { v: "Envoyer", je: "enverrai", nous: "enverrons", ils: "enverront", level: "red" }, // enverr-
+        { v: "Savoir", je: "saurai", nous: "saurons", ils: "sauront", level: "red" }, // saur-
+        { v: "Devoir", je: "devrai", nous: "devrons", ils: "devront", level: "red" }, // devr-
+        { v: "Recevoir", je: "recevrai", nous: "recevrons", ils: "recevront", level: "red" }, // recevr-
+        { v: "Vouloir", je: "voudrai", nous: "voudrons", ils: "voudront", level: "red" }, // voudr-
+        { v: "Falloir", je: "faudra", nous: "-", ils: "-", level: "red" }, // faudr-
+        { v: "Pleuvoir", je: "pleuvra", nous: "-", ils: "-", level: "red" }, // pleuvr-
+        { v: "Valoir", je: "vaudra", nous: "vaudrons", ils: "vaudront", level: "red" } // vaudr-
+    ];
+
+    /* --- LOGIC --- */
+
+    // 1. Translation Toggle
+    function toggleTraduction() {
+        const arDiv = document.getElementById("ar-text");
+        arDiv.style.display = (arDiv.style.display === "block") ? "none" : "block";
+    }
+
+    // 2. Populate Table
+    const tbody = document.getElementById("verb-table");
+    
+    function getBadge(level) {
+        if(level === 'green') return '<span style="color:#00b894; font-size:1.2rem;">●</span>';
+        if(level === 'orange') return '<span style="color:#e17055; font-size:1.2rem;">●</span>';
+        return '<span style="color:#d63031; font-size:1.2rem;">●</span>';
+    }
+
+    verbs.forEach(v => {
+        let row = `<tr>
+            <td style="font-weight:600;">${getBadge(v.level)} ${v.v}</td>
+            <td class="conjugation-cell">${v.je}</td>
+            <td class="conjugation-cell">${v.nous}</td>
+            <td class="conjugation-cell">${v.ils}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+    });
+
+    // 3. Hide/Show Answers (Blur Effect)
+    let isHidden = false;
+    function toggleAnswers() {
+        const cells = document.querySelectorAll('.conjugation-cell');
+        const btn = document.querySelector('.btn-toggle');
+        isHidden = !isHidden;
+        
+        btn.innerText = isHidden ? "👁️ Afficher les réponses" : "👁️ Masquer les réponses";
+
+        cells.forEach(cell => {
+            if (cell.innerText === "-") return;
+            if(isHidden) {
+                cell.classList.add('blur-effect');
+                cell.classList.remove('revealed');
+            } else {
+                cell.classList.remove('blur-effect');
+                cell.classList.add('revealed');
+            }
+        });
+    }
+
+    // 4. GAME LOGIC
+    let score = 0;
+    let currentItem = null;
+    let currentKey = "";
+
+    function nextQ() {
+        // Random selection
+        currentItem = verbs[Math.floor(Math.random() * verbs.length)];
+        
+        // Handle verbs with no nous/ils (Falloir/Pleuvoir)
+        let keys = ['je', 'nous', 'ils'];
+        if(currentItem.v === "Falloir" || currentItem.v === "Pleuvoir") keys = ['je'];
+        currentKey = keys[Math.floor(Math.random() * keys.length)];
+        
+        let phrase = "";
+        if(currentKey === 'je') phrase = (currentItem.v==="Falloir" || currentItem.v==="Pleuvoir") ? "Demain, il..." : "Demain, je/j'...";
+        if(currentKey === 'nous') phrase = "Demain, nous...";
+        if(currentKey === 'ils') phrase = "Demain, ils/elles...";
+
+        // Dynamic Color for verb in game
+        let color = "#00b894"; // green
+        if(currentItem.level === "orange") color = "#e17055";
+        if(currentItem.level === "red") color = "#ff7675";
+
+        document.getElementById("q-text").innerHTML = `${phrase} <br> <span style="color:${color}; font-size:2rem;">(${currentItem.v})</span>`;
+        document.getElementById("ans-input").value = "";
+        document.getElementById("fb-msg").innerText = "";
+        document.getElementById("ans-input").focus();
+    }
+
+    function check() {
+        let user = document.getElementById("ans-input").value.trim().toLowerCase();
+        let correct = currentItem[currentKey];
+        let fb = document.getElementById("fb-msg");
+
+        if(user === correct) {
+            score++;
+            document.getElementById("score").innerText = score;
+            fb.innerText = "Correct ! 🚀";
+            fb.style.color = "#00b894";
+            setTimeout(nextQ, 1000);
+        } else {
+            fb.innerText = `Non, c'est : ${correct}`;
+            fb.style.color = "#ff7675";
+            setTimeout(nextQ, 2500);
+        }
+    }
+
+    // Enable "Enter" key
+    document.getElementById("ans-input").addEventListener("keypress", (e) => {
+        if(e.key === "Enter") check();
+    });
+
+    // Init Game
+    nextQ();
+
+</script>
+
+</body>
+
+</html>

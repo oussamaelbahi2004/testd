@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 11: L'Appareil Digestif</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fef9e7; /* Fond crème/jaune pâle */
+            --text-color: #2c3e50;
+            
+            /* Couleurs Spécifiques */
+            --c-intro: #34495e;    /* Intro */
+            --c-tube: #d35400;     /* Tube (Orange brûlé) */
+            --c-gland: #f1c40f;    /* Glandes (Jaune) */
+            --c-mech: #e67e22;     /* Mécanique (Orange) */
+            --c-abs: #27ae60;      /* Absorption (Vert) */
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px;
+            line-height: 1.8;
+        }
+
+        .container { max-width: 850px; margin: 0 auto; }
+
+        h1 {
+            text-align: center;
+            color: #d35400;
+            border-bottom: 3px solid #d35400;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+            font-weight: 800;
+        }
+
+        h2 {
+            margin-top: 60px;
+            font-size: 1.6em;
+            color: #444;
+            border-left: 8px solid;
+            padding-left: 15px;
+            background: #fff;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            text-transform: uppercase;
+        }
+
+        /* BLOCS */
+        .block {
+            background: white;
+            padding: 25px 30px;
+            padding-bottom: 50px; 
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            cursor: pointer;
+            border-left: 5px solid transparent;
+            position: relative;
+            border: 1px solid #eee;
+            transition: all 0.2s;
+        }
+
+        .block:hover { transform: translateX(5px); background-color: #fffdf5; }
+
+        /* BOUTON TRADUCTION */
+        .block::after {
+            content: 'أنقر للترجمة ⇄';
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.75em;
+            color: #fff;
+            background-color: #d35400;
+            padding: 2px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        /* IMAGES */
+        .img-container {
+            margin: 30px 0;
+            text-align: center;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            max-height: 400px;
+            border-radius: 5px;
+            cursor: zoom-in;
+            transition: opacity 0.3s;
+        }
+        .img-container img:hover { opacity: 0.9; }
+        .img-caption { font-size: 0.85em; color: #7f8c8d; margin-top: 10px; font-style: italic; }
+
+        /* MODAL ZOOM */
+        #myModal { display: none; position: fixed; z-index: 1000; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+        #img01 { margin: auto; display: block; width: 90%; max-width: 1000px; max-height: 90vh; object-fit: contain; border-radius: 5px; }
+        .close { position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; }
+
+        /* TEXTES */
+        .fr h3, .ar h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.2em; text-transform: uppercase; letter-spacing: 0.5px; }
+        .fr ul, .ar ul { padding-left: 20px; color: #555; }
+        .ar { display: none; font-family: 'Cairo', sans-serif; direction: rtl; text-align: right; color: #b03a2e; }
+        .ar h3 { color: #c0392b; }
+        .swapped .fr { display: none; }
+        .swapped .ar { display: block; }
+        .swapped { background-color: #fff; border-color: #333; }
+        .swapped::after { content: 'إضغط للرجوع ↩'; background-color: #333; }
+
+        /* COULEURS */
+        .sec-intro { border-color: var(--c-intro); } .cat-intro { border-left-color: var(--c-intro); }
+        .sec-tube { border-color: var(--c-tube); } .cat-tube { border-left-color: var(--c-tube); }
+        .sec-gland { border-color: var(--c-gland); } .cat-gland { border-left-color: var(--c-gland); }
+        .sec-mech { border-color: var(--c-mech); } .cat-mech { border-left-color: var(--c-mech); }
+        .sec-abs { border-color: var(--c-abs); } .cat-abs { border-left-color: var(--c-abs); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>XI. L'APPAREIL DIGESTIF</h1>
+
+    <h2 class="sec-intro">1. Rôle et Fonction</h2>
+    <div class="block cat-intro">
+        <div class="fr">
+            <h3>TRANSFORMATION ET ABSORPTION</h3>
+            <p>Le système digestif a deux missions principales :</p>
+            <ul>
+                <li><strong>Digestion :</strong> Transformer les aliments complexes (repas) en nutriments simples (molécules absorbables).</li>
+                <li><strong>Absorption :</strong> Faire passer ces nutriments dans le sang.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>التحويل والامتصاص</h3>
+            <p>للجهاز الهضمي مهمتان رئيسيتان:</p>
+            <ul>
+                <li><strong>الهضم:</strong> تحويل الأغذية المعقدة (الوجبة) إلى مواد قيت بسيطة (جزيئات قابلة للامتصاص).</li>
+                <li><strong>الامتصاص:</strong> تمرير مواد القيت هذه إلى الدم.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="img-container">
+        
+
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Digestive_system_diagram_en.svg/800px-Digestive_system_diagram_en.svg.png" alt="Système Digestif">
+        <div class="img-caption">Anatomie de l'appareil digestif (Cliquez pour zoomer)</div>
+    </div>
+
+    <h2 class="sec-tube">2. Le Tube Digestif (Le Chemin)</h2>
+    <div class="block cat-tube">
+        <div class="fr">
+            <h3>DE LA BOUCHE À L'ANUS</h3>
+            <p>C'est un long canal où passent les aliments :</p>
+            <ul>
+                <li><strong>Bouche :</strong> Mastication et début de digestion (Salive).</li>
+                <li><strong>Œsophage :</strong> Tube de transport vers l'estomac.</li>
+                <li><strong>Estomac :</strong> Poche acide où les aliments sont brassés et mélangés (Chyme).</li>
+                <li><strong>Intestin Grêle :</strong> Lieu principal de la digestion finale et de l'<strong>Absorption</strong>.</li>
+                <li><strong>Gros Intestin (Côlon) :</strong> Récupération de l'eau et formation des selles (Fèces).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>من الفم إلى الشرج</h3>
+            <p>هو قناة طويلة تمر منها الأغذية:</p>
+            <ul>
+                <li><strong>الفم:</strong> المضغ وبداية الهضم (اللعاب).</li>
+                <li><strong>المريء:</strong> أنبوب النقل نحو المعدة.</li>
+                <li><strong>المعدة:</strong> جيب حمضي يتم فيه خلط وطحن الأغذية (الكيموس).</li>
+                <li><strong>المعي الدقيق:</strong> المكان الرئيسي للهضم النهائي و<strong>الامتصاص</strong>.</li>
+                <li><strong>المعي الغليظ (القولون):</strong> استرجاع الماء وتشكل البراز.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-gland">3. Les Glandes Annexes</h2>
+    <div class="block cat-gland">
+        <div class="fr">
+            <h3>LES AIDES CHIMIQUES</h3>
+            <p>Elles ne sont pas traversées par les aliments, mais elles sécrètent des liquides digestifs :</p>
+            <ul>
+                <li><strong>Glandes Salivaires :</strong> Produisent la salive (Bouche).</li>
+                <li><strong>Foie :</strong> Produit la <strong>Bile</strong> (stockée dans la vésicule biliaire) qui aide à digérer les graisses.</li>
+                <li><strong>Pancréas :</strong> Produit le suc pancréatique (riche en enzymes) déversé dans l'intestin.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>المساعدات الكيميائية</h3>
+            <p>لا تمر منها الأغذية، لكنها تفرز عصارات هضمية:</p>
+            <ul>
+                <li><strong>الغدد اللعابية:</strong> تنتج اللعاب (الفم).</li>
+                <li><strong>الكبد:</strong> ينتج <strong>الصفراء</strong> (تخزن في المرارة) التي تساعد على هضم الدهون.</li>
+                <li><strong>البنكرياس:</strong> ينتج العصارة البنكرياسية (غنية بالإنزيمات) التي تصب في المعي.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-mech">4. Types de Digestion</h2>
+    <div class="block cat-mech">
+        <div class="fr">
+            <h3>DEUX MÉCANISMES COMPLÉMENTAIRES</h3>
+            <ul>
+                <li><strong>Digestion Mécanique :</strong> Broyage par les dents (Mastication) et brassage par les muscles de l'estomac (Contractions).</li>
+                <li><strong>Digestion Chimique :</strong> Découpage des molécules par des <strong>Enzymes</strong> (ex: L'Amylase dans la salive découpe l'amidon).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>آليتان متكاملتان</h3>
+            <ul>
+                <li><strong>هضم آلي (ميكانيكي):</strong> الطحن بالأسنان (المضغ) والخلط بواسطة عضلات المعدة (تقلصات).</li>
+                <li><strong>هضم كيميائي:</strong> تقطيع الجزيئات بواسطة <strong>الإنزيمات</strong> (مثال: الأميلاز في اللعاب يقطع النشا).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-abs">5. L'Absorption Intestinale</h2>
+    <div class="block cat-abs">
+        <div class="fr">
+            <h3>LE PASSAGE VERS LE SANG</h3>
+            <p>L'intestin grêle possède des replis microscopiques appelés <strong>Villosités Intestinales</strong>.</p>
+            <ul>
+                <li>C'est à ce niveau que les nutriments (Glucose, Acides aminés...) traversent la paroi pour aller dans le sang et nourrir le corps.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>المرور نحو الدم</h3>
+            <p>يحتوي المعي الدقيق على طيات مجهرية تسمى <strong>الخملات المعوية</strong>.</p>
+            <ul>
+                <li>على هذا المستوى تعبر مواد القيت (غليكوز، أحماض أمينية...) الجدار لتذهب إلى الدم وتغذي الجسم.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="img-container">
+        
+
+
+
+        <img src="https://i.pinimg.com/736x/ca/1f/46/ca1f469d7a675d6f282607fd032889d6.jpg" alt="Villosités Intestinales">
+        <div class="img-caption">Zoom sur une villosité intestinale (Absorption)</div>
+    </div>
+
+</div>
+
+<div id="myModal">
+  <span class="close">&times;</span>
+  <img id="img01">
+</div>
+
+<script>
+    document.querySelectorAll('.block').forEach(block => {
+        block.addEventListener('click', (e) => {
+            if(!e.target.closest('.img-container')) {
+                block.classList.toggle('swapped');
+            }
+        });
+    });
+
+    const modal = document.getElementById("myModal");
+    const modalImg = document.getElementById("img01");
+    const span = document.getElementsByClassName("close")[0];
+
+    document.querySelectorAll('.img-container img').forEach(img => {
+        img.addEventListener('click', function(){
+            modal.style.display = "flex";
+            modalImg.src = this.src;
+        });
+    });
+
+    span.onclick = function() { modal.style.display = "none"; }
+    modal.onclick = function(event) { if (event.target === modal) modal.style.display = "none"; }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>النظريات التربوية الـ 13: الشرح والتطبيق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563eb;      /* bg-blue-600 */
+            --secondary: #3b82f6;    /* bg-blue-500 */
+            --accent: #ffc93c;       
+            --bg: #f4f6f7;           
+            --text: #2c3333;         
+            --light-gray: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        /* الرأس */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        header h1 { margin: 0; font-size: 2.2em; font-weight: 800; }
+        header p { font-size: 1.1em; opacity: 0.9; margin-top: 10px; }
+
+        /* الحاوية */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        /* القائمة الجانبية (scrollable) */
+        .sidebar {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 20px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            color: var(--primary);
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .nav-btn {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            background: transparent;
+            border: none;
+            border-right: 4px solid transparent;
+            text-align: right;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            color: #555;
+            border-radius: 4px;
+        }
+
+        .nav-btn:hover { background-color: var(--light-gray); color: var(--primary); }
+        .nav-btn.active {
+            border-right-color: var(--secondary);
+            background-color: #e8f8f5;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        /* منطقة المحتوى */
+        .content-area {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            min-height: 600px;
+        }
+
+        .theory-header {
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .theory-title { color: var(--primary); font-size: 2em; margin: 0; font-weight: 800; }
+        .proponents { color: #7f8c8d; font-style: italic; margin-top: 10px; display: block; }
+        .tag { background: var(--light-gray); padding: 2px 8px; border-radius: 4px; font-size: 0.9em; margin-right: 5px; color: var(--primary); }
+
+        .section-box {
+            margin-bottom: 25px;
+        }
+
+        .box-title {
+            font-size: 1.2em;
+            color: var(--secondary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-right: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .app-card {
+            background: #fff8e1;
+            border: 1px solid #ffe0b2;
+            border-right: 4px solid var(--accent);
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        /* الجدول التلخيصي */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        .summary-table th, .summary-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: right;
+        }
+        .summary-table th { background-color: var(--primary); color: white; }
+        .summary-table tr:nth-child(even) { background-color: #f9f9f9; }
+
+        /* أزرار التنقل */
+        .nav-button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            margin: 20px 10px;
+            display: inline-block;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .nav-button:active {
+            transform: translateY(0);
+        }
+
+        .nav-buttons-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--light-gray);
+        }
+
+        .back-button-header {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button-header:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* تجاوب للموبايل */
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .sidebar { position: static; max-height: 200px; border: 1px solid #ddd; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <button class="back-button-header" onclick="window.location.href='index.html'">
+        ← رجوع
+    </button>
+    <h1>النظريات التربوية الحديثة (13 نظرية)</h1>
+    <p>شرح المفاهيم المركزية، الرواد، وكيفية التنزيل الإجرائي في القسم</p>
+</header>
+
+<div class="container">
+    <aside class="sidebar">
+        <h3>قائمة النظريات</h3>
+        <button class="nav-btn active" onclick="loadTheory(0)">1. النظرية النفعية (البراغماتية)</button>
+        <button class="nav-btn" onclick="loadTheory(1)">2. النظرية الطبيعية</button>
+        <button class="nav-btn" onclick="loadTheory(2)">3. النظرية السلوكية</button>
+        <button class="nav-btn" onclick="loadTheory(3)">4. النظرية البنائية</button>
+        <button class="nav-btn" onclick="loadTheory(4)">5. البنائية الاجتماعية</button>
+        <button class="nav-btn" onclick="loadTheory(5)">6. النظرية الجشتالتية</button>
+        <button class="nav-btn" onclick="loadTheory(6)">7. النظريات الشخصانية</button>
+        <button class="nav-btn" onclick="loadTheory(7)">8. النظريات التكنولوجية</button>
+        <button class="nav-btn" onclick="loadTheory(8)">9. الاجتماعية المعرفية</button>
+        <button class="nav-btn" onclick="loadTheory(9)">10. النفس-معرفية</button>
+        <button class="nav-btn" onclick="loadTheory(10)">11. رأس المال الثقافي</button>
+        <button class="nav-btn" onclick="loadTheory(11)">12. الذكاءات المتعددة</button>
+        <button class="nav-btn" onclick="loadTheory(12)">13. النظرية الروحية</button>
+        <button class="nav-btn" onclick="loadSummary()">★ جدول التلخيص الشامل</button>
+    </aside>
+
+    <main id="displayArea" class="content-area">
+        </main>
+    
+    <div class="nav-buttons-container">
+        <button class="nav-button" onclick="window.location.href='SENADARIYATGAME.html'">
+            ابدأ التمارين التفاعلية →
+        </button>
+    </div>
+</div>
+
+<script>
+    /* بيانات النظريات بناءً على الصفحة 15 و 16 من الوثيقة 
+       
+    */
+    const theories = [
+        {
+            title: "النظرية النفعية (البراغماتية)",
+            scholars: "وليام جيمس، جون ديوي، شارل بيرس",
+            coreIdea: "تعتبر أن قيمة الأفكار تكمن في نفعها العملي ونتائجها الواقعية. التعلم هو الحياة نفسها وليس مجرد إعداد للحياة. تركز على الخبرة المباشرة وحل المشكلات.",
+            application: "<ul><li>اعتماد <strong>بيداغوجيا المشروع</strong> (Project-Based Learning).</li><li>ربط الدروس بمشكلات واقعية من حياة المتعلم اليومية.</li><li>التركيز على العمل الجماعي والتطبيق العملي بدل الحفظ النظري.</li></ul>"
+        },
+        {
+            title: "النظرية الطبيعية",
+            scholars: "جون جاك روسو، جون رولس",
+            coreIdea: "الإيمان بأن الطفل خير بطبعه، وأن التربية يجب أن تساير قوانين النمو الطبيعي دون إكراه أو تدخل صناعي مبكر. الحرية هي أساس التعلم.",
+            application: "<ul><li>التعلم خارج الأسوار (في الطبيعة أو المحيط).</li><li>عدم استعجال المراحل (احترام إيقاع نمو الطفل).</li><li>التعلم عبر الاستكشاف الحر والملاحظة المباشرة بدلاً من التلقين.</li></ul>"
+        },
+        {
+            title: "النظرية السلوكية",
+            scholars: "بافلوف، ثورندايك، سكنر، واطسون",
+            coreIdea: "التعلم هو تغير في السلوك الخارجي ناتج عن مثير واستجابة. يركز على التعزيز (المكافأة) والعقاب، والتكرار لترسيخ العادة.",
+            application: "<ul><li>استخدام <strong>التعزيز الإيجابي</strong> (المدح، النقاط) فور ظهور السلوك الصحيح.</li><li>تجزئة الدرس إلى مهام صغيرة متدرجة (من السهل للصعب).</li><li>التمارين التكرارية (Drills) لتثبيت المعلومات الأساسية.</li></ul>"
+        },
+        {
+            title: "النظرية البنائية",
+            scholars: "جون ديوي، جان بياجي",
+            coreIdea: "المتعلم يبني المعرفة بنفسه من خلال تفاعله مع الموضوع، ولا يتلقاها جاهزة. يمر العقل بمراحل نمو (التوازن - اللا توازن - الاستيعاب - الملاءمة).",
+            application: "<ul><li>وضع المتعلم في <strong>وضعية مشكلة</strong> تحدث له خلخلة معرفية (Cognitive Conflict).</li><li>السماح للمتعلم بارتكاب الخطأ واعتباره وسيلة للتعلم وبناء المعرفة.</li><li>ملاءمة المحتوى مع المرحلة العمرية العقلية للمتعلم.</li></ul>"
+        },
+        {
+            title: "النظرية البنائية الاجتماعية",
+            scholars: "ليف فيجوتسكي",
+            coreIdea: "التعلم عملية اجتماعية بامتياز. لا يحدث النمو المعرفي في عزلة بل عبر التفاعل مع الآخرين (الراشد أو الأقران). مفهوم المنطقة القريبة من التطور (ZPD).",
+            application: "<ul><li>اعتماد <strong>العمل بالمجموعات</strong> والتعلم التعاوني.</li><li>دور المدرس هو (السقالة Scaffolding): يقدم المساعدة ثم يسحبها تدريجياً.</li><li>تشجيع الحوار والنقاش بين المتعلمين لبناء الفهم المشترك.</li></ul>"
+        },
+        {
+            title: "النظرية الجشتالتية",
+            scholars: "كوهلر، كوفكا، فرتهيمر",
+            coreIdea: "الكل أكبر من مجموع الأجزاء. التعلم يحدث عبر (الاستبصار Insight)، أي الفهم المفاجئ للعلاقات بين عناصر الموقف، وليس عبر المحاولة والخطأ العمياء.",
+            application: "<ul><li>تقديم الدرس ككل (صورة شمولية) قبل الدخول في التفاصيل الجزئية.</li><li>استخدام الخرائط الذهنية لتوضيح العلاقات بين المفاهيم.</li><li>التركيز على الفهم والإدراك بدلاً من الحفظ الآلي.</li></ul>"
+        },
+        {
+            title: "النظريات الشخصانية",
+            scholars: "كارل روجرز، أليكسندر نيل",
+            coreIdea: "تركز على شخصية المتعلم ككيان متفرد، وحريته، واستقلاليته. الهدف هو تحقيق الذات وليس فقط التحصيل الدراسي. العلاقة التربوية مبنية على التعاطف والقبول غير المشروط.",
+            application: "<ul><li>خلق مناخ قسمي آمن خالٍ من التهديد.</li><li>اعتماد <strong>التربية غير الموجهة</strong> (ترك الخيار للمتعلم في طرق التعلم).</li><li>الاهتمام بالجانب الوجداني والنفسي للمتعلم (الاستماع الفعال).</li></ul>"
+        },
+        {
+            title: "النظريات التكنولوجية",
+            scholars: "بنجمان بلوم، سكينر، جون كارول",
+            coreIdea: "تطبيق التفكير المنظومي والعلمي لتحسين التعليم. تركز على الكفاءة، التخطيط الدقيق، الأهداف الإجرائية، والتعليم المبرمج.",
+            application: "<ul><li>صياغة أهداف تعليمية دقيقة وقابلة للقياس (صنافة بلوم).</li><li>استخدام الوسائل التكنولوجية والرقمية لتفريد التعلم.</li><li>اعتماد بيداغوجيا الإتقان (Mastery Learning).</li></ul>"
+        },
+        {
+            title: "النظريات الاجتماعية المعرفية",
+            scholars: "ألبير باندورا",
+            coreIdea: "التعلم يحدث عبر (الملاحظة والنمذجة). المتعلم يكتسب السلوكات والمعارف من خلال مراقبة نموذج (المعلم أو الأقران) وتقليده، مع وجود دافعية داخلية (الكفاءة الذاتية).",
+            application: "<ul><li>أن يكون المدرس قدوة (نموذجاً) في السلوك وطريقة التفكير.</li><li>استخدام استراتيجية (النمذجة): أفعل أنا، نفعل معاً، تفعل أنت.</li><li>تعزيز ثقة المتعلم بنفسه (الفعالية الذاتية) ليؤمن بقدرته على الإنجاز.</li></ul>"
+        },
+        {
+            title: "النظريات النفس-معرفية",
+            scholars: "برونر، أوزبل، رايجلوث",
+            coreIdea: "تهتم بما يحدث (داخل العقل): معالجة المعلومات، الذاكرة، والتفكير. تركز على كيفية تنظيم المعرفة في الذهن.",
+            application: "<ul><li>استخدام <strong>المنظمات المتقدمة</strong> (مقدمات تربط الجديد بالقديم) - أوزبل.</li><li>المنهج الحلزوني (تقديم المفاهيم وتعميقها تدريجياً كل سنة) - برونر.</li><li>تنظيم المعلومات لتسهيل تخزينها في الذاكرة طويلة المدى.</li></ul>"
+        },
+        {
+            title: "نظرية رأس المال الثقافي",
+            scholars: "بيير بورديو",
+            coreIdea: "المدرسة ليست محايدة، بل تعيد إنتاج التفاوت الطبقي. النجاح المدرسي يعتمد على (رأس المال الثقافي) الذي يرثه الطفل من أسرته (لغة، عادات، كتب).",
+            application: "<ul><li>مراعاة الفروق الاجتماعية والثقافية بين المتعلمين.</li><li>دعم المتعلمين القادمين من أوساط هشة لتقليص الفجوة اللغوية والثقافية.</li><li>تنويع الأمثلة لتشمل ثقافات جميع الفئات الاجتماعية.</li></ul>"
+        },
+        {
+            title: "نظرية الذكاءات المتعددة",
+            scholars: "هاورد غاردنر",
+            coreIdea: "لا يوجد ذكاء واحد (IQ)، بل ذكاءات متعددة (لغوي، منطقي، بصري، حركي، موسيقي، اجتماعي، ذاتي، طبيعي). كل متعلم ذكي بطريقته.",
+            application: "<ul><li>تنويع الأنشطة لتخاطب جميع أنواع الذكاءات (رسم، حركة، أناشيد، منطق).</li><li>السماح للمتعلمين باختيار طريقة العرض التي تناسب ذكاءهم.</li><li>عدم الحكم على المتعلم بالفشل لمجرد ضعفه في جانب واحد (كالرياضيات).</li></ul>"
+        },
+        {
+            title: "النظرية الروحية",
+            scholars: "أبراهام ماسلو، علي أحمد مدكور",
+            coreIdea: "تتجاوز الحاجات المادية لتركز على القيم، المعنى، والسمو الروحي. التربية هدفها بناء الإنسان المتكامل المتصل بالقيم العليا والكون.",
+            application: "<ul><li>دمج القيم الأخلاقية والروحية في المناهج الدراسية.</li><li>تنمية التأمل والتفكير في معنى الوجود والمسؤولية تجاه الكون.</li><li>التركيز على الحاجات العليا (تحقيق الذات والسامي) بعد إشباع الحاجات الأساسية.</li></ul>"
+        }
+    ];
+
+    function loadTheory(index) {
+        const t = theories[index];
+        const html = `
+            <div class="theory-header">
+                <h2 class="theory-title">${t.title}</h2>
+                <span class="proponents"><span class="tag">الرواد:</span> ${t.scholars}</span>
+            </div>
+            
+            <div class="section-box">
+                <div class="box-title">💡 الفكرة الجوهرية</div>
+                <div class="info-card">
+                    ${t.coreIdea}
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div class="box-title">🏫 كيفية التطبيق في القسم</div>
+                <div class="app-card">
+                    ${t.application}
+                </div>
+            </div>
+        `;
+        document.getElementById('displayArea').innerHTML = html;
+        updateActiveButton(index);
+    }
+
+    function loadSummary() {
+        let rows = '';
+        theories.forEach(t => {
+            rows += `
+                <tr>
+                    <td><strong>${t.title}</strong></td>
+                    <td>${t.scholars}</td>
+                    <td>${t.coreIdea.substring(0, 80)}...</td>
+                    <td>نقطة تركيزها: <strong>${extractKeyword(t.title)}</strong></td>
+                </tr>
+            `;
+        });
+
+        const html = `
+            <h2 style="color:var(--primary); text-align:center;">جدول التلخيص الشامل للنظريات الـ 13</h2>
+            <div style="overflow-x:auto;">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th width="20%">النظرية</th>
+                            <th width="20%">أهم الرواد</th>
+                            <th width="40%">الفكرة باختصار</th>
+                            <th width="20%">التركيز</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        `;
+        document.getElementById('displayArea').innerHTML = html;
+        updateActiveButton(13); // 13 is the summary button index
+    }
+
+    function extractKeyword(title) {
+        if(title.includes("البراغماتية")) return "المنفعة والمشروع";
+        if(title.includes("الطبيعية")) return "الحرية والنمو";
+        if(title.includes("السلوكية")) return "المثير والاستجابة";
+        if(title.includes("البنائية")) return "بناء المعرفة ذاتياً";
+        if(title.includes("الاجتماعية")) return "التفاعل الاجتماعي";
+        if(title.includes("الجشتالتية")) return "الكل والاستبصار";
+        if(title.includes("الشخصانية")) return "تحقيق الذات";
+        if(title.includes("التكنولوجية")) return "الكفاءة والأهداف";
+        if(title.includes("المعرفية")) return "النمذجة والمعالجة";
+        if(title.includes("رأس المال")) return "الفروق الاجتماعية";
+        if(title.includes("الذكاءات")) return "الاختلاف والتنوع";
+        if(title.includes("الروحية")) return "القيم والمعنى";
+        return "التعلم";
+    }
+
+    function updateActiveButton(index) {
+        const buttons = document.querySelectorAll('.nav-btn');
+        buttons.forEach((btn, idx) => {
+            if(idx === index) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+    }
+
+    // تحميل النظرية الأولى عند الفتح
+    window.onload = function() {
+        loadTheory(0);
+    };
+</script>
+
+</body>
+</html>

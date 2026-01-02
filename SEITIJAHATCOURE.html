@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اتجاهات فلسفة التربية ودور المربي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4a148c;      
+            --secondary: #7b1fa2;    
+            --accent: #ffca28;       
+            --bg: #f3e5f5;           
+            --text: #210e2f;         
+            --white: #ffffff;
+            --role-color: #00695c; /* لون مميز لدور المربي */
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #311b92);
+            color: var(--white);
+            text-align: center;
+            padding: 40px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .back-button-header {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button-header:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-buttons-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e1bee7;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: 0 4px 15px rgba(74, 20, 140, 0.3);
+            margin: 10px;
+            display: inline-block;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 20, 140, 0.4);
+        }
+
+        header h1 { margin: 0; font-size: 2.5em; font-weight: 800; }
+        header p { font-size: 1.2em; opacity: 0.9; margin-top: 10px; }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 25px;
+        }
+
+        /* القائمة الجانبية */
+        .sidebar {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .nav-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: transparent;
+            border: none;
+            border-right: 4px solid transparent;
+            text-align: right;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            color: var(--text);
+            border-radius: 5px;
+        }
+
+        .nav-btn:hover { background-color: #ede7f6; color: var(--primary); }
+        .nav-btn.active {
+            border-right-color: var(--accent);
+            background-color: #d1c4e9;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* منطقة المحتوى */
+        .content-area {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            min-height: 600px;
+        }
+
+        .trend-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .trend-title { color: var(--primary); font-size: 2.2em; font-weight: 800; margin: 0; }
+        .thinkers { background: var(--accent); color: #3e2723; padding: 5px 15px; border-radius: 20px; font-weight: 700; font-size: 0.9em; }
+
+        /* البطاقات */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .detail-card {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 25px;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .detail-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        
+        .card-icon {
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* تمييز خاص لبطاقة دور المربي */
+        .role-card {
+            border-right: 5px solid var(--role-color);
+            background-color: #e0f2f1;
+        }
+        .role-card .card-icon { background: var(--role-color); }
+        .role-card .card-title { color: var(--role-color); }
+
+        .card-title { color: var(--secondary); font-size: 1.1em; font-weight: 700; margin-bottom: 15px; display: block; }
+        .card-content { color: #555; font-size: 1em; }
+
+        /* الجدول */
+        .summary-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; }
+        .summary-table th, .summary-table td { padding: 15px; border: 1px solid #ddd; text-align: right; }
+        .summary-table th { background-color: var(--primary); color: white; font-weight: 700; }
+        .summary-table tr:nth-child(even) { background-color: #f9f9f9; }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .sidebar { position: static; display: flex; overflow-x: auto; padding: 10px; }
+            .nav-btn { min-width: 180px; border-bottom: 4px solid transparent; border-right: none; }
+            .nav-btn.active { border-bottom-color: var(--accent); }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <button class="back-button-header" onclick="window.location.href='index.html'">
+        ← رجوع
+    </button>
+    <h1>اتجاهات فلسفة التربية</h1>
+    <p>تحليل شامل: الفكرة، الهدف، المنهج، ودور المربي</p>
+</header>
+
+<div class="container">
+    <aside class="sidebar">
+        <button class="nav-btn active" onclick="loadTrend(0)">1. الاتجاه المثالي</button>
+        <button class="nav-btn" onclick="loadTrend(1)">2. الاتجاه الطبيعي</button>
+        <button class="nav-btn" onclick="loadTrend(2)">3. الاتجاه التجريبي</button>
+        <button class="nav-btn" onclick="loadTrend(3)">4. الاتجاه البراغماتي</button>
+        <button class="nav-btn" onclick="loadSummary()">★ جدول التلخيص (الخلاصة)</button>
+    </aside>
+
+    <main id="contentArea" class="content-area">
+        </main>
+    
+    <div class="nav-buttons-container">
+        <button class="nav-button" onclick="window.location.href='SEITIJAHATGAME.html'">
+            ابدأ التمارين التفاعلية →
+        </button>
+    </div>
+</div>
+
+<script>
+    /* تم تحديث البيانات لإضافة "دور المربي" بناءً على الصفحات 34-40 
+       [cite: 268-270, 281-282, 295-296, 307-308, 314, 331]
+    */
+    const trends = [
+        {
+            title: "الاتجاه المثالي (Idealism)",
+            thinkers: "أفلاطون، كانط، هيغل",
+            coreIdea: "الإنسان روح وعقل قبل أن يكون جسداً. الحقيقة في الأفكار والمثل العليا.",
+            goal: "تهذيب الأخلاق، تنمية العقل، والوصول إلى الكمال الروحي.",
+            method: "الحوار والمناقشة الفلسفية، التأمل.",
+            humanView: "كائن روحي وعقلي.",
+            educatorRole: "<strong>مرشد وناقل للقيم:</strong> المربي هنا هو القدوة الذي يملك المعرفة الرفيعة وينقلها، وهو موجه أخلاقي صارم يسعى لتنمية روح المتعلم."
+        },
+        {
+            title: "الاتجاه الطبيعي (Naturalism)",
+            thinkers: "جان جاك روسو، بستالوتزي",
+            coreIdea: "الطبيعة خيرة والمجتمع مفسد. يجب احترام القوانين الطبيعية للنمو.",
+            goal: "النمو الحر والمتوازن، حماية الفطرة.",
+            method: "التعلم بالاكتشاف، التجربة مع البيئة.",
+            humanView: "كائن فطري خير بطبعه.",
+            educatorRole: "<strong>ملاحظ ومرافق:</strong> دوره سلبي (بالمعنى الإيجابي)، لا يتدخل ولا يفرض قيوداً، بل يراقب الطفل ويحترم إيقاع نموه ويهيئ له البيئة الآمنة."
+        },
+        {
+            title: "الاتجاه التجريبي (Empiricism)",
+            thinkers: "جون لوك، فرنسيس بيكون",
+            coreIdea: "العقل صفحة بيضاء، والمعرفة تأتي حصرياً من التجربة الحسية.",
+            goal: "تنمية التفكير العلمي والعقل النقدي.",
+            method: "الملاحظة، التجريب، الاستقراء.",
+            humanView: "كائن حسي يكتسب المعرفة من الخارج.",
+            educatorRole: "<strong>منظم للخبرات (باحث):</strong> دوره تنظيم المواقف التعليمية التجريبية، ووضع المتعلم أمام ظواهر قابلة للملاحظة ليقوم بتجربتها واستنتاج القوانين."
+        },
+        {
+            title: "الاتجاه البراغماتي (Pragmatism)",
+            thinkers: "جون ديوي، وليم جيمس",
+            coreIdea: "قيمة المعرفة في نفعها العملي وحل المشكلات الواقعية.",
+            goal: "إعداد الفرد للحياة الاجتماعية وحل المشكلات.",
+            method: "التعلم بالمشروع، العمل الجماعي، حل المشكلات.",
+            humanView: "كائن اجتماعي عملي.",
+            educatorRole: "<strong>ميسر (Facilitator):</strong> ليس ملقناً ولا مراقباً فقط، بل شريك في البحث، يوجه المشاريع، ويساعد المتعلمين على تنظيم عملهم الجماعي وحل مشكلاتهم."
+        }
+    ];
+
+    function loadTrend(index) {
+        const t = trends[index];
+        const html = `
+            <div class="trend-header">
+                <h2 class="trend-title">${t.title}</h2>
+                <span class="thinkers">🧠 الرواد: ${t.thinkers}</span>
+            </div>
+
+            <div class="cards-grid">
+                <div class="detail-card role-card" style="grid-column: 1 / -1;">
+                    <span class="card-icon">👨‍🏫</span>
+                    <span class="card-title">دور المربي (المعلم)</span>
+                    <p class="card-content" style="font-size:1.1em;">${t.educatorRole}</p>
+                </div>
+
+                <div class="detail-card">
+                    <span class="card-icon">💡</span>
+                    <span class="card-title">الفكرة الأساسية</span>
+                    <p class="card-content">${t.coreIdea}</p>
+                </div>
+
+                <div class="detail-card">
+                    <span class="card-icon">🎯</span>
+                    <span class="card-title">الهدف من التربية</span>
+                    <p class="card-content">${t.goal}</p>
+                </div>
+
+                <div class="detail-card">
+                    <span class="card-icon">📚</span>
+                    <span class="card-title">طبيعة المنهج</span>
+                    <p class="card-content">${t.method}</p>
+                </div>
+
+                <div class="detail-card">
+                    <span class="card-icon">👤</span>
+                    <span class="card-title">النظرة إلى الإنسان</span>
+                    <p class="card-content">${t.humanView}</p>
+                </div>
+            </div>
+        `;
+        document.getElementById('contentArea').innerHTML = html;
+        updateActive(index);
+    }
+
+    function loadSummary() {
+        let rows = '';
+        trends.forEach(t => {
+            rows += `
+                <tr>
+                    <td><strong>${t.title}</strong></td>
+                    <td style="color:#00695c; font-weight:bold;">${t.educatorRole.split(':')[0].replace(/<strong>|<\/strong>/g, '')}</td>
+                    <td>${t.goal}</td>
+                    <td>${t.method}</td>
+                </tr>
+            `;
+        });
+
+        const html = `
+            <h2 class="trend-title" style="margin-bottom:20px; text-align:center;">جدول المقارنة الشامل (الخلاصة)</h2>
+            <div style="overflow-x:auto;">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th width="20%">الاتجاه</th>
+                            <th width="25%">دور المربي (المعلم)</th>
+                            <th width="25%">الهدف التربوي</th>
+                            <th width="30%">المنهج المعتمد</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        `;
+        document.getElementById('contentArea').innerHTML = html;
+        updateActive(4);
+    }
+
+    function updateActive(index) {
+        const btns = document.querySelectorAll('.nav-btn');
+        btns.forEach((b, i) => {
+            if(i === index) b.classList.add('active');
+            else b.classList.remove('active');
+        });
+    }
+
+    window.onload = function() { loadTrend(0); };
+</script>
+
+</body>
+</html>

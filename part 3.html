@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 3: Organisation du Corps Humain</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdfdfd;
+            --text-color: #2c3e50;
+            
+            /* Couleurs par fonction */
+            --c-hier: #34495e;     /* Hiérarchie (Gris foncé) */
+            --c-topo: #7f8c8d;     /* Topographie (Gris clair) */
+            --c-rel: #8e44ad;      /* Relation (Violet) */
+            --c-nut: #e67e22;      /* Nutrition (Orange) */
+            --c-rep: #c0392b;      /* Reproduction (Rouge) */
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px;
+            line-height: 1.8;
+        }
+
+        .container { max-width: 850px; margin: 0 auto; }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+            font-weight: 800;
+        }
+
+        h2 {
+            margin-top: 60px;
+            font-size: 1.6em;
+            color: #444;
+            border-left: 8px solid;
+            padding-left: 15px;
+            background: #fff;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            text-transform: uppercase;
+        }
+
+        /* BLOCS DE CONTENU */
+        .block {
+            background: white;
+            padding: 25px 30px;
+            padding-bottom: 50px; /* Espace pour le bouton */
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            cursor: pointer;
+            border-left: 5px solid transparent;
+            position: relative;
+            border: 1px solid #eee;
+            transition: all 0.2s;
+        }
+
+        .block:hover {
+            transform: translateX(5px);
+            background-color: #fafafa;
+        }
+
+        /* BOUTON TRADUCTION */
+        .block::after {
+            content: 'أنقر للترجمة ⇄';
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.75em;
+            color: #888;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            padding: 2px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        /* TEXTES */
+        .fr h3, .ar h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.2em; text-transform: uppercase; letter-spacing: 0.5px;}
+        .fr ul, .ar ul { padding-left: 20px; color: #555; }
+        .fr li, .ar li { margin-bottom: 8px; }
+
+        .ar { display: none; font-family: 'Cairo', sans-serif; direction: rtl; text-align: right; color: #b03a2e; }
+        .ar h3 { color: #c0392b; }
+        .ar ul { padding-right: 20px; padding-left: 0; }
+
+        /* Logic Swap */
+        .swapped .fr { display: none; }
+        .swapped .ar { display: block; }
+        .swapped { background-color: #fffbf0; border-color: #f0e6ce; }
+        .swapped::after { content: 'إضغط للرجوع ↩'; color: #d35400; border-color: #d35400; }
+
+        /* COULEURS */
+        .sec-hier { border-color: var(--c-hier); color: var(--c-hier); } .cat-hier { border-left-color: var(--c-hier); }
+        .sec-topo { border-color: var(--c-topo); color: var(--c-topo); } .cat-topo { border-left-color: var(--c-topo); }
+        .sec-rel { border-color: var(--c-rel); color: var(--c-rel); } .cat-rel { border-left-color: var(--c-rel); }
+        .sec-nut { border-color: var(--c-nut); color: var(--c-nut); } .cat-nut { border-left-color: var(--c-nut); }
+        .sec-rep { border-color: var(--c-rep); color: var(--c-rep); } .cat-rep { border-left-color: var(--c-rep); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>III. LES NIVEAUX D'ORGANISATION DU CORPS HUMAIN</h1>
+
+    <h2 class="sec-hier">1. La Hiérarchie d'Organisation</h2>
+    
+    <div class="block cat-hier">
+        <div class="fr">
+            <h3>DE LA CELLULE À L'ORGANISME</h3>
+            <p>Le corps humain est construit selon des niveaux de complexité croissante :</p>
+            <ul>
+                <li><strong>Niveau Chimique :</strong> Atomes et Molécules.</li>
+                <li><strong>Niveau Cellulaire :</strong> La cellule (unité de base).</li>
+                <li><strong>Niveau Tissulaire :</strong> Ensemble de cellules (ex: Épithélium, Muscle).</li>
+                <li><strong>Niveau Organique :</strong> Tissus formant un organe (ex: Estomac).</li>
+                <li><strong>Niveau Systémique :</strong> Organes formant un système (ex: Digestif).</li>
+                <li><strong>Niveau Organisme :</strong> L'être humain entier.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>من الخلية إلى الكائن الحي</h3>
+            <p>جسم الإنسان مبني وفق مستويات تعقيد متزايدة:</p>
+            <ul>
+                <li><strong>المستوى الكيميائي:</strong> ذرات وجزيئات.</li>
+                <li><strong>المستوى الخلوي:</strong> الخلية (الوحدة الأساسية).</li>
+                <li><strong>المستوى النسيجي:</strong> مجموعة خلايا (مثال: نسيج ظهاري، عضلة).</li>
+                <li><strong>المستوى العضوي:</strong> أنسجة تشكل عضواً (مثال: المعدة).</li>
+                <li><strong>المستوى الجهازي:</strong> أعضاء تشكل جهازاً (مثال: الهضمي).</li>
+                <li><strong>مستوى الكائن الحي:</strong> الإنسان بأكمله.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-topo">2. Organisation Topographique (Cavités)</h2>
+
+    <div class="block cat-topo">
+        <div class="fr">
+            <h3>LES CAVITÉS POSTÉRIEURES (Dorsales)</h3>
+            <p>Elles protègent le système nerveux central.</p>
+            <ul>
+                <li><strong>Cavité Crânienne :</strong> Contient l'Encéphale (Cerveau).</li>
+                <li><strong>Canal Vertébral :</strong> Contient la Moelle Épinière (à l'intérieur de la colonne vertébrale).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>التجاويف الخلفية (الظهرية)</h3>
+            <p>تحمي الجهاز العصبي المركزي.</p>
+            <ul>
+                <li><strong>التجويف القحفي:</strong> يحتوي على الدماغ.</li>
+                <li><strong>القناة الفقرية:</strong> تحتوي على النخاع الشوكي (داخل العمود الفقري).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-topo">
+        <div class="fr">
+            <h3>LES CAVITÉS ANTÉRIEURES (Ventrales)</h3>
+            <p>Elles contiennent les viscères (organes internes). Elles sont divisées par le <strong>Diaphragme</strong>.</p>
+            <ul>
+                <li><strong>Cavité Thoracique (Haut) :</strong> Contient le Cœur et les Poumons. Protégée par les côtes.</li>
+                <li><strong>Cavité Abdominale (Milieu) :</strong> Contient l'Estomac, le Foie, les Intestins, la Rate, les Reins.</li>
+                <li><strong>Cavité Pelvienne (Bas) :</strong> Contient la Vessie et les Organes Reproducteurs.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>التجاويف الأمامية (البطنية)</h3>
+            <p>تحتوي على الأحشاء (الأعضاء الداخلية). يفصل بينها <strong>الحجاب الحاجز</strong>.</p>
+            <ul>
+                <li><strong>التجويف الصدري (فوق):</strong> يحتوي على القلب والرئتين. محمي بالأضلاع.</li>
+                <li><strong>التجويف البطني (وسط):</strong> يحتوي على المعدة، الكبد، الأمعاء، الطحال، الكليتين.</li>
+                <li><strong>التجويف الحوضي (تحت):</strong> يحتوي على المثانة والأعضاء التناسلية.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-rel">3. La Fonction de Relation</h2>
+
+    <div class="block cat-rel">
+        <div class="fr">
+            <h3>RÔLE ET SYSTÈMES</h3>
+            <p>Permet à l'organisme d'interagir avec son environnement (Perception + Réaction).</p>
+            <ul>
+                <li><strong>Système Nerveux :</strong> Reçoit les informations, analyse et commande (Cerveau, Nerfs).</li>
+                <li><strong>Système Musculaire :</strong> Permet le mouvement et la posture.</li>
+                <li><strong>Système Squelettique :</strong> Soutient le corps et protège les organes.</li>
+                <li><strong>Système Sensoriel :</strong> Organes des sens (Yeux, Oreilles, Peau...).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الدور والأجهزة</h3>
+            <p>تمكن الجسم من التفاعل مع محيطه (الإدراك + رد الفعل).</p>
+            <ul>
+                <li><strong>الجهاز العصبي:</strong> يستقبل المعلومات، يحلل ويأمر (الدماغ، الأعصاب).</li>
+                <li><strong>الجهاز العضلي:</strong> يسمح بالحركة والوضعية.</li>
+                <li><strong>الجهاز الهيكلي:</strong> يدعم الجسم ويحمي الأعضاء.</li>
+                <li><strong>الجهاز الحسي:</strong> أعضاء الحواس (عيون، آذان، جلد...).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-nut">4. La Fonction de Nutrition</h2>
+
+    <div class="block cat-nut">
+        <div class="fr">
+            <h3>RÔLE ET SYSTÈMES</h3>
+            <p>Assure l'approvisionnement en matière et énergie, et l'élimination des déchets.</p>
+            <ul>
+                <li><strong>Appareil Digestif :</strong> Transforme les aliments en nutriments absorbables.</li>
+                <li><strong>Appareil Respiratoire :</strong> Apporte l'Oxygène et élimine le Dioxyde de carbone.</li>
+                <li><strong>Appareil Circulatoire :</strong> Transporte le sang (Nutriments + Gaz) vers toutes les cellules.</li>
+                <li><strong>Appareil Urinaire (Excréteur) :</strong> Filtre le sang et élimine les déchets toxiques (Urine).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الدور والأجهزة</h3>
+            <p>تضمن التزود بالمادة والطاقة، وطرح الفضلات.</p>
+            <ul>
+                <li><strong>الجهاز الهضمي:</strong> يحول الأغذية إلى مواد القيت قابلة للامتصاص.</li>
+                <li><strong>الجهاز التنفسي:</strong> يجلب الأكسجين ويطرح ثنائي أكسيد الكربون.</li>
+                <li><strong>الجهاز الدوراني:</strong> ينقل الدم (مواد القيت + الغازات) نحو جميع الخلايا.</li>
+                <li><strong>الجهاز البولي (الإبرازي):</strong> يصفي الدم ويطرح الفضلات السامة (البول).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-rep">5. La Fonction de Reproduction</h2>
+
+    <div class="block cat-rep">
+        <div class="fr">
+            <h3>RÔLE ET SYSTÈMES</h3>
+            <p>Fonction non vitale pour l'individu mais vitale pour l'espèce.</p>
+            <ul>
+                <li><strong>Appareil Génital Masculin :</strong> Production des spermatozoïdes.</li>
+                <li><strong>Appareil Génital Féminin :</strong> Production des ovules et gestation (Grossesse).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الدور والأجهزة</h3>
+            <p>وظيفة غير حيوية بالنسبة للفرد لكنها حيوية بالنسبة للنوع.</p>
+            <ul>
+                <li><strong>الجهاز التناسلي الذكري:</strong> إنتاج الحيوانات المنوية.</li>
+                <li><strong>الجهاز التناسلي الأنثوي:</strong> إنتاج البويضات والحمل.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-hier">6. Maintien et Protection</h2>
+
+    <div class="block cat-hier">
+        <div class="fr">
+            <h3>SYSTÈMES DE DÉFENSE ET RÉGULATION</h3>
+            <ul>
+                <li><strong>Système Immunitaire :</strong> Défend le corps contre les microbes et maladies.</li>
+                <li><strong>Système Téguementaire :</strong> La Peau (Barrière physique, régulation thermique).</li>
+                <li><strong>Système Endocrinien :</strong> Régulation par les Hormones (ex: Thyroïde, Pancréas).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>أجهزة الدفاع والتنظيم</h3>
+            <ul>
+                <li><strong>الجهاز المناعي:</strong> يدافع عن الجسم ضد الميكروبات والأمراض.</li>
+                <li><strong>الجهاز اللحافي:</strong> الجلد (حاجز فيزيائي، تنظيم الحرارة).</li>
+                <li><strong>الجهاز الهرموني:</strong> التنظيم بواسطة الهرمونات (مثال: الغدة الدرقية، البنكرياس).</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.querySelectorAll('.block').forEach(block => {
+        block.addEventListener('click', () => {
+            block.classList.toggle('swapped');
+        });
+    });
+</script>
+
+</body>
+</html>

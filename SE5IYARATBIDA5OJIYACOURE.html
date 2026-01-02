@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاختيارات البيداغوجية - إصلاح العرض</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #006064;      
+            --secondary: #0097a7;    
+            --accent: #ffb74d;       
+            --bg: #e0f7fa;           
+            --text: #263238;         
+            --white: #ffffff;
+            --pos: #2e7d32;          /* أخضر غامق واضح */
+            --neg: #c62828;          /* أحمر غامق واضح */
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #00363a);
+            color: var(--white);
+            text-align: center;
+            padding: 30px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .back-button-header {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button-header:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-buttons-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #b2ebf2;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: 0 4px 15px rgba(0, 96, 100, 0.3);
+            margin: 10px;
+            display: inline-block;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 96, 100, 0.4);
+        }
+
+        header h1 { margin: 0; font-size: 2.2em; font-weight: 800; }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 25px;
+        }
+
+        /* القائمة الجانبية */
+        .sidebar {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+
+        .nav-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f5f5f5;
+            border: none;
+            border-right: 5px solid transparent;
+            text-align: right;
+            font-size: 1.05em;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            color: var(--text);
+            border-radius: 5px;
+        }
+
+        .nav-btn:hover { background-color: #b2ebf2; }
+        .nav-btn.active {
+            border-right-color: var(--secondary);
+            background-color: #80deea;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        /* منطقة المحتوى */
+        .content-area {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .title-box {
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .main-title { color: var(--primary); font-size: 2em; font-weight: 800; margin: 0; }
+        .subtitle { color: #555; margin-top: 5px; display: block; font-weight: 600; }
+
+        /* البطاقات */
+        .info-box {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-label {
+            display: block;
+            font-weight: 800;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .idea-text { color: var(--primary); font-size: 1.1em; font-weight: 600; }
+        .pros-list { color: var(--pos); }
+        .cons-list { color: var(--neg); }
+
+        /* الجدول */
+        .summary-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .summary-table th, .summary-table td { padding: 12px; border: 1px solid #ddd; text-align: right; }
+        .summary-table th { background-color: var(--primary); color: white; }
+        
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <button class="back-button-header" onclick="window.location.href='index.html'">
+        ← رجوع
+    </button>
+    <h1>الاختيارات البيداغوجية</h1>
+</header>
+
+<div class="container">
+    <aside class="sidebar">
+        <button class="nav-btn active" onclick="showChoice(0)">1. بيداغوجيا المضمون</button>
+        <button class="nav-btn" onclick="showChoice(1)">2. بيداغوجيا الأهداف</button>
+        <button class="nav-btn" onclick="showChoice(2)">3. بيداغوجيا الكفايات</button>
+        <button class="nav-btn" onclick="showSummary()">★ جدول التلخيص</button>
+    </aside>
+
+    <main id="displayArea" class="content-area">
+        </main>
+    
+    <div class="nav-buttons-container">
+        <button class="nav-button" onclick="window.location.href='SE5IYARATBIDA5OJIYAGAME.html'">
+            ابدأ التمارين التفاعلية →
+        </button>
+    </div>
+</div>
+
+<script>
+    // البيانات النصية الصريحة
+    var data = [
+        {
+            title: "بيداغوجيا المضمون (Contenus)",
+            date: "فترة ما بعد الاستقلال",
+            idea: "ترتكز هذه المقاربة على 'شحن' المتعلم بالمعارف. المحتوى الدراسي هو الغاية، والأستاذ هو المالك الوحيد للمعرفة والناقل لها، بينما المتعلم وعاء متلقٍ سلبي.",
+            pros: "<ul><li>وضوح المادة الدراسية والمحتوى.</li><li>سهولة إجراء الامتحانات (استظهار المعلومات).</li></ul>",
+            cons: "<ul><li>تغييب كلي لنشاط المتعلم وذكائه.</li><li>لا تواكب العصر (مجتمع المعرفة) الذي يتطلب مهارات وليس فقط معلومات.</li></ul>"
+        },
+        {
+            title: "بيداغوجيا الأهداف (PPO)",
+            date: "السبعينيات والثمانينيات",
+            idea: "تعتمد على تفتيت التعلم إلى سلوكات صغيرة قابلة للملاحظة والقياس (أهداف إجرائية). تركز على النتيجة السلوكية الظاهرة.",
+            pros: "<ul><li>الدقة في التخطيط للدروس.</li><li>إمكانية قياس النتائج بدقة وموضوعية.</li></ul>",
+            cons: "<ul><li>تجزيء المعرفة وفقدان المعنى الشمولي.</li><li>التركيز على الحفظ الآلي والسلوك الميكانيكي على حساب الإبداع.</li></ul>"
+        },
+        {
+            title: "بيداغوجيا الكفايات (APC)",
+            date: "منذ الميثاق الوطني (2000)",
+            idea: "تجعل المتعلم في قلب العملية. الهدف هو قدرته على دمج المعارف والمهارات والقيم لحل 'وضعية مشكلة' مركبة مستمدة من الواقع.",
+            pros: "<ul><li>جعل التعلم ذا معنى ومرتبطاً بالواقع.</li><li>تنمية الاستقلالية والتفكير النقدي لدى المتعلم.</li></ul>",
+            cons: "<ul><li>صعوبة التطبيق في ظل الاكتظاظ.</li><li>تحتاج تكويناً رصيناً للمدرسين ووسائل ديداكتيكية متنوعة.</li></ul>"
+        }
+    ];
+
+    function showChoice(index) {
+        var item = data[index];
+        var content = '';
+        
+        content += '<div class="title-box">';
+        content += '<h2 class="main-title">' + item.title + '</h2>';
+        content += '<span class="subtitle">📅 تاريخ الاعتماد: ' + item.date + '</span>';
+        content += '</div>';
+
+        content += '<div class="info-box" style="border-right: 5px solid var(--primary);">';
+        content += '<span class="info-label" style="color:var(--primary)">💡 الفكرة الجوهرية (الشرح)</span>';
+        content += '<p class="idea-text">' + item.idea + '</p>';
+        content += '</div>';
+
+        content += '<div class="info-box" style="border-right: 5px solid var(--pos);">';
+        content += '<span class="info-label" style="color:var(--pos)">✅ الإيجابيات</span>';
+        content += '<div class="pros-list">' + item.pros + '</div>';
+        content += '</div>';
+
+        content += '<div class="info-box" style="border-right: 5px solid var(--neg);">';
+        content += '<span class="info-label" style="color:var(--neg)">⚠️ السلبيات / الحدود</span>';
+        content += '<div class="cons-list">' + item.cons + '</div>';
+        content += '</div>';
+
+        document.getElementById('displayArea').innerHTML = content;
+        
+        // تحديث الأزرار
+        var btns = document.getElementsByClassName('nav-btn');
+        for(var i=0; i<btns.length; i++) {
+            btns[i].classList.remove('active');
+        }
+        btns[index].classList.add('active');
+    }
+
+    function showSummary() {
+        var content = '<h2 class="main-title" style="text-align:center; margin-bottom:20px;">جدول التلخيص المقارن</h2>';
+        content += '<div style="overflow-x:auto;"><table class="summary-table">';
+        content += '<thead><tr><th>البيداغوجيا</th><th>الفكرة باختصار</th><th>أهم ميزة</th><th>أهم عيب</th></tr></thead>';
+        content += '<tbody>';
+        
+        for(var i=0; i<data.length; i++) {
+            content += '<tr>';
+            content += '<td><strong>' + data[i].title + '</strong></td>';
+            content += '<td>' + data[i].idea.substring(0, 50) + '...</td>';
+            content += '<td>سهولة/دقة</td>'; 
+            content += '<td>سلبية المتعلم/التجزيء/الصعوبة</td>';
+            content += '</tr>';
+        }
+        
+        content += '</tbody></table></div>';
+        document.getElementById('displayArea').innerHTML = content;
+        
+        var btns = document.getElementsByClassName('nav-btn');
+        for(var i=0; i<btns.length; i++) {
+            btns[i].classList.remove('active');
+        }
+        btns[3].classList.add('active');
+    }
+
+    // التشغيل التلقائي عند التحميل
+    window.onload = function() {
+        showChoice(0);
+    }
+</script>
+
+</body>
+</html>

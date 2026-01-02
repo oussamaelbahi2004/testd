@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي علوم التربية الشامل - ENS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; /* bg-blue-600 */
+            --secondary: #3b82f6; /* bg-blue-500 */
+            --accent: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --warning: #f39c12;
+            --bg: #f0f2f5;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 700px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            min-height: 500px;
+        }
+
+        .back-button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-3px);
+        }
+
+        /* الهيدر */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .score-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* شريط التقدم */
+        .progress-bar {
+            height: 8px;
+            background: #eee;
+            width: 100%;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* محتوى الشاشات */
+        .screen {
+            padding: 30px 20px;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        h1, h2 {
+            margin: 0 0 20px 0;
+            color: var(--primary);
+        }
+
+        .phase-title {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            background: #eef5f9;
+            padding: 5px 15px;
+            border-radius: 50px;
+        }
+
+        /* الأزرار والخيارات */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Tajawal', sans-serif;
+            position: relative;
+            color: #333;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--accent);
+            background: #f8fbff;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        .option-btn.correct {
+            background: #d4edda;
+            border-color: var(--success);
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background: #fadbd8;
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        /* زر المتابعة */
+        .next-btn {
+            margin-top: 25px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        /* شاشة البداية والنهاية */
+        .intro-box, .result-box {
+            padding: 40px 20px;
+        }
+        
+        .big-score {
+            font-size: 4rem;
+            color: var(--accent);
+            font-weight: 800;
+            margin: 20px 0;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        /* رسائل التعزيز */
+        .feedback-msg {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 24px;
+            font-size: 1.2rem;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <button class="back-button" onclick="window.location.href='SENADARIYATCOURE.html'">
+            ← رجوع
+        </button>
+        <div id="section-title">علوم التربية</div>
+        <div class="score-badge">النقاط: <span id="score">0</span></div>
+    </div>
+    
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+    </div>
+
+    <div class="screen active intro-box" id="screen-intro">
+        <h1>مستعد للتحدي؟</h1>
+        <p>الاختبار مقسم إلى جزأين:</p>
+        <div style="text-align:right; display:inline-block; background:#f9f9f9; padding:20px; border-radius:10px;">
+            <p>1️⃣ <strong>لعبة النظريات:</strong> اربط النظرية بالفكرة والتطبيق.</p>
+            <p>2️⃣ <strong>اختبار QCM:</strong> أجب على 30 سؤالاً شاملاً.</p>
+        </div>
+        <br>
+        <button class="start-btn" onclick="startGame()">ابدأ التحدي</button>
+    </div>
+
+    <div class="screen" id="screen-game">
+        <div class="phase-title" id="theory-counter">النظرية 1 / 13</div>
+        <h1 id="theory-name" style="font-size: 1.8rem;">...</h1>
+        <p id="game-question-text" style="color:#7f8c8d; margin-bottom: 20px; font-size:1.1rem;">...</p>
+        
+        <div class="options-grid" id="game-options"></div>
+        
+        <div class="feedback-msg" id="game-feedback"></div>
+        <button class="next-btn" id="game-next-btn" onclick="nextGameStep()">استمر</button>
+    </div>
+
+    <div class="screen" id="screen-qcm">
+        <div class="phase-title" id="qcm-counter">السؤال 1 / 30</div>
+        <h2 id="qcm-text" style="line-height: 1.6;">...</h2>
+        
+        <div class="options-grid" id="qcm-options"></div>
+        
+        <div class="feedback-msg" id="qcm-feedback"></div>
+        <button class="next-btn" id="qcm-next-btn" onclick="nextQCMStep()">السؤال التالي</button>
+    </div>
+
+    <div class="screen result-box" id="screen-result">
+        <h1>🎉 انتهى الاختبار!</h1>
+        <p>نتيجتك النهائية هي:</p>
+        <div class="big-score" id="final-score">0</div>
+        <p id="final-msg">أداء رائع!</p>
+        <button class="start-btn" onclick="location.reload()">إعادة المحاولة</button>
+    </div>
+</div>
+<script>
+    /* ================= بيانات النظريات (Game Data) ================= */
+    const theoriesData = [
+        { name: "النظرية البراغماتية", idea: "العبرة بالنتائج والمنفعة العملية", app: "التعلم بالمشروع وحل المشكلات" },
+        { name: "النظرية الطبيعية (روسو)", idea: "الطفل خير بطبعه وينمو وفق قوانين الطبيعة", app: "التعلم في أحضان الطبيعة وعدم استعجال النمو" },
+        { name: "النظرية السلوكية", idea: "التعلم هو تغير في السلوك (مثير-استجابة)", app: "التكرار، التعزيز، والعقاب (التدريب)" },
+        { name: "النظرية البنائية (بياجي)", idea: "المتعلم يبني معرفته ذاتياً (التوازن/التكيف)", app: "وضعيات الاستكشاف والصراع المعرفي" },
+        { name: "البنائية الاجتماعية (فيجوتسكي)", idea: "التعلم يحدث عبر التفاعل الاجتماعي (ZPD)", app: "العمل بالمجموعات والتعلم بالأقران" },
+        { name: "النظرية الجشتالتية", idea: "الكل أكبر من مجموع الأجزاء (الاستبصار)", app: "القراءة المقطعية (من الكل للجزء)" },
+        { name: "النظريات الشخصانية", idea: "مركزية الشخص وحريته الكاملة", app: "التربية غير الموجهة وحرية التعبير" },
+        { name: "النظريات التكنولوجية", idea: "الفاعلية والنجاعة عبر التقنية", app: "التعليم المبرمج والوسائل الرقمية" },
+        { name: "الاجتماعية المعرفية (باندورا)", idea: "التعلم بالملاحظة والنمذجة", app: "التقليد، المحاكاة، ولعب الأدوار" },
+        { name: "النظريات النفس-معرفية", idea: "معالجة المعلومات (الذاكرة والدماغ)", app: "الخرائط الذهنية والمنظمات المتقدمة" },
+        { name: "نظرية رأس المال الثقافي", idea: "المدرسة تعيد إنتاج الفوارق الطبقية", app: "الدعم التربوي والتمييز الإيجابي للفئات الهشة" },
+        { name: "نظرية الذكاءات المتعددة", idea: "الذكاء ليس واحداً بل متعدد الأشكال", app: "تنويع الأنشطة (موسيقى، حركة، صورة...)" },
+        { name: "النظرية الروحية", idea: "السمو بالروح والقيم الإنسانية", app: "التربية على القيم والأخلاق" }
+    ];
+
+    /* ================= بيانات QCM (30 سؤال) ================= */
+    const qcmData = [
+        { q: "المفهوم الذي يعني 'قيادة وسياقة الطفل' في أصله اليوناني هو:", o: ["الديداكتيك", "البيداغوجيا", "الإبستمولوجيا", "الأندراغوجيا"], a: 1 },
+        { q: "التعاقد الديداكتيكي هو العلاقة التي تربط بين:", o: ["المدرس والمتعلم", "المتعلم والمعرفة", "المدرس والإدارة", "الأسرة والمدرسة"], a: 0 },
+        { q: "صاحب كتاب 'إميل' ورائد التربية الطبيعية هو:", o: ["جون لوك", "جان جاك روسو", "كانط", "أفلاطون"], a: 1 },
+        { q: "يرى جون ديوي أن التربية هي:", o: ["إعداد للمستقبل فقط", "الحياة نفسها وعملية نمو مستمر", "حفظ للتراث", "عزل الطفل عن المجتمع"], a: 1 },
+        { q: "المثلث الديداكتيكي يتكون من الأقطاب التالية:", o: ["المدرس، المتعلم، المعرفة", "المدرسة، الأسرة، الوزارة", "التربية، التعليم، التكوين", "الأهداف، الكفايات، التقويم"], a: 0 },
+        { q: "يعتبر 'فيجوتسكي' مؤسس:", o: ["النظرية البنائية الاجتماعية", "النظرية السلوكية", "النظرية الجشتالتية", "التحليل النفسي"], a: 0 },
+        { q: "الهدف من التربية عند 'المثاليين' (مثل أفلاطون) هو:", o: ["المنفعة المادية", "التكيف البيولوجي", "تنمية العقل والوصول للفضيلة", "اللعب"], a: 2 },
+        { q: "مرحلة 'العمليات الملموسة' عند بياجي تمتد من:", o: ["الولادة لسنتين", "2 إلى 7 سنوات", "7 إلى 11 سنة", "12 سنة فما فوق"], a: 2 },
+        { q: "العلم الذي يدرس 'طرائق تدريس مادة معينة' هو:", o: ["البيداغوجيا", "الديداكتيك الخاص", "علم النفس التربوي", "سوسيولوجيا التربية"], a: 1 },
+        { q: "يرى 'ابن خلدون' أن الشدة على المتعلمين:", o: ["مفيدة للتحصيل", "تضر بهم وتفسد طباعهم", "ضرورية في الصغر", "أساس التربية"], a: 1 },
+        { q: "المبادئ الأربعة لإصلاح 1956 هي:", o: ["الجودة والإنصاف", "التعميم، التوحيد، المغربة، التعريب", "الرقمنة والتكوين", "الكفايات والأهداف"], a: 1 },
+        { q: "صدر الميثاق الوطني للتربية والتكوين سنة:", o: ["1990", "1999/2000", "2009", "2015"], a: 1 },
+        { q: "شعار الرؤية الاستراتيجية 2015-2030 هو:", o: ["من أجل مدرسة النجاح", "مدرسة الإنصاف والجودة والارتقاء", "التعليم أولوية", "مدرسة الغد"], a: 1 },
+        { q: "القانون الإطار 51.17 جعل التعليم الأولي:", o: ["اختيارياً", "ملزماً للدولة والأسر", "للقطاع الخاص فقط", "غير ضروري"], a: 1 },
+        { q: "برنامج TaRL (التدريس وفق المستوى المناسب) يهدف إلى:", o: ["إنهاء المقرر بسرعة", "تجاوز التعثرات في التعلمات الأساس", "تدريس اللغات الأجنبية", "إلغاء الامتحانات"], a: 1 },
+        { q: "الخطوة الأولى في منهجية TaRL هي:", o: ["شرح الدرس", "التشخيص (Raid positionnement)", "التقويم الإجمالي", "الحفظ"], a: 1 },
+        { q: "يعتمد مشروع 'المدارس الرائدة' في التدريس على:", o: ["طريقة الإلقاء", "المقاربة بالكفايات التقليدية", "التدريس الصريح/الفعال و TaRL", "التعليم الذاتي"], a: 2 },
+        { q: "المقصود بـ 'التناوب اللغوي' هو:", o: ["تدريس اللغات فقط", "تدريس بعض المضامين أو المجزوءات بلغة أجنبية", "إلغاء اللغة العربية", "الترجمة"], a: 1 },
+        { q: "انتقل المغرب رسمياً إلى 'المقاربة بالكفايات' مع:", o: ["البرنامج الاستعجالي", "الميثاق الوطني للتربية والتكوين", "الرؤية الاستراتيجية", "المخطط الخماسي"], a: 1 },
+        { q: "من مبادئ 'بيداغوجيا الكفايات':", o: ["التلقين", "الإدماج وحل الوضعيات المشكلة", "الحفظ", "السلوك الميكانيكي"], a: 1 },
+        { q: "نظرية تعتبر العقل 'صفحة بيضاء' والتجربة هي المصدر:", o: ["المثالية", "التجريبية (لوك)", "الفطرية", "الجشتالت"], a: 1 },
+        { q: "مشروع 'مسار' يندرج ضمن:", o: ["الدعم الاجتماعي", "الحكامة والتحول الرقمي", "البناء المدرسي", "المناهج"], a: 1 },
+        { q: "تعني 'الحياة المدرسية':", o: ["وقت الاستراحة فقط", "جميع الأوقات والأنشطة التي يعيشها المتعلم داخل المؤسسة", "الدروس الخصوصية", "العطل المدرسية"], a: 1 },
+        { q: "من غايات النظام التربوي المغربي:", o: ["تكوين مواطن متمسك بثوابته ومنفتح", "التركيز على الجانب المعرفي فقط", "عزل المدرسة عن المحيط", "إلغاء اللغات الأجنبية"], a: 0 },
+        { q: "يرى 'بوردو' أن المدرسة:", o: ["تحقق المساواة المطلقة", "تعيد إنتاج التفاوت الطبقي عبر العنف الرمزي", "محايدة تماماً", "لا دور لها"], a: 1 },
+        { q: "التربية الدامجة تستهدف:", o: ["المتفوقين فقط", "الأطفال في وضعية إعاقة ودمجهم مع أقرانهم", "فصل التلاميذ حسب الذكاء", "التعليم الخاص"], a: 1 },
+        { q: "البرنامج الذي يقدم دعماً مالياً مشروطاً للأسر (تيسير) يهدف لـ:", o: ["تحسين الجودة", "محاربة الهدر المدرسي", "بناء الأقسام", "شراء الكتب"], a: 1 },
+        { q: "المقاربة البيداغوجية التي تعتمد 'التعاقد' مع المتعلم تسمى:", o: ["بيداغوجيا الخطأ", "بيداغوجيا التعاقد", "بيداغوجيا اللعب", "بيداغوجيا المشروع"], a: 1 },
+        { q: "الهدف الإجرائي يجب أن يكون:", o: ["عاماً وغامضاً", "قابلاً للملاحظة والقياس", "طويل المدى", "فلسفياً"], a: 1 },
+        { q: "من رواد النظرية السلوكية:", o: ["بافلوف، واطسون، سكنر", "بياجي، برونر", "ديوي، جيمس", "كوهلر، كوفكا"], a: 0 }
+    ];
+
+    /* ================= منطق اللعبة (Logic) ================= */
+    let totalScore = 0;
+    let gameIndex = 0;
+    let gameStep = 1; // 1: Idea, 2: Application
+    let qcmIndex = 0;
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function updateScore() {
+        document.getElementById('score').innerText = totalScore;
+    }
+
+    // بدء اللعبة
+    function startGame() {
+        totalScore = 0;
+        gameIndex = 0;
+        gameStep = 1;
+        qcmIndex = 0;
+        updateScore();
+        
+        shuffleArray(theoriesData);
+        shuffleArray(qcmData);
+        
+        document.getElementById('section-title').innerText = "المرحلة 1: لعبة النظريات";
+        loadGameRound();
+        showScreen('screen-game');
+    }
+
+    /* ------- منطق نظريات ------- */
+    function loadGameRound() {
+        const theory = theoriesData[gameIndex];
+        const optionsDiv = document.getElementById('game-options');
+        const progressBar = document.getElementById('progress');
+        const nextBtn = document.getElementById('game-next-btn');
+        const feedbackEl = document.getElementById('game-feedback');
+
+        document.getElementById('theory-counter').innerText = `النظرية ${gameIndex + 1} / ${theoriesData.length}`;
+        document.getElementById('theory-name').innerText = theory.name;
+        feedbackEl.innerText = "";
+        nextBtn.style.display = "none";
+        optionsDiv.innerHTML = "";
+        
+        // التقدم (الجزء الأول = 50% من الكلي)
+        let progressPercent = ((gameIndex) / theoriesData.length) * 50;
+        progressBar.style.width = `${progressPercent}%`;
+
+        let correctAns = "";
+        let questionText = "";
+        
+        if (gameStep === 1) {
+            questionText = "🔻 ما هي الفكرة الأساسية لهذه النظرية؟";
+            correctAns = theory.idea;
+            let distractors = theoriesData.filter((_, i) => i !== gameIndex).map(t => t.idea);
+            shuffleArray(distractors);
+            let options = [correctAns, distractors[0], distractors[1]];
+            shuffleArray(options);
+            createButtons(optionsDiv, options, correctAns, 'game');
+        } else {
+            questionText = "🔹 كيف يتم تنزيلها وتطبيقها في المدرسة؟";
+            correctAns = theory.app;
+            let distractors = theoriesData.filter((_, i) => i !== gameIndex).map(t => t.app);
+            shuffleArray(distractors);
+            let options = [correctAns, distractors[0], distractors[1]];
+            shuffleArray(options);
+            createButtons(optionsDiv, options, correctAns, 'game');
+        }
+        document.getElementById('game-question-text').innerText = questionText;
+    }
+
+    function nextGameStep() {
+        if (gameStep === 1) {
+            gameStep = 2;
+            loadGameRound();
+        } else {
+            gameIndex++;
+            if (gameIndex < theoriesData.length) {
+                gameStep = 1;
+                loadGameRound();
+            } else {
+                startQCMPhase();
+            }
+        }
+    }
+
+    /* ------- منطق QCM ------- */
+    function startQCMPhase() {
+        showScreen('screen-qcm');
+        document.getElementById('section-title').innerText = "المرحلة 2: اختبار QCM";
+        loadQCMRound();
+    }
+
+    function loadQCMRound() {
+        const data = qcmData[qcmIndex];
+        const optionsDiv = document.getElementById('qcm-options');
+        const nextBtn = document.getElementById('qcm-next-btn');
+        const feedbackEl = document.getElementById('qcm-feedback');
+        
+        document.getElementById('qcm-counter').innerText = `السؤال ${qcmIndex + 1} / ${qcmData.length}`;
+        document.getElementById('qcm-text').innerText = data.q;
+        feedbackEl.innerText = "";
+        nextBtn.style.display = "none";
+        optionsDiv.innerHTML = "";
+
+        // التقدم (من 50% إلى 100%)
+        let progressPercent = 50 + ((qcmIndex / qcmData.length) * 50);
+        document.getElementById('progress').style.width = `${progressPercent}%`;
+
+        let options = [...data.o];
+        let correctTxt = data.o[data.a];
+        
+        createButtons(optionsDiv, options, correctTxt, 'qcm');
+    }
+
+    function nextQCMStep() {
+        qcmIndex++;
+        if (qcmIndex < qcmData.length) {
+            loadQCMRound();
+        } else {
+            finishExam();
+        }
+    }
+
+    /* ------- دوال مساعدة ------- */
+    function createButtons(container, optionsList, correctText, mode) {
+        optionsList.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = function() { 
+                checkAnswer(this, opt, correctText, container, mode); 
+            };
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(btn, selectedText, correctText, container, mode) {
+        // تعطيل الأزرار
+        const allBtns = container.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.disabled = true);
+
+        const feedbackEl = document.getElementById(mode === 'game' ? 'game-feedback' : 'qcm-feedback');
+        const nextBtn = document.getElementById(mode === 'game' ? 'game-next-btn' : 'qcm-next-btn');
+
+        if (selectedText === correctText) {
+            btn.classList.add('correct');
+            totalScore += 10;
+            updateScore();
+            feedbackEl.innerText = "✅ إجابة صحيحة!";
+            feedbackEl.style.color = "#27ae60";
+        } else {
+            btn.classList.add('wrong');
+            // تلوين الصحيح
+            allBtns.forEach(b => {
+                if (b.innerText === correctText) b.classList.add('correct');
+            });
+            feedbackEl.innerText = "❌ إجابة خاطئة!";
+            feedbackEl.style.color = "#e74c3c";
+        }
+        nextBtn.style.display = "inline-block";
+    }
+
+    function finishExam() {
+        showScreen('screen-result');
+        document.getElementById('progress').style.width = "100%";
+        document.getElementById('final-score').innerText = totalScore;
+        
+        // Max Score Calculation
+        const maxScore = (theoriesData.length * 2 * 10) + (qcmData.length * 10);
+        const percentage = (totalScore / maxScore) * 100;
+        const msgEl = document.getElementById('final-msg');
+        
+        if (percentage >= 80) {
+            msgEl.innerText = "أداء ممتاز! 🌟";
+            msgEl.style.color = "#27ae60";
+        } else if (percentage >= 50) {
+            msgEl.innerText = "جيد، تابع المراجعة. 👍";
+            msgEl.style.color = "#f39c12";
+        } else {
+            msgEl.innerText = "حاول مرة أخرى. 💪";
+            msgEl.style.color = "#e74c3c";
+        }
+    }
+</script>
+
+</body>
+</html>

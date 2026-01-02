@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game - Communication</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db; /* Bleu pour la Communication */
+            --wrong: #e74c3c;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .game-container {
+            background: var(--card);
+            width: 100%;
+            max-width: 800px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header { margin-bottom: 20px; }
+        h1 { color: var(--primary); margin: 0; font-size: 1.8rem; }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            color: #777;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .question-box { margin: 30px 0; }
+        
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--primary);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: #e9ecef;
+            border-color: #dbe4eb;
+        }
+
+        .correct {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724;
+        }
+
+        .incorrect {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24;
+        }
+
+        .result-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
+        }
+
+        .btn-action {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .badge-type {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .badge-qcm { background-color: #3498db; }
+        .badge-vf { background-color: #9b59b6; }
+        .badge-sit { background-color: #e67e22; }
+
+        #error-display {
+            color: red;
+            background: #fee;
+            border: 1px solid red;
+            padding: 10px;
+            margin: 10px;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <div id="error-display"></div>
+
+    <div id="game-interface">
+        <header>
+            <h1>Quiz : La Communication</h1>
+            <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+            <div class="stats">
+                <span id="q-counter">Question 1/45</span>
+                <span id="score-display">Score: 0</span>
+            </div>
+        </header>
+
+        <div class="question-box">
+            <span id="q-type-badge" class="badge-type badge-qcm">QCM</span>
+            <div class="question-text" id="question">Chargement en cours...</div>
+            <div class="options-grid" id="options">
+                </div>
+        </div>
+    </div>
+
+    <div id="result-interface" class="result-screen">
+        <h2>Quiz Terminé ! (ساليتي)</h2>
+        <div class="score-circle" id="final-score">0/45</div>
+        <p id="feedback-text">Analyse en cours...</p>
+        
+        <a href="Communication.html" class="btn-action">GO BACK TO LESSON</a>
+        <button onclick="location.reload()" class="btn-action" style="background-color: #7f8c8d; margin-top: 10px;">REJOUER</button>
+    </div>
+</div>
+
+<script>
+try {
+    // --- DATABASE DES QUESTIONS COMMUNICATION (45 Questions) ---
+    const quizData = [
+        // --- 30 QCM ---
+        // Définition & Composantes
+        { t: "QCM", q: "Le mot 'Communication' vient du latin 'Communicare' qui signifie :", o: ["Parler seul", "Mettre en commun / Partager", "Transmettre un ordre", "Écrire une lettre"], a: 1 },
+        { t: "QCM", q: "La communication est-elle un simple transfert d'information ?", o: ["Oui, toujours", "Non, c'est une interaction et un partage", "Seulement à l'écrit", "Oui, comme une clé USB"], a: 1 },
+        { t: "QCM", q: "Qui est 'l'Émetteur' ?", o: ["Celui qui reçoit le message", "Celui qui crée et envoie le message", "Le moyen de transport", "L'environnement"], a: 1 },
+        { t: "QCM", q: "Qu'appelle-t-on le 'Canal' ?", o: ["La langue utilisée", "Le moyen de transmission (Voix, Tél, Papier)", "Le contenu du message", "La réponse du récepteur"], a: 1 },
+        { t: "QCM", q: "Le 'Code' en communication correspond à :", o: ["Un mot de passe secret", "Le système de signes/langue utilisé", "Le bruit environnant", "L'heure du message"], a: 1 },
+        { t: "QCM", q: "Qu'est-ce que le 'Feed-back' ?", o: ["La nourriture", "La réaction/réponse du récepteur", "L'absence de réponse", "Un problème technique"], a: 1 },
+        { t: "QCM", q: "Le 'Bruit' en communication désigne :", o: ["Seulement les sons forts", "Tout ce qui perturbe la transmission du message", "La musique", "La voix de l'émetteur"], a: 1 },
+
+        // Théories
+        { t: "QCM", q: "Le modèle de Shannon & Weaver est considéré comme :", o: ["Circulaire et humain", "Linéaire et mécanique", "Systémique", "Psychologique"], a: 1 },
+        { t: "QCM", q: "Quelle question NE fait PAS partie du modèle de Lasswell ?", o: ["Qui ?", "Dit quoi ?", "Pourquoi ?", "À qui ?"], a: 2 }, // Lasswell: Qui, dit quoi, par quel canal, à qui, avec quel effet.
+        { t: "QCM", q: "Qui a introduit la notion de Feed-back (Cybernétique) ?", o: ["Lasswell", "Norbert Wiener", "Shannon", "Aristote"], a: 1 },
+        { t: "QCM", q: "L'École de Palo Alto considère la communication comme :", o: ["Un système circulaire (Orchestre)", "Un télégraphe", "Un monologue", "Inutile"], a: 0 },
+        { t: "QCM", q: "Le principe 'On ne peut pas ne pas communiquer' signifie :", o: ["Il faut toujours parler", "Même le silence et le regard sont des messages", "On est forcé de crier", "Les sourds ne communiquent pas"], a: 1 },
+        { t: "QCM", q: "Selon Palo Alto, toute communication a deux aspects :", o: ["Le contenu et la relation", "Le vrai et le faux", "Le bien et le mal", "Le rapide et le lent"], a: 0 },
+
+        // Types et Modes
+        { t: "QCM", q: "La communication 'Interpersonnelle' se passe entre :", o: ["Une personne et un ordinateur", "Deux personnes (échange direct)", "Une entreprise et le public", "Des machines"], a: 1 },
+        { t: "QCM", q: "La communication 'Organisationnelle' a lieu :", o: ["Dans la rue", "Au sein d'une structure (entreprise, école)", "Dans un rêve", "Seulement par écrit"], a: 1 },
+        { t: "QCM", q: "La communication 'Descendante' va :", o: ["Des employés vers le patron", "Du patron vers les employés", "Entre collègues", "Vers les clients"], a: 1 },
+        { t: "QCM", q: "La communication Non-Verbal représente quel pourcentage du message (environ) ?", o: ["10%", "Moins de 5%", "Plus de 50% (majoritaire)", "0%"], a: 2 },
+        { t: "QCM", q: "Lequel est un exemple de communication Verbale ?", o: ["Un sourire", "Une lettre écrite", "Un haussement d'épaules", "La distance physique"], a: 1 },
+
+        // Proxémie et Postures
+        { t: "QCM", q: "La 'Proxémie' (Edward T. Hall) étudie :", o: ["Les maladies", "La gestion de l'espace et des distances", "Le temps", "Les vêtements"], a: 1 },
+        { t: "QCM", q: "La distance 'Intime' (0-45cm) est réservée :", o: ["Aux inconnus", "Aux confidences et proches", "Aux réunions de travail", "Aux discours publics"], a: 1 },
+        { t: "QCM", q: "Quelle distance utilise-t-on pour parler à un collègue de travail ?", o: ["Intime", "Personnelle/Sociale", "Publique", "Kilométrique"], a: 1 },
+        { t: "QCM", q: "Une posture de 'Dominance' se reconnait par :", o: ["Tête rentrée, corps petit", "Épaules ouvertes, menton levé, occupation de l'espace", "Bras croisés, regard fuyant", "Dos courbé"], a: 1 },
+        { t: "QCM", q: "Une posture de 'Soumission' se reconnait par :", o: ["Corps en extension", "Tête rentrée, épaules basses, se faire petit", "Mains sur les hanches", "Regard fixe"], a: 1 },
+        { t: "QCM", q: "Une posture de 'Rejet' se manifeste souvent par :", o: ["Bras ouverts", "Corps tourné de profil, bras croisés", "Sourire", "Mains tendues"], a: 1 },
+        
+        // Obstacles
+        { t: "QCM", q: "L' 'Effet de Halo' est :", o: ["Une lumière divine", "Une première impression qui influence tout le jugement", "Un problème auditif", "Une technique de vente"], a: 1 },
+        { t: "QCM", q: "Un obstacle 'Sociologique' est lié à :", o: ["La culture et le milieu social", "Le bruit du marteau-piqueur", "La mauvaise vue", "La faim"], a: 1 },
+        { t: "QCM", q: "Lors de la transmission, le message subit souvent :", o: ["Une amélioration", "Une déperdition (perte d'info) et déformation", "Une traduction automatique", "Une validation"], a: 1 },
+        
+        // Efficacité
+        { t: "QCM", q: "L'écoute active nécessite de :", o: ["Couper la parole", "Préparer sa réponse pendant que l'autre parle", "Écouter attentivement et reformuler", "Regarder son téléphone"], a: 2 },
+        { t: "QCM", q: "Pour bien communiquer, il faut connaitre son objectif :", o: ["Vrai, c'est essentiel", "Faux, l'improvisation suffit", "Ça dépend de la météo", "Seulement à l'écrit"], a: 0 },
+
+        // --- 10 Vrai/Faux ---
+        { t: "V/F", q: "Vrai ou Faux : Le silence est une forme de communication.", o: ["Vrai", "Faux"], a: 0 }, // Vrai
+        { t: "V/F", q: "Vrai ou Faux : Dans le modèle de Shannon, le bruit n'existe pas.", o: ["Vrai", "Faux"], a: 1 }, // Faux
+        { t: "V/F", q: "Vrai ou Faux : La communication digitale (mots) est plus importante que l'analogique (gestes) pour les émotions.", o: ["Vrai", "Faux"], a: 1 }, // Faux, le non-verbal prime pour les émotions
+        { t: "V/F", q: "Vrai ou Faux : La distance Publique est supérieure à 3 mètres.", o: ["Vrai", "Faux"], a: 0 }, // Vrai
+        { t: "V/F", q: "Vrai ou Faux : Le Feed-back permet de vérifier si le message a été compris.", o: ["Vrai", "Faux"], a: 0 }, // Vrai
+        { t: "V/F", q: "Vrai ou Faux : Croiser les bras est toujours un signe d'ouverture.", o: ["Vrai", "Faux"], a: 1 }, // Faux, souvent fermeture/rejet
+        { t: "V/F", q: "Vrai ou Faux : Les préjugés sont des obstacles psychologiques à la communication.", o: ["Vrai", "Faux"], a: 0 }, // Vrai
+        { t: "V/F", q: "Vrai ou Faux : La communication latérale se fait entre un chef et un employé.", o: ["Vrai", "Faux"], a: 1 }, // Faux, c'est entre collègues
+        { t: "V/F", q: "Vrai ou Faux : L'émetteur est le seul responsable de la réussite de la communication.", o: ["Vrai", "Faux"], a: 1 }, // Faux, le récepteur joue un rôle
+        { t: "V/F", q: "Vrai ou Faux : Le contexte (lieu, moment) n'influence pas le message.", o: ["Vrai", "Faux"], a: 1 }, // Faux
+
+        // --- 5 Situations ---
+        { t: "SITUATION", q: "Mise en situation : En entretien, le candidat s'assoit au fond de sa chaise, baisse la tête et parle doucement. Quelle posture ?", o: ["Dominance", "Soumission", "Partage", "Agression"], a: 1 },
+        { t: "SITUATION", q: "Mise en situation : Vous parlez à votre meilleur ami en lui chuchotant un secret à l'oreille. Quelle zone de distance ?", o: ["Intime", "Personnelle", "Sociale", "Publique"], a: 0 },
+        { t: "SITUATION", q: "Mise en situation : Le directeur envoie une note de service à tous les employés. C'est une communication :", o: ["Ascendante", "Descendante", "Latérale", "Non-verbale"], a: 1 },
+        { t: "SITUATION", q: "Mise en situation : Vous discutez avec quelqu'un qui regarde sa montre et tape du pied. Son langage non-verbal dit :", o: ["Je suis très intéressé", "Je suis impatient / Je m'ennuie", "J'ai faim", "Je suis heureux"], a: 1 },
+        { t: "SITUATION", q: "Mise en situation : Vous reformulez ce que votre interlocuteur vient de dire pour être sûr d'avoir compris. Vous faites :", o: ["Du bruit", "Un Feed-back / Écoute active", "Une erreur", "De la proxémie"], a: 1 }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const ui = {
+        question: document.getElementById('question'),
+        options: document.getElementById('options'),
+        progress: document.getElementById('progress'),
+        counter: document.getElementById('q-counter'),
+        score: document.getElementById('score-display'),
+        gameInterface: document.getElementById('game-interface'),
+        resultInterface: document.getElementById('result-interface'),
+        finalScore: document.getElementById('final-score'),
+        feedbackText: document.getElementById('feedback-text'),
+        badge: document.getElementById('q-type-badge')
+    };
+
+    function loadQuestion() {
+        if(currentQuestionIndex >= quizData.length) {
+            endGame();
+            return;
+        }
+
+        const data = quizData[currentQuestionIndex];
+        
+        if(ui.question) ui.question.innerText = data.q;
+        if(ui.counter) ui.counter.innerText = `Question ${currentQuestionIndex + 1}/${quizData.length}`;
+        if(ui.score) ui.score.innerText = `Score: ${score}`;
+        
+        if(ui.badge) {
+            ui.badge.innerText = data.t;
+            ui.badge.className = 'badge-type'; 
+            if(data.t === 'QCM') ui.badge.classList.add('badge-qcm');
+            else if(data.t === 'V/F') ui.badge.classList.add('badge-vf');
+            else ui.badge.classList.add('badge-sit');
+        }
+
+        if(ui.progress) {
+            const progressPercent = ((currentQuestionIndex) / quizData.length) * 100;
+            ui.progress.style.width = `${progressPercent}%`;
+        }
+
+        if(ui.options) {
+            ui.options.innerHTML = '';
+            data.o.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = option;
+                btn.onclick = () => checkAnswer(index, btn);
+                ui.options.appendChild(btn);
+            });
+        }
+    }
+
+    window.checkAnswer = function(selectedIndex, btnElement) {
+        const allBtns = document.querySelectorAll('.option-btn');
+        allBtns.forEach(btn => btn.disabled = true);
+
+        const correctIndex = quizData[currentQuestionIndex].a;
+
+        if (selectedIndex === correctIndex) {
+            btnElement.classList.add('correct');
+            score++;
+            ui.score.innerText = `Score: ${score}`;
+        } else {
+            btnElement.classList.add('incorrect');
+            if(allBtns[correctIndex]) {
+                allBtns[correctIndex].classList.add('correct');
+            }
+        }
+
+        setTimeout(() => {
+            currentQuestionIndex++;
+            loadQuestion();
+        }, 1000);
+    };
+
+    function endGame() {
+        ui.gameInterface.style.display = 'none';
+        ui.resultInterface.style.display = 'flex';
+        ui.finalScore.innerText = `${score}/${quizData.length}`;
+
+        const percentage = (score / quizData.length) * 100;
+        let msg = "";
+        if (percentage === 100) msg = "Excellent ! Tu es un expert en Communication ! (تبارك الله عليك)";
+        else if (percentage >= 70) msg = "Très bien ! Tu as bien compris les concepts.";
+        else if (percentage >= 50) msg = "Pas mal, mais révise encore la proxémie et les théories.";
+        else msg = "Attention, il faut relire le cours sur la Communication.";
+        
+        ui.feedbackText.innerText = msg;
+    }
+
+    loadQuestion();
+
+} catch (error) {
+    document.getElementById('error-display').innerText = "Erreur : " + error.message;
+    document.getElementById('error-display').style.display = 'block';
+}
+</script>
+
+</body>
+</html>

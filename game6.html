@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen MTU - Artistic Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. BASE STYLES --- */
+        *, *::after, *::before {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            overflow: hidden; /* Empêche le scroll de la page entière */
+        }
+
+        /* --- 2. NEW BACKGROUND (User Code Adapted) --- */
+        .bg {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+            background-color: black;
+            background-image: url('https://20essentials.github.io/project-000-128/assets/n1.avif');
+            background-position: center;
+            background-size: cover;
+            position: relative;
+            
+            /* Centrer le quiz */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bg .inner {
+            z-index: 1; /* Derrière le quiz mais devant l'image */
+            mix-blend-mode: overlay;
+            inset: 0;
+            position: absolute;
+            animation: moveInner 10s ease infinite alternate;
+            pointer-events: none; /* IMPORTANT: Permet de cliquer à travers */
+        }
+
+        @keyframes moveInner {
+            0% { background-color: #f0f; }
+            25% { background-color: #0f0; }
+            50% { background-color: #00f; }
+            75% { background-color: #f00; }
+            100% { background-color: #ff0; }
+        }
+
+        /* --- 3. GLASSMORPHISM QUIZ CONTAINER --- */
+        .game-container {
+            position: relative;
+            z-index: 10; /* Au-dessus de l'animation */
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto; /* Scroll interne si nécessaire */
+            
+            /* Style Zojaji (Glass) */
+            background: rgba(255, 255, 255, 0.1); /* Très transparent pour voir le fond */
+            backdrop-filter: blur(25px); /* Flou puissant */
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            
+            padding: 30px;
+            text-align: center;
+            color: white; /* Texte blanc pour contraster avec le fond sombre */
+        }
+
+        /* Scrollbar invisible/custom */
+        .game-container::-webkit-scrollbar { width: 6px; }
+        .game-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+
+        /* --- UI ELEMENTS --- */
+        header { margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+        h1 { margin: 0; font-size: 2rem; font-weight: 800; text-shadow: 0 2px 10px rgba(0,0,0,0.5); letter-spacing: 1px; }
+        h2 { font-size: 1rem; opacity: 0.8; margin-top: 5px; color: #ffeb3b; } /* Jaune pour ressortir */
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00f260, #0575e6); /* Dégradé vif */
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 242, 96, 0.5);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            color: rgba(255,255,255,0.8);
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .question-box {
+            margin: 30px 0;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.3); /* Fond sombre semi-transparent */
+            border-radius: 16px;
+            border-left: 4px solid #00f260;
+        }
+        
+        .question-text {
+            font-size: 1.25rem;
+            line-height: 1.5;
+            font-weight: 600;
+            text-shadow: 0 1px 2px black;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .grid-vf { grid-template-columns: 1fr 1fr; }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+            text-align: left;
+            color: white;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Feedback Colors */
+        .correct {
+            background: rgba(46, 204, 113, 0.6) !important; /* Vert plus opaque */
+            border-color: #2ecc71 !important;
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
+        }
+
+        .incorrect {
+            background: rgba(231, 76, 60, 0.6) !important; /* Rouge plus opaque */
+            border-color: #e74c3c !important;
+        }
+
+        .badge-type {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Start & Result Screens */
+        .screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .screen.active { display: flex; }
+
+        .btn-action {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 16px 50px;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-action:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+
+        .score-circle {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 30px auto;
+            border: 4px solid rgba(255,255,255,0.3);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+    </style>
+</head>
+<body>
+
+<main class="bg">
+    <aside class="inner"></aside>
+    
+    <div class="game-container">
+        
+        <div id="start-screen" class="screen active">
+            <h1>GRAND EXAMEN MTU</h1>
+            <h2>Chapitres 1, 2, 3 et 4</h2>
+            <div style="margin: 40px 0; font-size: 1.2rem; line-height: 1.8; text-shadow: 0 2px 4px black;">
+                <p>Bienvenue dans l'arène finale.</p>
+                <p><strong>40 Questions</strong> aléatoires.</p>
+                <p><strong>Réponses mélangées</strong>.</p>
+                <p>Zéro droit à l'erreur (ou presque).</p>
+            </div>
+            <button class="btn-action" onclick="startGame()">LANCER LE DÉFI</button>
+        </div>
+
+        <div id="game-interface" style="display:none;">
+            <header>
+                <h1 style="font-size: 1.5rem;">Examen en cours</h1>
+                <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+                <div class="stats">
+                    <span id="q-counter">Question 1/40</span>
+                    <span id="score-display">Score: 0</span>
+                </div>
+            </header>
+
+            <div class="question-box">
+                <span id="chap-badge" class="badge-type">Chapitre 1</span>
+                <div class="question-text" id="question">Chargement...</div>
+            </div>
+            
+            <div class="options-grid" id="options">
+                </div>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <h1>Examen Terminé</h1>
+            <div class="score-circle" id="final-score">0/40</div>
+            <p id="feedback-text" style="font-size: 1.3rem; margin-bottom: 20px; font-weight:bold;">Analyse...</p>
+            <button onclick="location.reload()" class="btn-action">REJOUER</button>
+            <a href="index.html" style="margin-top: 25px; display: block; color: rgba(255,255,255,0.7); font-weight:bold; text-decoration: none;">Retour au Menu</a>
+        </div>
+
+    </div>
+</main>
+
+<script>
+// --- BANQUE DE DONNEES MASSIVE (MIX CHAP 1-4) ---
+const fullQuestionPool = [
+    // --- CHAPITRE 1 ---
+    { c: 1, q: "Le système LMD signifie :", o: ["Licence, Master, Doctorat", "Lettres, Maths, Droit", "Lecture, Mémoire, Dictée", "Lycée, Maison, Devoirs"], a: 0 },
+    { c: 1, q: "La Licence s'obtient après la validation de :", o: ["120 crédits", "180 crédits", "300 crédits", "60 crédits"], a: 1 },
+    { c: 1, q: "Un module est validé si la note est supérieure ou égale à :", o: ["5/20", "12/20", "10/20", "08/20"], a: 2 },
+    { c: 1, q: "La note éliminatoire (qui bloque la compensation) est :", o: ["< 10/20", "< 7/20", "< 5/20", "< 3/20"], a: 2 },
+    { c: 1, q: "L'organisme qui gère les bourses et le logement est :", o: ["Le Doyen", "L'ONOUSC", "Le service de Scolarité", "La Commune"], a: 1 },
+    { c: 1, q: "Vrai ou Faux : Le plagiat peut entraîner des sanctions disciplinaires.", o: ["Vrai", "Faux"], a: 0 },
+    { c: 1, q: "Le 'Tutorat' en première année sert à :", o: ["Punir les absences", "Faciliter l'intégration et l'apprentissage", "Surveiller la cafétéria", "Remplacer les professeurs"], a: 1 },
+    { c: 1, q: "Les 'Passerelles' permettent de :", o: ["Changer de filière ou d'établissement", "Sauter des cours", "Avoir une bourse double", "Valider sans examen"], a: 0 },
+    { c: 1, q: "L'accès aux Facultés (Accès Ouvert) nécessite :", o: ["Un concours écrit", "Un entretien oral", "Le Baccalauréat uniquement", "De l'argent"], a: 2 },
+    { c: 1, q: "Le Diplôme DEUG est obtenu après :", o: ["2 semestres (S2)", "4 semestres (S4)", "6 semestres (S6)", "8 semestres"], a: 1 },
+    { c: 1, q: "Un semestre est composé de combien de modules environ ?", o: ["2 ou 3", "6 à 7", "10 à 12", "20"], a: 1 },
+    { c: 1, q: "Vrai ou Faux : L'étudiant doit développer son autonomie (travail personnel).", o: ["Vrai", "Faux"], a: 0 },
+    { c: 1, q: "AMO signifie :", o: ["Assurance Maladie Obligatoire", "Aide Médicale aux Oubliés", "Association Marocaine"], a: 0 },
+    
+    // --- CHAPITRE 2 ---
+    { c: 2, q: "VAKOG signifie :", o: ["Visuel, Auditif, Kinesthésique, Olfactif, Gustatif", "Vitesse, Action, Kinesthésique", "Vue, Audition, Kilo, Odeur, Goût"], a: 0 },
+    { c: 2, q: "Un apprenant 'Visuel' préfère :", o: ["Écouter des podcasts", "Bouger en apprenant", "Les schémas, images et graphiques", "Manger en apprenant"], a: 2 },
+    { c: 2, q: "La méthode Pomodoro consiste à travailler par cycles de :", o: ["1 heure", "10 minutes", "25 minutes", "45 minutes"], a: 2 },
+    { c: 2, q: "Dans la matrice d'Eisenhower, une tâche 'Urgente et Importante' doit être :", o: ["Faite immédiatement", "Planifiée", "Déléguée", "Éliminée"], a: 0 },
+    { c: 2, q: "La procrastination est le fait de :", o: ["Travailler en avance", "Remettre une tâche au lendemain", "Travailler vite", "Bien s'organiser"], a: 1 },
+    { c: 2, q: "Vrai ou Faux : Le stress est toujours négatif pour la performance.", o: ["Vrai", "Faux"], a: 1 },
+    { c: 2, q: "Pour un apprenant 'Auditif', il est conseillé de :", o: ["Lire à voix haute ou discuter", "Faire des dessins", "Marcher dans la chambre", "Regarder des films muets"], a: 0 },
+    { c: 2, q: "Le 'Temps Créateur' est celui qui :", o: ["Génère de la valeur ajoutée", "Est perdu", "Est passé à dormir", "Sert aux obligations"], a: 0 },
+    { c: 2, q: "Vrai ou Faux : On peut combiner plusieurs styles d'apprentissage.", o: ["Vrai", "Faux"], a: 0 },
+    { c: 2, q: "La procrastination 'Face au Vouloir' privilégie :", o: ["Le travail", "Les distractions (plaisir immédiat)", "Le sommeil", "Le sport"], a: 1 },
+    { c: 2, q: "Une longue pause Pomodoro dure :", o: ["5 min", "15 à 30 min", "2 heures", "1 jour"], a: 1 },
+
+    // --- CHAPITRE 3 ---
+    { c: 3, q: "Un moteur de recherche 'Ouvert' (ex: Google) indexe :", o: ["Uniquement des PDF", "Tout type de contenu web", "Seulement des images", "Des sites payants"], a: 1 },
+    { c: 3, q: "L'opérateur booléen 'ET' permet de :", o: ["Élargir la recherche", "Préciser la recherche (les 2 termes présents)", "Exclure un mot", "Traduire le texte"], a: 1 },
+    { c: 3, q: "L'opérateur 'OU' permet de trouver :", o: ["Au moins un des termes", "Les deux termes obligatoirement", "Aucun des termes", "Le contraire"], a: 0 },
+    { c: 3, q: "Le critère de 'Pertinence' vérifie si l'info est :", o: ["Récente", "En lien avec le sujet", "Bien écrite", "Gratuite"], a: 1 },
+    { c: 3, q: "Le critère de 'Validité/Fiabilité' concerne :", o: ["La vérité et la source de l'info", "La date de publication", "La longueur du texte", "La couleur du site"], a: 0 },
+    { c: 3, q: "Vrai ou Faux : La Carte Mentale (Mind Map) est une structure linéaire.", o: ["Vrai", "Faux"], a: 1 },
+    { c: 3, q: "Qui a popularisé la Carte Mentale ?", o: ["Einstein", "Tony Buzan", "Bill Gates", "Victor Hugo"], a: 1 },
+    { c: 3, q: "La 'Lecture Rapide' (Survol) sert à :", o: ["Repérer les idées clés rapidement", "Lire chaque mot", "Apprendre par cœur", "Dormir"], a: 0 },
+    { c: 3, q: "Une bibliothèque 'Domiciliée' est :", o: ["Une bibliothèque chez soi", "Une bibliothèque universitaire", "Une librairie", "Un site web"], a: 1 },
+    { c: 3, q: "Vrai ou Faux : L'opérateur 'NON' permet d'exclure un mot des résultats.", o: ["Vrai", "Faux"], a: 0 },
+    { c: 3, q: "Pour évaluer une info, on utilise combien de critères principaux ?", o: ["2", "5", "10", "1"], a: 1 },
+
+    // --- CHAPITRE 4 ---
+    { c: 4, q: "Le traitement de l'information vise à transformer l'info brute en :", o: ["Info fausse", "Connaissance exploitable", "Bruit", "Image"], a: 1 },
+    { c: 4, q: "L'Encodage est quelle étape de la mémoire ?", o: ["La 1ère", "La 2ème", "La 3ème", "La dernière"], a: 0 },
+    { c: 4, q: "La mémoire à court terme a une capacité :", o: ["Illimitée", "Limitée (quelques éléments)", "Permanente", "Gigantesque"], a: 1 },
+    { c: 4, q: "La reformulation 'Inversée' consiste à :", o: ["Répéter les mots", "Changer le point de vue (positif/négatif)", "Traduire en anglais", "Ne rien dire"], a: 1 },
+    { c: 4, q: "La schématisation utilise des attributs 'pré-attentifs' comme :", o: ["La couleur et la forme", "Le silence", "Les phrases longues", "L'encre invisible"], a: 0 },
+    { c: 4, q: "Le raisonnement 'Inductif' part de :", o: ["La théorie vers l'exemple", "L'observation vers la théorie", "Rien", "L'imagination"], a: 1 },
+    { c: 4, q: "Le raisonnement 'Déductif' part de :", o: ["La théorie (Général) vers l'Hypothèse (Particulier)", "L'expérience vers la règle", "L'exemple vers la loi", "L'inconnu"], a: 0 },
+    { c: 4, q: "Une bonne problématique doit être :", o: ["Vague", "Précise et pertinente", "Impossible", "Déjà résolue"], a: 1 },
+    { c: 4, q: "Vrai ou Faux : La pensée critique permet d'évaluer la valeur de l'information.", o: ["Vrai", "Faux"], a: 0 },
+    { c: 4, q: "La mémoire à long terme stocke l'information pour :", o: ["Quelques secondes", "Une durée indéterminée (longtemps)", "Une journée", "Une heure"], a: 1 },
+    { c: 4, q: "L'erreur d'interprétation dans la vie pro est une :", o: ["Qualité", "Faute grave", "Blague", "Preuve de créativité"], a: 1 }
+];
+
+let examQuestions = [];
+let currentIdx = 0;
+let score = 0;
+
+// SHUFFLE FUNCTION
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function startGame() {
+    const shuffledPool = shuffleArray([...fullQuestionPool]);
+    examQuestions = shuffledPool.slice(0, 40);
+    currentIdx = 0;
+    score = 0;
+    
+    document.getElementById('start-screen').classList.remove('active');
+    document.getElementById('game-interface').style.display = 'block';
+    
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const data = examQuestions[currentIdx];
+    
+    document.getElementById('question').innerText = data.q;
+    document.getElementById('q-counter').innerText = `Question ${currentIdx + 1}/40`;
+    document.getElementById('score-display').innerText = `Score: ${score}`;
+    
+    const badge = document.getElementById('chap-badge');
+    badge.innerText = `Chapitre ${data.c}`;
+
+    const pct = ((currentIdx) / 40) * 100;
+    document.getElementById('progress').style.width = `${pct}%`;
+
+    const optionsDiv = document.getElementById('options');
+    optionsDiv.innerHTML = '';
+    
+    // Shuffle des options pour éviter que la bonne réponse soit toujours au même endroit
+    let indices = data.o.map((_, i) => i);
+    indices.sort(() => Math.random() - 0.5);
+    
+    if (data.o.length === 2) {
+        optionsDiv.classList.add('grid-vf');
+    } else {
+        optionsDiv.classList.remove('grid-vf');
+    }
+
+    indices.forEach(idx => {
+        const btn = document.createElement('div');
+        btn.className = 'option-btn';
+        
+        // Icônes A, B, C, D
+        const labels = ['A', 'B', 'C', 'D'];
+        const icon = labels[idx] || '';
+        
+        btn.innerHTML = `<span style="opacity:0.6; font-weight:900; margin-right:12px; color:#ffeb3b;">${icon}.</span> ${data.o[idx]}`;
+        
+        btn.onclick = () => handleAnswer(idx, btn);
+        optionsDiv.appendChild(btn);
+    });
+}
+
+function handleAnswer(selectedIndex, btn) {
+    // Bloquer les clics
+    document.getElementById('options').style.pointerEvents = 'none';
+    
+    const correctIndex = examQuestions[currentIdx].a;
+    
+    // Find all buttons
+    const allBtns = document.querySelectorAll('.option-btn');
+
+    if(selectedIndex === correctIndex) {
+        btn.classList.add('correct');
+        score++;
+    } else {
+        btn.classList.add('incorrect');
+        // Visual hack to show correct answer despite shuffle
+        // We look for the button containing the text of the correct answer
+        const correctText = examQuestions[currentIdx].o[correctIndex];
+        allBtns.forEach(b => {
+            if(b.innerText.includes(correctText)) b.classList.add('correct');
+        });
+    }
+    
+    document.getElementById('score-display').innerText = `Score: ${score}`;
+
+    setTimeout(() => {
+        document.getElementById('options').style.pointerEvents = 'auto';
+        currentIdx++;
+        if(currentIdx < 40) {
+            loadQuestion();
+        } else {
+            endGame();
+        }
+    }, 1200);
+}
+
+function endGame() {
+    document.getElementById('game-interface').style.display = 'none';
+    document.getElementById('result-screen').classList.add('active');
+    
+    document.getElementById('final-score').innerText = `${score}/40`;
+    
+    const pct = (score / 40) * 100;
+    let msg = "";
+    if(pct === 100) msg = "PARFAIT ! L'excellence absolue ! 🎓🔥";
+    else if(pct >= 80) msg = "Excellent travail ! Tu es prêt.";
+    else if(pct >= 50) msg = "Bien joué, continue tes efforts.";
+    else msg = "Il faut réviser encore un peu.";
+    
+    document.getElementById('feedback-text').innerText = msg;
+}
+</script>
+
+</body>
+</html>

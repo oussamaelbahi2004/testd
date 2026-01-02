@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapitre 2 : Styles d'apprentissage & Gestion du temps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Segoe+UI&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --darija-color: #16a085;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .instruction {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #ffeeba;
+            margin-bottom: 30px;
+        }
+
+        /* Card Style */
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--accent-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-top: 25px;
+            font-size: 1.2rem;
+        }
+
+        /* Interactive Text Area */
+        .interactive-text {
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #bdc3c7;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .interactive-text:hover {
+            background-color: #e3f2fd;
+            border-left-color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        /* Style spécifique pour la Darija (Active) */
+        .interactive-text.darija-active {
+            border-left-color: var(--darija-color);
+            background-color: #e8f5e9;
+            font-family: 'Cairo', sans-serif; /* Font arabe lisible */
+            direction: rtl; /* Droite à gauche pour l'arabe */
+            text-align: right;
+            font-size: 1.1em;
+            color: #0e6655;
+        }
+
+        .interactive-text::after {
+            content: "👆 Traduire";
+            display: block;
+            font-size: 0.7em;
+            color: #999;
+            text-align: right;
+            margin-top: 5px;
+            opacity: 0.5;
+        }
+        
+        .interactive-text.darija-active::after {
+            text-align: left;
+            content: "👆 Retour au Français";
+        }
+
+        /* Buttons Container */
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-quiz {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-back {
+            background-color: #7f8c8d;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Chapitre 2 : Styles d'Apprentissage & Gestion du Temps</h1>
+        <p>Résumé interactif du module MTU - ENS Casablanca</p>
+        <div class="instruction">
+            💡 <strong>Mode d'emploi :</strong> Clique sur les paragraphes pour traduire !
+            <br>(اضغط على النص باش تقرا الشرح بالدارجة)
+        </div>
+    </header>
+
+    <div class="section-card">
+        <h2>1. Les Styles d'Apprentissage (Introduction)</h2>
+        
+        <div class="interactive-text" 
+             data-darija='شنو هو ستيل د القراية؟ هو الطريقة باش كل طالب كيبدا يركز على معلومة جديدة وصعيبة، وكيفاش كيحللها وكيعقل عليها. كل واحد فينا عندو بصمة خاصة بيه فالقراية.'>
+            Le style d'apprentissage est la manière dont chaque apprenant commence à se concentrer sur une information nouvelle et difficile, la traite et la retient.
+        </div>
+
+        <div class="interactive-text" 
+             data-darija='باش كندخلو المعلومات لراسنا كنستعملو الحواس ديالنا. هادشي كيتسمى "الفيلتر العصبي" (VAKOG): الشوف (Visuel)، السمع (Auditif)، الحركة (Kinesthésique)، الشم (Olfactif) والدوق (Gustatif).'>
+            Nous utilisons des canaux sensoriels pour filtrer l'information, connus sous le nom de filtre neurologique ou VAKOG (Visuel, Auditif, Kinesthésique, Olfactif, Gustatif).
+        </div>
+
+        <div class="interactive-text" 
+             data-darija='ملاحظة مهمة: أغلب الطلبة ماكيستخدموش غير ستيل واحد. كنقدرو نخلطو بيناتهم على حساب الوضعية. مثلا تقدر تكون "بصري" فالحفاظة، و"حركي" فالتعلم ديال مهارة يدوية.'>
+            Note importante : La plupart des apprenants ne se limitent pas à un seul style. Ils utilisent des combinaisons selon la situation (ex: visuel pour mémoriser, kinesthésique pour pratiquer).
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>2. Les 3 Profils Sensoriels (VAK)</h2>
+
+        <h3>👁️ Visuel (Le voir)</h3>
+        <div class="interactive-text" 
+             data-darija='إلا كنتي "Visuel"، كتعلم بعينيك. خاصك تستعمل المبيانات، التصاور، الفيديوهات. ومن الأحسن تاخد النقط (notes) على شكل خطاطات (mind maps) باش تنظم أفكارك.'>
+            Ce registre utilise la vue. Si vous êtes visuel, utilisez des supports visuels (graphiques, images, vidéos). Prenez des notes sous forme de « mind maps » ou de schémas.
+        </div>
+
+        <h3>👂 Auditif (L'entendre)</h3>
+        <div class="interactive-text" 
+             data-darija='إلا كنتي "Auditif"، كتعلم بودنيك. الحل هو تسمع لي بودكاست (podcasts)، والكتوبة المسموعة. وحاول تعاود المعلومات بصوت عالي أو تناقشهم مع صحابك فمجموعات.'>
+            Ce registre utilise l'ouïe. Il est recommandé d'écouter des enregistrements (podcasts, livres audio), de répéter à voix haute ou de participer à des discussions de groupe.
+        </div>
+
+        <h3>✋ Kinesthésique (Le faire)</h3>
+        <div class="interactive-text" 
+             data-darija='إلا كنتي "Kinesthésique"، كتعلم بالحركة واللمس. خاصك تتحرك وانت كتحفظ (تمشى)، تكتب بيدك، وترسم. كتعقل حسن ملي كتقيس مجسمات أو كدير تجارب تطبيقية.'>
+            Ce registre utilise la sensation et le mouvement. Il est recommandé de bouger (dessiner, écrire à la main), de manipuler des objets concrets ou de faire des expériences.
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>3. Gestion du Temps & Procrastination</h2>
+        
+        <div class="interactive-text" 
+             data-darija='الوقت حاجة نسبية، كل واحد كيفاش كيحس بيه. المشكل الكبير هو "التسويف" (Procrastination): ملي كتأجل شي خدمة لغدا وانت عارف خاصك ديرها، حيث كيسحاب لك غتكون سهلة من بعد.'>
+            La perception du temps est subjective. La procrastination est le fait de remettre une tâche à plus tard, en croyant qu'elle sera plus facile à réaliser ultérieurement.
+        </div>
+
+        <h3>Les deux types de Procrastination</h3>
+        <div class="interactive-text" 
+             data-darija='1. تسويف الواجب (Face au devoir): كتأجل المهام المهمة حيث خايف تفشل، أو المهمة صعيبة، أو مافيكش النفس (Motivation).<br>2. تسويف الرغبة (Face au vouloir): كتسمح فالخدمة باش دير أنشطة ممتعة (بحال الريزو سوسيو وفيديوهات يوتيوب).'>
+            1. Face au devoir : Retarder des tâches importantes par peur de l'échec ou manque de motivation.<br>
+            2. Face au vouloir : Retarder le travail au profit d'activités agréables (réseaux sociaux, vidéos).
+        </div>
+
+        <h3>Classification du temps</h3>
+        <div class="interactive-text" 
+             data-darija='باش تنظم حياتك، قسم الوقت لـ 3 أنواع:<br>1. الوقت الخلاق (Créateur): كتنتج فيه قيمة مضافة.<br>2. الوقت الضروري (Nécessaire): الوقت اللي خاصك باش دير المهام المفروضة عليك.<br>3. الوقت الضايع (Inutile): اللي كيمشي فالخاوي وعن غفلة.'>
+            Il faut classifier le temps en trois catégories :<br>
+            1. Le temps créateur (génère de la valeur ajoutée).<br>
+            2. Le temps nécessaire (pour exécuter les tâches).<br>
+            3. Le temps inutile (perdu par inadvertance).
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>4. Planification & Organisation</h2>
+
+        <div class="interactive-text" 
+             data-darija='أول خطوة: قيم التوقعات (Évaluer les attentes). خاصك تعرف القوانين د الجامعة، تواريخ الامتحانات، وشنو كيطلبو الأساتذة (المشاركة، البحوث) وحتى التزاماتك مع صحابك الطلبة.'>
+            Étape 1 : Évaluer les attentes. Comprenez les normes de l'université, les délais, les attentes des enseignants (participation, qualité) et celles des autres étudiants.
+        </div>
+
+        <h3>La Grille d'Eisenhower (Les Priorités)</h3>
+        <div class="interactive-text" 
+             data-darija='باش ترتب أولوياتك، استعمل "مصفوفة أيزنهاور". كتقسم المهام على حساب "الاستعجال" و "الأهمية":<br>1. عاجل ومهم (ديرو دابا).<br>2. مهم وماشي عاجل (خطط ليه).<br>3. عاجل وماشي مهم (كلف شي حد).<br>4. ماشي مهم وماشي عاجل (لوحو).'>
+            Utilisez la grille d'Eisenhower pour classer les tâches selon l'urgence et l'importance :<br>
+            1. Urgent et Important.<br>
+            2. Important mais peu Urgent.<br>
+            3. Urgent mais pas Important.<br>
+            4. Ni Important ni Urgent.
+        </div>
+
+        <h3>La Méthode Pomodoro (Séquençage)</h3>
+        <div class="interactive-text" 
+             data-darija='تقنية بومودورو فعالة بزاف فالإنتاجية:<br>1. خير هدف.<br>2. خدم 25 دقيقة (ضبط المؤقت).<br>3. رتاح 5 دقايق.<br>4. ملي تكمل 4 د الجولات (Sessions)، خود راحة طويلة ديال 15-30 دقيقة.'>
+            La méthode Pomodoro :<br>
+            1. Choisir un objectif.<br>
+            2. Travailler pendant une durée définie (ex: 25 min).<br>
+            3. Pause de 5 min.<br>
+            4. Après 4 sessions, pause longue de 15 à 30 min.
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>5. Gestion du Stress</h2>
+        
+        <div class="interactive-text" 
+             data-darija='الستريس هو رد فعل طبيعي، ولكن كاين 3 د الأنواع:<br>1. ستريس إيجابي (Productif): كيخليك تخدم وتكون مركز باش تحترم شي أجل (Deadline).<br>2. ستريس سلبي (Improductif): كيجي من كثرة الخدمة وسوء التواصل، وكيسبب القلق والاكتئاب.<br>3. ستريس مشلل (Paralysant): ملي كيكون الضغط بزاف، كتبلوكا وماكتبقاش قادر تاخد قرارات أو تركز.'>
+            Il existe trois types de stress :<br>
+            1. Productif : Rend plus performant et concentré (défis, échéances).<br>
+            2. Improductif : Nuit à la performance et la santé (trop de travail, anxiété).<br>
+            3. Paralysant : Rend incapable d'agir ou de décider (fatigue mentale, blocage).
+        </div>
+    </div>
+
+    <div class="buttons-container">
+        <a href="game1.html" class="btn btn-quiz" >PASSER LE QUIZ</a>
+        <a href="index.html" class="btn btn-back">GET BACK</a>
+    </div>
+
+</div>
+
+<script>
+    const textElements = document.querySelectorAll('.interactive-text');
+
+    textElements.forEach(element => {
+        // Sauvegarde le texte français propre (sans HTML qui pourrait casser)
+        element.dataset.french = element.innerHTML;
+
+        element.addEventListener('click', () => {
+            // Check si on est déjà en Darija
+            if (element.classList.contains('darija-active')) {
+                // Retour au français
+                element.innerHTML = element.dataset.french;
+                element.classList.remove('darija-active');
+            } else {
+                // Passage en Darija
+                // On vérifie que la donnée existe pour éviter "undefined"
+                if(element.dataset.darija) {
+                    element.innerHTML = element.dataset.darija;
+                    element.classList.add('darija-active');
+                } else {
+                    console.error("Erreur: Pas de traduction trouvée pour cet élément");
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
+

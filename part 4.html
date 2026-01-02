@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 4: Organisation Cellulaire (Complet)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdfdfd;
+            --text-color: #2c3e50;
+            
+            /* Couleurs par catégorie */
+            --c-memb: #e67e22;     /* Membrane (Orange) */
+            --c-noyau: #2980b9;    /* Noyau (Bleu) */
+            --c-usine: #8e44ad;    /* Synthèse (Violet) */
+            --c-nrj: #27ae60;      /* Énergie (Vert) */
+            --c-cyto: #7f8c8d;     /* Cytosquelette (Gris) */
+            --c-move: #34495e;     /* Mouvement (Gris Foncé) */
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px;
+            line-height: 1.8;
+        }
+
+        .container { max-width: 850px; margin: 0 auto; }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+            font-weight: 800;
+        }
+
+        h2 {
+            margin-top: 60px;
+            font-size: 1.6em;
+            color: #444;
+            border-left: 8px solid;
+            padding-left: 15px;
+            background: #fff;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            text-transform: uppercase;
+        }
+
+        /* BLOCS */
+        .block {
+            background: white;
+            padding: 25px 30px;
+            padding-bottom: 50px; /* Espace pour le bouton */
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            cursor: pointer;
+            border-left: 5px solid transparent;
+            position: relative;
+            border: 1px solid #eee;
+            transition: all 0.2s;
+        }
+
+        .block:hover {
+            transform: translateX(5px);
+            background-color: #fafafa;
+        }
+
+        /* BOUTON TRADUCTION */
+        .block::after {
+            content: 'أنقر للترجمة ⇄';
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.75em;
+            color: #888;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            padding: 2px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        /* TEXTES */
+        .fr h3, .ar h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.2em; text-transform: uppercase; letter-spacing: 0.5px; }
+        .fr ul, .ar ul { padding-left: 20px; color: #555; }
+        .fr li, .ar li { margin-bottom: 8px; }
+
+        .ar { display: none; font-family: 'Cairo', sans-serif; direction: rtl; text-align: right; color: #b03a2e; }
+        .ar h3 { color: #c0392b; }
+        .ar ul { padding-right: 20px; padding-left: 0; }
+
+        /* Logic Swap */
+        .swapped .fr { display: none; }
+        .swapped .ar { display: block; }
+        .swapped { background-color: #fffbf0; border-color: #f0e6ce; }
+        .swapped::after { content: 'إضغط للرجوع ↩'; color: #d35400; border-color: #d35400; }
+
+        /* COULEURS */
+        .sec-memb { border-color: var(--c-memb); color: var(--c-memb); } .cat-memb { border-left-color: var(--c-memb); }
+        .sec-noyau { border-color: var(--c-noyau); color: var(--c-noyau); } .cat-noyau { border-left-color: var(--c-noyau); }
+        .sec-usine { border-color: var(--c-usine); color: var(--c-usine); } .cat-usine { border-left-color: var(--c-usine); }
+        .sec-nrj { border-color: var(--c-nrj); color: var(--c-nrj); } .cat-nrj { border-left-color: var(--c-nrj); }
+        .sec-cyto { border-color: var(--c-cyto); color: var(--c-cyto); } .cat-cyto { border-left-color: var(--c-cyto); }
+        .sec-move { border-color: var(--c-move); color: var(--c-move); } .cat-move { border-left-color: var(--c-move); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>IV. ORGANISATION CELLULAIRE ET MOLÉCULAIRE (Complet)</h1>
+
+    <h2 class="sec-memb">1. La Membrane Plasmique (La Barrière)</h2>
+    
+    <div class="block cat-memb">
+        <div class="fr">
+            <h3>STRUCTURE MOLÉCULAIRE : "MOSAÏQUE FLUIDE"</h3>
+            <p>Structure dynamique composée de 3 types de molécules :</p>
+            <ul>
+                <li><strong>1. Lipides (Phospholipides) :</strong> Bicouche imperméable (Têtes hydrophiles, Queues hydrophobes).</li>
+                <li><strong>2. Protéines :</strong> Insérées dans la membrane (Canaux, Pompes, Récepteurs).</li>
+                <li><strong>3. Glucides :</strong> Face externe uniquement (Glycocalyx) pour la reconnaissance cellulaire.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>البنية الجزيئية: "الفسيفساء المائعة"</h3>
+            <p>بنية ديناميكية تتكون من 3 أنواع من الجزيئات:</p>
+            <ul>
+                <li><strong>1. الدهنيات (فوسفودهنيات):</strong> طبقة مزدوجة غير نفوذة (رؤوس محبة للماء، ذيول كارهة للماء).</li>
+                <li><strong>2. البروتينات:</strong> منغرزة في الغشاء (قنوات، مضخات، مستقبلات).</li>
+                <li><strong>3. السكريات:</strong> الوجه الخارجي فقط (غليكوكاليكس) للتعرف الخلوي.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-noyau">2. Le Noyau (Centre de Contrôle)</h2>
+
+    <div class="block cat-noyau">
+        <div class="fr">
+            <h3>COMPOSITION ET RÔLE</h3>
+            <ul>
+                <li><strong>Enveloppe Nucléaire :</strong> Double membrane avec des <strong>Pores Nucléaires</strong> (sorties).</li>
+                <li><strong>Chromatine :</strong> ADN + Protéines (Histones). Contient l'information génétique.</li>
+                <li><strong>Nucléole :</strong> Fabrique les ribosomes.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>التركيب والدور</h3>
+            <ul>
+                <li><strong>الغلاف النووي:</strong> غشاء مزدوج به <strong>ثقوب نووية</strong> (مخارج).</li>
+                <li><strong>الصبغين:</strong> ADN + بروتينات (هيستونات). يحتوي على الخبر الوراثي.</li>
+                <li><strong>النوية:</strong> تصنع الريبوزومات.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-usine">3. Le Système de Synthèse et Transport</h2>
+
+    <div class="block cat-usine">
+        <div class="fr">
+            <h3>RÉTICULUM ENDOPLASMIQUE (RE)</h3>
+            <ul>
+                <li><strong>RE Rugueux :</strong> Avec ribosomes. Synthèse et transport des <strong>protéines</strong>.</li>
+                <li><strong>RE Lisse :</strong> Sans ribosomes. Synthèse des <strong>lipides</strong> et détoxification.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الشبكة السيتوبلازمية (RE)</h3>
+            <ul>
+                <li><strong>شبكة خشنة:</strong> مع ريبوزومات. تركيب ونقل <strong>البروتينات</strong>.</li>
+                <li><strong>شبكة ملساء:</strong> بدون ريبوزومات. تركيب <strong>الدهنيات</strong> وإزالة السموم.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-usine">
+        <div class="fr">
+            <h3>APPAREIL DE GOLGI</h3>
+            <p>Sacs aplatis (Dictyosomes).</p>
+            <ul>
+                <li><strong>Fonction :</strong> Reçoit, modifie (ajoute des sucres), trie et emballe les protéines dans des vésicules pour la <strong>Sécrétion</strong>.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>جهاز غولجي</h3>
+            <p>أكياس مسطحة (ديكتيوزومات).</p>
+            <ul>
+                <li><strong>الوظيفة:</strong> يستقبل، يعدل (يضيف سكريات)، يفرز ويغلف البروتينات في حويصلات من أجل <strong>الإفراز</strong>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-usine">
+        <div class="fr">
+            <h3>LES LYSOSOMES</h3>
+            <ul>
+                <li>Vésicules contenant des enzymes digestives (pH acide).</li>
+                <li><strong>Rôle :</strong> Digestion (Nutriments, Bactéries) et Recyclage (Autophagie).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الليوزوزومات</h3>
+            <ul>
+                <li>حويصلات تحتوي على إنزيمات هضمية (pH حمضي).</li>
+                <li><strong>الدور:</strong> الهضم (مواد القيت، بكتيريا) وإعادة التدوير (الالتهام الذاتي).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-nrj">4. Les Convertisseurs d'Énergie</h2>
+
+    <div class="block cat-nrj">
+        <div class="fr">
+            <h3>LA MITOCHONDRIE (Animale & Végétale)</h3>
+            <ul>
+                <li>Double membrane (Crêtes internes).</li>
+                <li><strong>Rôle :</strong> Respiration Cellulaire (Production d'<strong>ATP</strong> à partir de Glucose + $O_2$).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الميتوكوندري (حيوانية ونباتية)</h3>
+            <ul>
+                <li>غشاء مزدوج (أعراف داخلية).</li>
+                <li><strong>الدور:</strong> التنفس الخلوي (إنتاج <strong>ATP</strong> انطلاقاً من غليكوز + $O_2$).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-nrj">
+        <div class="fr">
+            <h3>LE CHLOROPLASTE (Végétale seulement)</h3>
+            <ul>
+                <li>Contient la Chlorophylle (Vert).</li>
+                <li><strong>Rôle :</strong> Photosynthèse (Énergie solaire $\rightarrow$ Sucres).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>البلاستيدة الخضراء (نباتية فقط)</h3>
+            <ul>
+                <li>تحتوي على اليخضور (أخضر).</li>
+                <li><strong>الدور:</strong> التركيب الضوئي (طاقة شمسية $\rightarrow$ سكريات).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-cyto">5. Le Cytosquelette</h2>
+
+    <div class="block cat-cyto">
+        <div class="fr">
+            <h3>DÉFINITION & RÔLE</h3>
+            <p>Réseau de fibres (Microtubules, Microfilaments) dans le cytoplasme.</p>
+            <ul>
+                <li>Maintient la forme de la cellule.</li>
+                <li>Sert de "rails" pour le transport des organites.</li>
+                <li>Participe à la division cellulaire (Fuseau mitotique).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>التعريف والدور</h3>
+            <p>شبكة من الألياف (أنبيبات دقيقة، خييطات دقيقة) في السيتوبلازم.</p>
+            <ul>
+                <li>تحافظ على شكل الخلية.</li>
+                <li>تعمل كـ "سكك" لنقل العضيات.</li>
+                <li>تشارك في الانقسام الخلوي (المغزل اللالوني).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-move">6. Organites de Mouvement (Appendices)</h2>
+
+    <div class="block cat-move">
+        <div class="fr">
+            <h3>LES CILS ET LES FLAGELLES</h3>
+            <p>Ce sont des expansions de la membrane plasmique contenant des microtubules mobiles.</p>
+            <ul>
+                <li><strong>Flagelles :</strong> Longs et peu nombreux (souvent unique). Mouvement ondulatoire (comme un serpent). <em>Exemple : Spermatozoïde.</em></li>
+                <li><strong>Cils :</strong> Courts et très nombreux. Mouvement de battement (comme des rames). <em>Exemple : Paramecie, Cellules de la trachée (pour remonter le mucus).</em></li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الأهداب والسياط</h3>
+            <p>هي امتدادات للغشاء السيتوبلازمي تحتوي على أنبيبات دقيقة متحركة.</p>
+            <ul>
+                <li><strong>السياط (Flagelles):</strong> طويلة وقليلة العدد (غالباً واحد). حركة تموجية (مثل الثعبان). <em>مثال: الحيوان المنوي.</em></li>
+                <li><strong>الأهداب (Cils):</strong> قصيرة وكثيرة جداً. حركة ضربات (مثل المجاديف). <em>مثال: البراميسيوم، خلايا القصبة الهوائية (لصعود المخاط).</em></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.querySelectorAll('.block').forEach(block => {
+        block.addEventListener('click', () => {
+            block.classList.toggle('swapped');
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game - MTU Chapitre 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #c0392b;
+            --wrong: #e74c3c;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .game-container {
+            background: var(--card);
+            width: 100%;
+            max-width: 800px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header { margin-bottom: 20px; }
+        h1 { color: var(--primary); margin: 0; font-size: 1.8rem; }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            color: #777;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .question-box { margin: 30px 0; }
+        
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--primary);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: #e9ecef;
+            border-color: #dbe4eb;
+        }
+
+        .correct {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724;
+        }
+
+        .incorrect {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24;
+        }
+
+        .result-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
+        }
+
+        .btn-action {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .badge-type {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .badge-qcm { background-color: #3498db; }
+        .badge-vf { background-color: #9b59b6; }
+        .badge-sit { background-color: #e67e22; }
+
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    
+    <div id="game-interface">
+        <header>
+            <h1>Quiz : La Vie à l'Université</h1>
+            <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+            <div class="stats">
+                <span id="q-counter">Question 1/45</span>
+                <span id="score-display">Score: 0</span>
+            </div>
+        </header>
+
+        <div class="question-box">
+            <span id="q-type-badge" class="badge-type badge-qcm">QCM</span>
+            <div class="question-text" id="question">Chargement...</div>
+            <div class="options-grid" id="options">
+                </div>
+        </div>
+    </div>
+
+    <div id="result-interface" class="result-screen">
+        <h2>Quiz Terminé ! (ساليتي)</h2>
+        <div class="score-circle" id="final-score">0/45</div>
+        <p id="feedback-text">Analyse en cours...</p>
+        
+        <a href="MTU CHAP 1.html" class="btn-action">GO BACK TO LESSON</a>
+        <button onclick="location.reload()" class="btn-action" style="background-color: #7f8c8d; margin-top: 10px;">REJOUER</button>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    // --- DATABASE DES QUESTIONS CHAPITRE 1 (45 Questions) ---
+    // Les réponses correctes sont indiquées par l'index 'a' (0, 1, 2, 3)
+    const quizData = [
+        // --- 30 QCM ---
+        // Organisation et Accès
+        { t: "QCM", q: "Le système d'enseignement supérieur marocain comprend :", o: ["Uniquement le secteur Public", "Le Public, le Privé et le Partenariat Public-Privé", "Seulement les Universités Privées", "Les lycées et collèges"], a: 1 },
+        { t: "QCM", q: "Un établissement à 'Accès Ouvert' (comme la Faculté) est accessible :", o: ["Sur concours uniquement", "À tous les titulaires du Baccalauréat", "Sur dossier scolaire", "Après un entretien oral"], a: 1 },
+        { t: "QCM", q: "Les établissements à 'Accès Régulé' (Ecoles, Instituts) :", o: ["Sont ouverts à tous", "Ont un nombre de places limité et une sélection", "N'existent pas au Maroc", "Ne demandent pas le Bac"], a: 1 },
+        { t: "QCM", q: "Qui dirige l'Université ?", o: ["Le Doyen", "Le Président", "Le Directeur", "Le Ministre directement"], a: 1 },
+        { t: "QCM", q: "Qui dirige une Faculté ?", o: ["Le Président", "Le Doyen", "Le Directeur", "Le Secrétaire Général"], a: 1 },
+        { t: "QCM", q: "Les étudiants sont-ils représentés dans les conseils de l'université ?", o: ["Non, jamais", "Oui, par des représentants élus", "Seulement les délégués de classe", "Oui, par les parents"], a: 1 },
+        
+        // Système LMD (Cycle, Filière, Module)
+        { t: "QCM", q: "Dans le système LMD, quelle est la hiérarchie correcte ?", o: ["Module > Cycle > Filière", "Filière > Module > Cycle", "Cycle > Filière > Module", "Cycle > Module > Filière"], a: 2 },
+        { t: "QCM", q: "Combien de temps dure le cycle Licence (normalement) ?", o: ["2 ans", "3 ans (6 semestres)", "4 ans", "5 ans"], a: 1 },
+        { t: "QCM", q: "Un Module correspond à une matière enseignée sur :", o: ["Une année entière", "Un semestre", "Un mois", "Deux ans"], a: 1 },
+        { t: "QCM", q: "Combien d'heures (cours + éval) comporte un module environ ?", o: ["10 à 20 heures", "40 à 50 heures", "100 heures", "200 heures"], a: 1 },
+        { t: "QCM", q: "Les modules des semestres S1 et S2 constituent :", o: ["La spécialisation", "Le Tronc Commun", "Le Master", "Le Doctorat"], a: 1 },
+        { t: "QCM", q: "Quel diplôme obtient-on après la validation des 4 premiers semestres (S1 à S4) ?", o: ["La Licence", "Le DEUG", "Le Master", "Le Baccalauréat"], a: 1 },
+        { t: "QCM", q: "Quels types de modules trouve-t-on en Licence ?", o: ["Disciplinaires, Langues, Power Skills", "Sport, Musique, Cuisine", "Maths uniquement", "Français uniquement"], a: 0 },
+
+        // Validation et Crédits
+        { t: "QCM", q: "Pour valider un module, il faut une note supérieure ou égale à :", o: ["05/20", "10/20", "12/20", "15/20"], a: 1 },
+        { t: "QCM", q: "Un semestre est validé par compensation si la moyenne est >= 10 et :", o: ["Aucune note n'est inférieure à 5/20", "Aucune note n'est inférieure à 8/20", "Même avec un 0/20", "Si le prof est gentil"], a: 0 },
+        { t: "QCM", q: "Quelle est la note éliminatoire (qui empêche la compensation) ?", o: ["Moins de 10/20", "Moins de 7/20", "Moins de 5/20", "Moins de 3/20"], a: 2 },
+        { t: "QCM", q: "Combien de crédits faut-il pour obtenir la Licence ?", o: ["100 crédits", "180 crédits", "30 crédits", "60 crédits"], a: 1 },
+        { t: "QCM", q: "Combien de crédits valide un semestre ?", o: ["20 crédits", "30 crédits", "40 crédits", "60 crédits"], a: 1 },
+        { t: "QCM", q: "Un module disciplinaire (majeur) vaut généralement :", o: ["1 crédit", "2 crédits", "4 à 5 crédits", "10 crédits"], a: 2 },
+        { t: "QCM", q: "Un module de langue ou soft skills vaut généralement :", o: ["1 crédit", "3 crédits", "5 crédits", "6 crédits"], a: 1 },
+
+        // Modes d'enseignement et Services
+        { t: "QCM", q: "L'enseignement 'Hybride' signifie :", o: ["100% à distance", "100% en classe", "Un mélange de présentiel et de distance", "Un cours enregistré sur cassette"], a: 2 },
+        { t: "QCM", q: "L'enseignement à distance se fait via :", o: ["La poste", "Une plateforme numérique dédiée", "La télévision uniquement", "La radio"], a: 1 },
+        { t: "QCM", q: "Le 'Tutorat' en première année sert à :", o: ["Surveiller les examens", "Aider à l'intégration et la compréhension des cours", "Punir les retards", "Donner les bourses"], a: 1 },
+        { t: "QCM", q: "Le Plagiat (copier sans citer) est :", o: ["Encouragé", "Toléré", "Interdit et sanctionné", "Une preuve d'intelligence"], a: 2 },
+        { t: "QCM", q: "Quel service gère les bourses, le logement et la restauration ?", o: ["Le service de Scolarité", "L'ONOUSC", "Le Doyen", "La Bibliothèque"], a: 1 },
+        { t: "QCM", q: "Quel service gère les inscriptions et les diplômes ?", o: ["Le service de Scolarité", "L'ONOUSC", "Le concierge", "Le Ministère"], a: 0 },
+        { t: "QCM", q: "Que signifie AMO ?", o: ["Association Marocaine d'Organisation", "Assurance Maladie Obligatoire", "Aide Mensuelle aux Oubliés", "Aucune Mauvaise Odeur"], a: 1 },
+        { t: "QCM", q: "À quoi servent les 'Passerelles' ?", o: ["À traverser la rivière", "À se réorienter vers une autre filière", "À sauter une année", "À éviter les examens"], a: 1 },
+        { t: "QCM", q: "Quand peut-on accéder aux 'Centres d'Excellence' ?", o: ["Dès la 1ère année", "Après validation des 4 premiers semestres (S4)", "Après le Doctorat", "N'importe quand"], a: 1 },
+        { t: "QCM", q: "Le travail personnel de l'étudiant nécessite :", o: ["De l'autonomie", "De copier sur les autres", "D'attendre tout du prof", "De ne rien faire"], a: 0 },
+
+        // --- 10 Vrai/Faux ---
+        { t: "V/F", q: "Vrai ou Faux : Les établissements à accès ouvert (Facultés) exigent un concours d'entrée.", o: ["Vrai", "Faux"], a: 1 },
+        { t: "V/F", q: "Vrai ou Faux : Un semestre est validé si j'ai 10 de moyenne générale et un 3/20 en Maths.", o: ["Vrai", "Faux"], a: 1 },
+        { t: "V/F", q: "Vrai ou Faux : Le plagiat peut entraîner des sanctions graves.", o: ["Vrai", "Faux"], a: 0 },
+        { t: "V/F", q: "Vrai ou Faux : L'ONOUSC s'occupe de la couverture sanitaire des étudiants.", o: ["Vrai", "Faux"], a: 0 },
+        { t: "V/F", q: "Vrai ou Faux : On ne peut jamais changer de filière une fois inscrit.", o: ["Vrai", "Faux"], a: 1 },
+        { t: "V/F", q: "Vrai ou Faux : La Licence dure généralement 3 années.", o: ["Vrai", "Faux"], a: 0 },
+        { t: "V/F", q: "Vrai ou Faux : Un module validé donne droit à des crédits (ECTS).", o: ["Vrai", "Faux"], a: 0 },
+        { t: "V/F", q: "Vrai ou Faux : L'enseignement à distance oblige l'étudiant à être présent en classe.", o: ["Vrai", "Faux"], a: 1 },
+        { t: "V/F", q: "Vrai ou Faux : Les étudiants élisent leurs représentants dans les conseils de l'université.", o: ["Vrai", "Faux"], a: 0 },
+        { t: "V/F", q: "Vrai ou Faux : Le DEUG est obtenu après la validation de la 3ème année.", o: ["Vrai", "Faux"], a: 1 },
+
+        // --- 5 Situations ---
+        { t: "SITUATION", q: "Mise en situation : Sara a eu 12/20 de moyenne au S1, mais elle a eu 04/20 en Langues. Son semestre est-il validé ?", o: ["Oui, car la moyenne > 10", "Non, car 4/20 est une note éliminatoire", "Oui, par rattrapage", "Ça dépend du professeur"], a: 1 },
+        { t: "SITUATION", q: "Mise en situation : Ahmed veut changer de filière après son S1 car il n'aime pas ses études. Que doit-il utiliser ?", o: ["Le système des Passerelles", "Abandonner ses études", "Refaire le Bac", "Payer une amende"], a: 0 },
+        { t: "SITUATION", q: "Mise en situation : Vous avez besoin d'une attestation de scolarité. Où allez-vous ?", o: ["Chez le concierge", "Au service de Scolarité", "À la buvette", "À l'ONOUSC"], a: 1 },
+        { t: "SITUATION", q: "Mise en situation : Karim copie un paragraphe d'Internet pour son rapport sans mettre la source. C'est :", o: ["De la recherche", "Du Plagiat", "De l'inspiration", "Autorisé"], a: 1 },
+        { t: "SITUATION", q: "Mise en situation : Vous cherchez un logement universitaire et une bourse. Quel organisme contacter ?", o: ["La Commune", "L'ONOUSC", "Le Ministère des Finances", "La Faculté directement"], a: 1 }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const ui = {
+        question: document.getElementById('question'),
+        options: document.getElementById('options'),
+        progress: document.getElementById('progress'),
+        counter: document.getElementById('q-counter'),
+        score: document.getElementById('score-display'),
+        gameInterface: document.getElementById('game-interface'),
+        resultInterface: document.getElementById('result-interface'),
+        finalScore: document.getElementById('final-score'),
+        feedbackText: document.getElementById('feedback-text'),
+        badge: document.getElementById('q-type-badge')
+    };
+
+    function loadQuestion() {
+        if(currentQuestionIndex >= quizData.length) {
+            endGame();
+            return;
+        }
+
+        const data = quizData[currentQuestionIndex];
+        
+        // Mise à jour de l'affichage
+        ui.question.innerText = data.q;
+        ui.counter.innerText = `Question ${currentQuestionIndex + 1}/${quizData.length}`;
+        ui.score.innerText = `Score: ${score}`;
+        
+        // Badge Type
+        ui.badge.innerText = data.t;
+        ui.badge.className = 'badge-type'; 
+        if(data.t === 'QCM') ui.badge.classList.add('badge-qcm');
+        else if(data.t === 'V/F') ui.badge.classList.add('badge-vf');
+        else ui.badge.classList.add('badge-sit');
+
+        // Barre de progression
+        const progressPercent = ((currentQuestionIndex) / quizData.length) * 100;
+        ui.progress.style.width = `${progressPercent}%`;
+
+        // Générer les boutons
+        ui.options.innerHTML = '';
+        data.o.forEach((option, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = option;
+            btn.onclick = () => checkAnswer(index, btn);
+            ui.options.appendChild(btn);
+        });
+    }
+
+    window.checkAnswer = function(selectedIndex, btnElement) {
+        const allBtns = document.querySelectorAll('.option-btn');
+        allBtns.forEach(btn => btn.disabled = true);
+
+        const correctIndex = quizData[currentQuestionIndex].a;
+
+        if (selectedIndex === correctIndex) {
+            btnElement.classList.add('correct');
+            score++;
+            ui.score.innerText = `Score: ${score}`;
+        } else {
+            btnElement.classList.add('incorrect');
+            if(allBtns[correctIndex]) {
+                allBtns[correctIndex].classList.add('correct');
+            }
+        }
+
+        setTimeout(() => {
+            currentQuestionIndex++;
+            loadQuestion();
+        }, 1000);
+    };
+
+    function endGame() {
+        ui.gameInterface.style.display = 'none';
+        ui.resultInterface.style.display = 'flex';
+        ui.finalScore.innerText = `${score}/${quizData.length}`;
+
+        const percentage = (score / quizData.length) * 100;
+        let msg = "";
+        if (percentage === 100) msg = "Excellent ! Tu connais l'université par cœur ! (تبارك الله عليك)";
+        else if (percentage >= 70) msg = "Très bien ! Tu es prêt pour la vie universitaire.";
+        else if (percentage >= 50) msg = "Pas mal, mais revois quelques règles (LMD, Validation...).";
+        else msg = "Attention, il faut relire le Chapitre 1 pour ne pas être perdu !";
+        
+        ui.feedbackText.innerText = msg;
+    }
+
+    // Lancement du jeu
+    loadQuestion();
+
+});
+</script>
+
+</body>
+</html>

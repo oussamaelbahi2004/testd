@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 2: Niveaux d'Organisation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #2c3e50;
+            
+            /* Code Couleurs Niveaux */
+            --c-chimique: #7f8c8d; /* Gris (Atomes) */
+            --c-cellule: #2980b9;  /* Bleu (Cellule) */
+            --c-organe: #e67e22;   /* Orange (Organisme) */
+            --c-eco: #27ae60;      /* Vert (Ecologie) */
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px;
+            line-height: 1.8;
+        }
+
+        .container { max-width: 850px; margin: 0 auto; }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+            font-weight: 800;
+        }
+
+        h2 {
+            margin-top: 50px;
+            font-size: 1.5em;
+            color: #444;
+            border-left: 6px solid;
+            padding-left: 15px;
+            background: #fff;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            text-transform: uppercase;
+        }
+
+        /* BLOCS */
+        .block {
+            background: white;
+            padding: 25px 30px;
+            padding-bottom: 50px; /* Espace pour le bouton */
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            cursor: pointer;
+            border-left: 5px solid transparent;
+            position: relative;
+            border: 1px solid #eee;
+            transition: all 0.2s;
+        }
+
+        .block:hover {
+            transform: translateX(5px);
+            background-color: #fafafa;
+        }
+
+        /* BOUTON TRADUCTION */
+        .block::after {
+            content: 'أنقر للترجمة ⇄';
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.75em;
+            color: #888;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            padding: 2px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        /* TEXTES */
+        .fr h3, .ar h3 { margin-top: 0; margin-bottom: 15px; font-size: 1.2em; text-transform: uppercase; letter-spacing: 0.5px; }
+        .fr ul, .ar ul { padding-left: 20px; color: #555; }
+        .fr li, .ar li { margin-bottom: 8px; }
+
+        .ar { display: none; font-family: 'Cairo', sans-serif; direction: rtl; text-align: right; color: #b03a2e; }
+        .ar h3 { color: #c0392b; }
+        .ar ul { padding-right: 20px; padding-left: 0; }
+
+        /* Logic Swap */
+        .swapped .fr { display: none; }
+        .swapped .ar { display: block; }
+        .swapped { background-color: #fffbf0; border-color: #f0e6ce; }
+        .swapped::after { content: 'إضغط للرجوع ↩'; color: #d35400; border-color: #d35400; }
+
+        /* COULEURS */
+        .sec-chim { border-color: var(--c-chimique); } .cat-chim { border-left-color: var(--c-chimique); } .cat-chim h3 { color: var(--c-chimique); }
+        .sec-cel { border-color: var(--c-cellule); } .cat-cel { border-left-color: var(--c-cellule); } .cat-cel h3 { color: var(--c-cellule); }
+        .sec-org { border-color: var(--c-organe); } .cat-org { border-left-color: var(--c-organe); } .cat-org h3 { color: var(--c-organe); }
+        .sec-eco { border-color: var(--c-eco); } .cat-eco { border-left-color: var(--c-eco); } .cat-eco h3 { color: var(--c-eco); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>II. NIVEAUX D'ORGANISATION DU MONDE VIVANT</h1>
+
+    <h2 class="sec-chim">1. Le Niveau Chimique (Non Vivant)</h2>
+    
+    <div class="block cat-chim">
+        <div class="fr">
+            <h3>ATOME → MOLÉCULE</h3>
+            <ul>
+                <li><strong>L'Atome :</strong> La plus petite unité de la matière (C, H, O, N). C'est le niveau le plus bas.</li>
+                <li><strong>La Molécule :</strong> Assemblage d'atomes liés chimiquement (ex: Eau $H_2O$, Glucose, ADN).</li>
+                <li><strong>La Macromolécule :</strong> Molécule géante (ex: Protéine, Amidon).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>ذرة ← جزيئة</h3>
+            <ul>
+                <li><strong>الذرة:</strong> أصغر وحدة للمادة (كربون، هيدروجين...). هو المستوى الأدنى.</li>
+                <li><strong>الجزيئة:</strong> تجمع لذرات مرتبطة كيميائياً (مثال: الماء، الغليكوز، ADN).</li>
+                <li><strong>الجزيئة الكبيرة:</strong> جزيئة عملاقة (مثال: بروتين، نشا).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-cel">2. Le Niveau Cellulaire (Début de la Vie)</h2>
+
+    <div class="block cat-cel">
+        <div class="fr">
+            <h3>ORGANITE → CELLULE</h3>
+            <ul>
+                <li><strong>L'Organite :</strong> Structure spécialisée dans la cellule (ex: Mitochondrie, Noyau). Ce n'est pas encore autonome.</li>
+                <li><strong>La Cellule :</strong> L'unité de base structurale et fonctionnelle de tout être vivant. C'est le premier niveau qui possède toutes les caractéristiques de la vie.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>عضي ← خلية</h3>
+            <ul>
+                <li><strong>العضي:</strong> بنية متخصصة داخل الخلية (مثال: ميتوكوندري، نواة). ليس مستقلاً بعد.</li>
+                <li><strong>الخلية:</strong> الوحدة الأساسية البنيوية والوظيفية لكل كائن حي. هو أول مستوى يمتلك جميع خصائص الحياة.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="sec-org">3. Le Niveau Organique (Pluricellulaire)</h2>
+
+    <div class="block cat-org">
+        <div class="fr">
+            <h3>TISSU → ORGANE → SYSTÈME</h3>
+            <ul>
+                <li><strong>Le Tissu :</strong> Groupe de cellules semblables qui accomplissent une fonction commune (ex: Tissu musculaire, Tissu nerveux).</li>
+                <li><strong>L'Organe :</strong> Structure composée de plusieurs tissus agissant ensemble (ex: Cœur, Estomac, Poumon).</li>
+                <li><strong>Le Système (Appareil) :</strong> Ensemble d'organes qui collaborent pour une fonction vitale (ex: Système digestif, Système nerveux).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>نسيج ← عضو ← جهاز</h3>
+            <ul>
+                <li><strong>النسيج:</strong> مجموعة خلايا متشابهة تقوم بوظيفة مشتركة (مثال: نسيج عضلي، نسيج عصبي).</li>
+                <li><strong>العضو:</strong> بنية تتكون من عدة أنسجة تعمل معاً (مثال: القلب، المعدة، الرئة).</li>
+                <li><strong>الجهاز:</strong> مجموعة أعضاء تتعاون من أجل وظيفة حيوية (مثال: الجهاز الهضمي، الجهاز العصبي).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-org">
+        <div class="fr">
+            <h3>L'ORGANISME (L'Individu)</h3>
+            <p>C'est l'être vivant entier (ex: Un être humain, un arbre, un chat). Il est constitué de l'ensemble des systèmes qui travaillent en harmonie pour maintenir la vie.</p>
+        </div>
+        <div class="ar">
+            <h3>الكائن الحي (الفرد)</h3>
+            <p>هو الكائن الحي بأكمله (مثال: إنسان، شجرة، قط). يتكون من مجموع الأجهزة التي تعمل بانسجام للحفاظ على الحياة.</p>
+        </div>
+    </div>
+
+    <h2 class="sec-eco">4. Le Niveau Écologique (Supra-individuel)</h2>
+
+    <div class="block cat-eco">
+        <div class="fr">
+            <h3>POPULATION & BIOCÉNOSE</h3>
+            <ul>
+                <li><strong>La Population :</strong> Ensemble d'individus de la <strong>MÊME espèce</strong> vivant dans la même zone (ex: Un troupeau de zèbres).</li>
+                <li><strong>La Communauté (Biocénose) :</strong> Ensemble de <strong>TOUTES les populations</strong> (différentes espèces) vivant dans une zone (ex: Zèbres + Lions + Herbes + Insectes).</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الساكنة والعشيرة الإحيائية</h3>
+            <ul>
+                <li><strong>الساكنة (Population):</strong> مجموعة أفراد من <strong>نفس النوع</strong> تعيش في نفس المنطقة (مثال: قطيع من الحمير الوحشية).</li>
+                <li><strong>العشيرة الإحيائية (Biocénose):</strong> مجموعة <strong>كل الساكنات</strong> (أنواع مختلفة) التي تعيش في منطقة ما (مثال: حمير وحشية + أسود + أعشاب + حشرات).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="block cat-eco">
+        <div class="fr">
+            <h3>ÉCOSYSTÈME & BIOSPHÈRE</h3>
+            <ul>
+                <li><strong>L'Écosystème :</strong> C'est l'ensemble formé par la Biocénose (les vivants) + le Biotope (le milieu physique : eau, sol, climat) et leurs interactions.</li>
+                <li><strong>La Biosphère :</strong> C'est l'ensemble de tous les écosystèmes de la Terre. C'est la zone de la planète où la vie est possible.</li>
+            </ul>
+        </div>
+        <div class="ar">
+            <h3>الحميلة البيئية والمحيط الحيوي</h3>
+            <ul>
+                <li><strong>الحميلة البيئية (Écosystème):</strong> هي المجموعة المكونة من العشيرة الإحيائية (الكائنات الحية) + المحيا (الوسط الفيزيائي: ماء، تربة، مناخ) وتفاعلاتهم.</li>
+                <li><strong>المحيط الحيوي (Biosphère):</strong> هو مجموع كل الحميلات البيئية في الأرض. هو منطقة الكوكب التي تكون الحياة فيها ممكنة.</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.querySelectorAll('.block').forEach(block => {
+        block.addEventListener('click', () => {
+            block.classList.toggle('swapped');
+        });
+    });
+</script>
+
+</body>
+</html>

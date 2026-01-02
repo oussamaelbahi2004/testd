@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours Langue 1 : La Communication</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Segoe+UI&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db; /* Bleu pour la Communication */
+            --darija-color: #16a085;
+            --bg-color: #f4f6f7;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .instruction {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #ffeeba;
+            margin-bottom: 30px;
+        }
+
+        /* Card Style */
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--accent-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-top: 25px;
+            font-size: 1.2rem;
+        }
+
+        /* Interactive Text Area */
+        .interactive-text {
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #bdc3c7;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .interactive-text:hover {
+            background-color: #e1f5fe;
+            border-left-color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        /* Style spécifique pour la Darija (Active) */
+        .interactive-text.darija-active {
+            border-left-color: var(--darija-color);
+            background-color: #e8f5e9;
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+            font-size: 1.1em;
+            color: #0e6655;
+        }
+
+        .interactive-text::after {
+            content: "👆 Traduire";
+            display: block;
+            font-size: 0.7em;
+            color: #999;
+            text-align: right;
+            margin-top: 5px;
+            opacity: 0.5;
+        }
+        
+        .interactive-text.darija-active::after {
+            text-align: left;
+            content: "👆 Retour au Français";
+        }
+
+        /* Buttons Container */
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-quiz {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-back {
+            background-color: #7f8c8d;
+            color: white;
+        }
+        
+        ul { margin: 0; padding-left: 20px; }
+        li { margin-bottom: 5px; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Cours Langue : La Communication</h1>
+        <p>Licence d'éducation (S1) - ENS Casablanca</p>
+        <div class="instruction">
+            💡 <strong>Mode d'emploi :</strong> Clique sur le texte pour traduire en Darija !
+            <br>(اضغط على النص باش تقرا الشرح بالدارجة)
+        </div>
+    </header>
+
+    <div class="section-card">
+        <h2>1. Définition et Composantes</h2>
+        
+        <div class="interactive-text" 
+             data-darija='كلمة "Communication" جاية من اللاتينية "Communicare" اللي كاتعني تشارك شي حاجة. هي تبادل المعلومات، الأفكار، والأحاسيس بين الناس، ماشي غير "نقل" للمعلومة صافي، ولكن حوار وتفاعل.'>
+            La communication vient du latin « communicare » (partager). C'est l'ensemble des échanges (paroles, gestes) permettant de partager des informations et émotions. Ce n'est pas un simple transfert, c'est une interaction.
+        </div>
+
+        <h3>Les 7 Composantes de la communication</h3>
+        <div class="interactive-text" 
+             data-darija='1. <strong>المُرسِل (Émetteur):</strong> اللي كيصيفط الميساج.<br>2. <strong>المُستقبِل (Récepteur):</strong> اللي كيشد الميساج ويفهمو.<br>3. <strong>الرسالة (Message):</strong> المضمون (هضرة، إشارات).<br>4. <strong>الكود (Code):</strong> اللغة أو الرموز باش كنتواصلو.<br>5. <strong>القناة (Canal):</strong> الوسيلة (صوت، تيليفون، ورقة).<br>6. <strong>السياق (Contexte):</strong> الزمان والمكان والظروف النفسية.<br>7. <strong>الضجيج (Bruit):</strong> أي تشويش كيخسر التواصل (صداع الزنقة، أو السرحان).'>
+            1. <strong>L'émetteur :</strong> La source qui crée le message.<br>
+            2. <strong>Le récepteur :</strong> Celui qui reçoit et interprète.<br>
+            3. <strong>Le message :</strong> Le contenu transmis (mots, gestes).<br>
+            4. <strong>Le code :</strong> La langue, les symboles utilisés.<br>
+            5. <strong>Le canal :</strong> Le moyen de diffusion (oral, écrit, visuel).<br>
+            6. <strong>Le contexte :</strong> L'environnement physique, social et psychologique.<br>
+            7. <strong>Le bruit :</strong> Perturbations techniques ou psychologiques qui nuisent au message.
+        </div>
+
+        <h3>Le Feed-back (Rétroaction)</h3>
+        <div class="interactive-text" 
+             data-darija='الـ Feed-back هو القلب ديال التواصل. هو الجواب ديال المُستقبِل باش نتأكدو واش الميساج وصل وفهمو مزيان. يقدر يكون إيجابي (تصنت، تفاعل) أو سلبي (تجاهل، فهم غلط).'>
+            Le feed-back est le retour du récepteur vers l'émetteur. Il permet de vérifier la compréhension. Il peut être positif (écouter, clarifier) ou négatif (ignorer, déformer).
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>2. Les Théories de la Communication</h2>
+
+        <h3>A. Modèle de Shannon & Weaver (1949)</h3>
+        <div class="interactive-text" 
+             data-darija='هذا نموذج "ميكانيكي" خطي (بحال التيليفون). كيشوف التواصل غير نقل د المعلومة من A لـ B. عيبو أنه كينسى الجانب النفسي ومافيهش الـ Feedback.'>
+            Approche mécaniste et linéaire. La communication est vue comme une transmission d'information d'un point A à un point B. Limite : ignore le feedback et les dimensions psychologiques.
+        </div>
+
+        <h3>B. Modèle de Lasswell (1948)</h3>
+        <div class="interactive-text" 
+             data-darija='لازويل لخص التواصل فـ 5 ديال الأسئلة: شكون؟ (Émetteur) قال شنو؟ (Message) بآش من طريقة؟ (Canal) لمن؟ (Récepteur) وشنو الأثر؟ (Effet). كيركز بزاف على التأثير والإقناع.'>
+            Approche fonctionnaliste basée sur 5 questions : Qui ? Dit quoi ? Par quel canal ? À qui ? Avec quel effet ? Se concentre sur l'influence et la persuasion.
+        </div>
+
+        <h3>C. La Cybernétique (Wiener)</h3>
+        <div class="interactive-text" 
+             data-darija='وينر زاد فكرة الـ "Feed-back". يعني التواصل ولا دائري، كاين أخذ ورد بين المرسل والمستقبل.'>
+            Wiener introduit le concept de feed-back (rétroaction). La communication devient circulaire et interactive.
+        </div>
+
+        <h3>D. École de Palo Alto (Watzlawick)</h3>
+        <div class="interactive-text" 
+             data-darija='هاد المدرسة كتقول أن التواصل "سيستيم" (Nidham). أهم المبادئ ديالها:<br>1. <strong>ميمكنش ليك ماتواصلش:</strong> حتى السكات والنظرات راه ميساج.<br>2. <strong>المضمون والعلاقة:</strong> "كيفاش قلتيها" أهم من "شنو قلتي".<br>3. <strong>التواصل الرقمي والتماثلي:</strong> الهضرة (Digital) ولغة الجسد (Analogique).'>
+            Approche systémique. Principes clés :<br>
+            1. <strong>On ne peut pas ne pas communiquer :</strong> Tout comportement est message (même le silence).<br>
+            2. <strong>Contenu et Relation :</strong> La relation influence le sens du contenu.<br>
+            3. <strong>Digital et Analogique :</strong> Verbal (mots) et Non-verbal (gestes).
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>3. Types de Communication</h2>
+        
+        <div class="interactive-text" 
+             data-darija='<strong>1. التواصل بين الأشخاص (Interpersonnelle):</strong> مباشر، وجه لوجه أو تليفون، بين جوج ناس أو كثر.<br><strong>2. التواصل التنظيمي (Organisationnelle):</strong> داخل الشركات والإدارات. فيه 3 أنواع: هابط (من المدير للموظف)، طالع (من الموظف للمدير)، وأفقي (بين الزملاء).'>
+            <strong>1. Interpersonnelle :</strong> Directe, entre individus (échange d'infos, relation).<br>
+            <strong>2. Organisationnelle :</strong> Au sein d'une structure. Elle peut être descendante (direction vers employés), ascendante (employés vers direction) ou latérale (entre collègues).
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>4. Modes : Verbal et Non-Verbal</h2>
+
+        <h3>A. Verbal (Mots)</h3>
+        <div class="interactive-text" 
+             data-darija='التواصل اللفظي كيكون بالكلمات، إما شفويا (Oral) باستعمال الصوت والنبرة، أو كتابيا (Écrit) بحال الإيميلات والتقارير.'>
+            Utilise les mots. Peut être oral (voix, intonation) ou écrit (lettres, mails, rapports).
+        </div>
+
+        <h3>B. Non-Verbal (Langage du corps)</h3>
+        <div class="interactive-text" 
+             data-darija='التواصل غير اللفظي مهم بزاف وهو اللي كيحدد الانطباع الأول. كيشمل: حركات اليدين، تعابير الوجه، الشوفة، اللبس، والروائح.'>
+            Le langage du corps détermine souvent la première impression. Inclut : gestes, postures, regard, habillement, odeurs, mimiques.
+        </div>
+
+        <h3>Les Postures (وضعيات الجسد)</h3>
+        <div class="interactive-text" 
+             data-darija='<strong>1. الخضوع (Soumission):</strong> راس محني، كتاف طايحين (كايصغر راسو).<br><strong>2. الهيمنة (Dominance):</strong> كتاف محلولين، راس مهزوز (كايعمر البلاصة).<br><strong>3. الرفض (Rejet):</strong> عاطي بالجنب بحال الملاكم.<br><strong>4. المشاركة (Partage):</strong> مايل القدام، يدين محلولين (مهتم).'>
+            <strong>1. Soumission :</strong> Contraction, tête rentrée (se faire petit).<br>
+            <strong>2. Dominance :</strong> Extension, épaules ouvertes (occuper l'espace).<br>
+            <strong>3. Rejet :</strong> De profil, regard détourné.<br>
+            <strong>4. Partage :</strong> Buste en avant, mains ouvertes (intérêt).
+        </div>
+
+        <h3>La Proxémie (المسافات ديال Hall)</h3>
+        <div class="interactive-text" 
+             data-darija='إدوارد هول قسم المسافات بين الناس لـ 4 مناطق:<br>1. <strong>الحميمة (Intime):</strong> (0-60 سم) للأسرار والناس القراب بزاف.<br>2. <strong>الشخصية (Personnelle):</strong> (60-120 سم) للأصدقاء والمعارف.<br>3. <strong>الاجتماعية (Sociale):</strong> (1.2-3 متر) للخدمة والتفاوض.<br>4. <strong>العمومية (Publique):</strong> (أكثر من 3 متر) للخطابات والجمهور.'>
+            Edward T. Hall a défini 4 zones de distance :<br>
+            1. <strong>Intime (0-60 cm) :</strong> Secrets, proches.<br>
+            2. <strong>Personnelle (60cm-1.2m) :</strong> Amis, conversations privées.<br>
+            3. <strong>Sociale (1.2m-3m) :</strong> Travail, négociation.<br>
+            4. <strong>Publique (+3m) :</strong> Discours, face à un groupe.
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>5. Les Facteurs Filtrants (Les obstacles)</h2>
+        <p>Ce qui déforme le message entre l'émetteur et le récepteur.</p>
+
+        <div class="interactive-text" 
+             data-darija='<strong>1. عوامل سوسيولوجية:</strong> الثقافة، والوسط الاجتماعي.<br><strong>2. عوامل نفسية:</strong> المزاج، العواطف، والتجارب القديمة.<br><strong>3. عوامل فكرية:</strong> مستوى القراية والذكاء.<br><strong>4. تأثير الهالة (Effet de Halo):</strong> ملي انطباع واحد (إيجابي أو سلبي) كيخليك تحكم على الشخص كامل.'>
+            <strong>1. Sociologiques :</strong> Culture, normes, statut social.<br>
+            <strong>2. Psychologiques :</strong> Émotions, humeurs, préjugés.<br>
+            <strong>3. Intellectuels :</strong> Niveau de connaissance, logique.<br>
+            <strong>4. Effet de Halo :</strong> Une première impression (bonne ou mauvaise) influence tout le jugement sur la personne.
+        </div>
+
+        <h3>Les modifications du message</h3>
+        <div class="interactive-text" 
+             data-darija='الميساج كيتبدل بسبب:<br>- النسيان (Diminution).<br>- التفسير الشخصي (Interprétation).<br>- الزيادة من عندك (Ajout).<br>- الاستنتاج الخاص (Déduction).'>
+            Le message subit des modifications : oubli de détails, interprétation personnelle, déduction erronée, ou ajout d'informations par le récepteur.
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>6. Conditions d'efficacité</h2>
+        
+        <div class="interactive-text" 
+             data-darija='باش التواصل ينجح، خاص:<br>- تحترم لاخور وتقبل الاختلاف ديالو.<br>- تعرف تسمع مزيان (Écoute active).<br>- تكون عندك ثقة فالنفس وعارف هدفك.<br>- تكثر من الـ Feed-back باش تأكد من الفهم.'>
+            Pour une communication efficace :<br>
+            - Reconnaître et accepter l'autre (différences, valeurs).<br>
+            - Savoir écouter activement.<br>
+            - Avoir confiance en soi et connaître son objectif.<br>
+            - Multiplier le feed-back pour vérifier la compréhension.
+        </div>
+    </div>
+
+    <div class="buttons-container">
+      <a href="game5.html" class="btn btn-quiz" >PASSER LE QUIZ</a>
+        <a href="index.html" class="btn btn-back">GET BACK</a>
+    </div>
+
+</div>
+
+<script>
+    const textElements = document.querySelectorAll('.interactive-text');
+
+    textElements.forEach(element => {
+        // Stocker le HTML original
+        element.dataset.french = element.innerHTML;
+
+        element.addEventListener('click', () => {
+            if (element.classList.contains('darija-active')) {
+                // Retour au français
+                element.innerHTML = element.dataset.french;
+                element.classList.remove('darija-active');
+            } else {
+                // Passage en Darija
+                if(element.dataset.darija) {
+                    element.innerHTML = element.dataset.darija;
+                    element.classList.add('darija-active');
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+
+</html>

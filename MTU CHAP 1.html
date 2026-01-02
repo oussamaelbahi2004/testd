@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapitre 1 : La Vie à l'Université</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Segoe+UI&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c; /* Rouge pour le Chapitre 1 */
+            --darija-color: #27ae60;
+            --bg-color: #fdfefe;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .instruction {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #ffeeba;
+            margin-bottom: 30px;
+        }
+
+        /* Card Style */
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--accent-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-top: 25px;
+            font-size: 1.2rem;
+        }
+
+        /* Interactive Text Area */
+        .interactive-text {
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #bdc3c7;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .interactive-text:hover {
+            background-color: #ffebee;
+            border-left-color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        /* Style spécifique pour la Darija (Active) */
+        .interactive-text.darija-active {
+            border-left-color: var(--darija-color);
+            background-color: #e8f5e9;
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+            font-size: 1.1em;
+            color: #0e6655;
+        }
+
+        .interactive-text::after {
+            content: "👆 Traduire";
+            display: block;
+            font-size: 0.7em;
+            color: #999;
+            text-align: right;
+            margin-top: 5px;
+            opacity: 0.5;
+        }
+        
+        .interactive-text.darija-active::after {
+            text-align: left;
+            content: "👆 Retour au Français";
+        }
+
+        /* Buttons Container */
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-quiz {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-back {
+            background-color: #7f8c8d;
+            color: white;
+        }
+        
+        ul { margin: 0; padding-left: 20px; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Chapitre 1 : La Vie à l'Université</h1>
+        <p>Méthodologie de Travail Universitaire (MTU)</p>
+        <div class="instruction">
+            💡 <strong>Mode d'emploi :</strong> Clique sur le texte pour traduire en Darija !
+            <br>(اضغط على النص باش تقرا الشرح بالدارجة)
+        </div>
+    </header>
+
+    <div class="section-card">
+        <h2>1. Bienvenue & Introduction</h2>
+        
+        <div class="interactive-text" 
+             data-darija='مرحبا بكم فالجامعة! هادي ماشي غير بلاصة د القراية، ولكن فضاء للعيش، التطور، ولقاء طلبة من ثقافات مختلفة. هاد الموديل موجه للطلبة الجداد باش يسهل عليهم الاندماج.'>
+            L'université est un lieu d'apprentissage, d'épanouissement et d'échanges. Ce module est consacré aux nouveaux inscrits pour préparer leur cycle de licence.
+        </div>
+
+        <div class="interactive-text" 
+             data-darija='قصة مهدي: مهدي يلاه شد الباك، وواقف قدام باب الجامعة دايخ. كيتساءل كيفاش يتأقلم، ينظم وقتو، وينجح. هاد الدرس غايجاوب على أسئلتو كاملة.'>
+            Exemple de Mehdi : Nouveau bachelier, il se pose des questions sur l'adaptation, la gestion du temps et les ressources pour réussir. Ce module vise à lui fournir les outils nécessaires.
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>2. Le Système d'Enseignement Supérieur</h2>
+        <p>Au Maroc, le système comprend trois secteurs sous la tutelle du Ministère :</p>
+
+        <div class="interactive-text" 
+             data-darija='<strong>1. التعليم العالي العمومي (Public):</strong> بحال الجامعات والمدارس العليا.<br><strong>2. التعليم العالي الخاص (Privé):</strong> جامعات ومدارس بتمويل خاص.<br><strong>3. الشراكة (Partenariat Public-Privé):</strong> مؤسسات غير ربحية لتدويل التعليم.'>
+            <strong>1. Public :</strong> Universités et établissements sous tutelle ministérielle.<br>
+            <strong>2. Privé :</strong> Créé par initiatives privées.<br>
+            <strong>3. Partenariat Public-Privé :</strong> Fondations à but non lucratif.
+        </div>
+
+        <h3>Accès (Dakhla)</h3>
+        <div class="interactive-text" 
+             data-darija='كاين جوج أنواع د المؤسسات:<br><strong>1. ذات الولوج المفتوح (Accès Ouvert):</strong> كدخل ليها غير بالباك (بحال لافاك د الآداب أو القانون).<br><strong>2. ذات الولوج المحدود (Accès Régulé):</strong> الدخول فيها بالكونكور والانتقاء (Sélection) وعدد المقاعد محدود.'>
+            <strong>1. Accès Ouvert :</strong> Pour tous les bacheliers (ex: Facultés).<br>
+            <strong>2. Accès Régulé :</strong> Admission limitée sur étude de dossier ou concours (ex: Écoles, Instituts).
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>3. Organisation de l'Université</h2>
+
+        <div class="interactive-text" 
+             data-darija='الجامعة كيسيرها "رئيس الجامعة" (Président) ومجلس الجامعة. المؤسسات (بحال الكليات) كيسيرها "العميد" (Doyen) أو "المدير" (Directeur).'>
+            L'université est dirigée par un Président et un Conseil. Les établissements (facultés, écoles) sont dirigés par des Doyens ou Directeurs.
+        </div>
+
+        <div class="interactive-text" 
+             data-darija='مهم بزاف: الطلبة عندهم ممثلين (Représentants) فالكليات ومجلس الجامعة. هاد الممثلين كيدافعو على حقوق الطلبة وكيوصلو صوتهم للإدارة.'>
+            Les étudiants sont représentés par des élus dans les conseils (Université, Établissement). Ils défendent les intérêts des étudiants et participent aux décisions.
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>4. Organisation Pédagogique (Système LMD)</h2>
+        <p>Le système est structuré en : Cycle > Filière > Module.</p>
+
+        <div class="interactive-text" 
+             data-darija='<strong>1. السلك (Cycle):</strong> المراحل الكبار: إجازة (Licence)، ماستر، دكتوراه.<br><strong>2. المسلك (Filière):</strong> التخصص اللي ختاريتي، فيه مجموعة د الموادي.<br><strong>3. الوحدة (Module):</strong> هي المادة، وكتقرا فسميستر واحد (40-50 ساعة).'>
+            <strong>1. Cycle :</strong> Étapes successives (Licence, Master, Doctorat).<br>
+            <strong>2. Filière :</strong> Cursus de formation avec un ensemble de modules.<br>
+            <strong>3. Module :</strong> Unité fondamentale (Matière) de 40 à 50 heures sur un semestre.
+        </div>
+
+        <h3>Architecture de la Licence (3 ans)</h3>
+        <div class="interactive-text" 
+             data-darija='<strong>السنة 1 (S1-S2):</strong> 10 مواد تخصص، 2 لغات، Digital Skills، و Soft Skills (MTU).<br><strong>السنة 2 (S3-S4):</strong> 10 مواد تخصص، لغات، Culture & Art Skills. كتاخد فيها DEUG.<br><strong>السنة 3 (S5-S6):</strong> التخصص والمهنية (Professional Skills).'>
+            <strong>Année 1 :</strong> Disciplinaire + Langues + Digital/Soft Skills.<br>
+            <strong>Année 2 :</strong> Disciplinaire + Culture & Art Skills (Diplôme DEUG).<br>
+            <strong>Année 3 :</strong> Spécialisation et Professional Skills.
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>5. Validation et Crédits</h2>
+        
+        <div class="interactive-text" 
+             data-darija='<strong>التنقيط:</strong> باش تڤاليدي "Module" خاصك تجيب 10/20. السمستر كيتڤاليدى يلا جبتي المعدل العام 10/20 (بشرط ماعندك حتى نقطة قل من 5/20 فشي مادة) - هادشي كيتسمى التعويض (Compensation).'>
+            Un module est validé avec une note ≥ 10/20. Le semestre est validé par compensation si la moyenne ≥ 10/20 (aucune note < 5/20).
+        </div>
+
+        <div class="interactive-text" 
+             data-darija='<strong>الرصيد (Crédits):</strong> كل موديل عندو "وزن". مواد التخصص فيها 4-5 كريدي، واللغات/Soft Skills فيهم 3 كريدي. باش تشد الإجازة خاصك تجمع 180 كريدي (30 فكل سمستر).'>
+            Chaque module a un nombre de crédits. Modules disciplinaires = 4-5 crédits. Langues/Skills = 3 crédits. Total Licence = 180 crédits (30 par semestre).
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>6. Les Modes d'Enseignement</h2>
+        
+        <div class="interactive-text" 
+             data-darija='<strong>1. الحضوري (Présentiel):</strong> القراية فلقسم مع الأستاذ.<br><strong>2. عن بعد (À distance):</strong> منصة فيها فيديوهات وتمارين، كتقرا فوقت ما بغيتي.<br><strong>3. الهجين (Hybride):</strong> مخلط بين الحضوري وعن بعد.'>
+            <strong>1. Présentiel :</strong> En classe, temps réel.<br>
+            <strong>2. À distance :</strong> Plateforme, capsules vidéo, autonomie.<br>
+            <strong>3. Hybride :</strong> Combinaison des deux.
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>7. Règles et Services Utiles</h2>
+
+        <h3>Plagiat & Travail Personnel</h3>
+        <div class="interactive-text" 
+             data-darija='ممنوع تنقل (Copier-coller) فالبحوث ديالك. هادشي سميتو Plagiat وعليه عقوبات. خاصك تكتب بأسلوبك ودير المراجع (Références). خاصك تعلم تخدم بوحدك (Autonomie).'>
+            Le plagiat (copier sans citer) est interdit et sanctionné. Il faut développer son propre style et citer les sources. Le travail personnel et l'autonomie sont clés.
+        </div>
+
+        <h3>Services (ONOUSC & Scolarité)</h3>
+        <div class="interactive-text" 
+             data-darija='<strong>مصلحة الطلبة (Scolarité):</strong> هي اللي مكلفة بالتسجيل، "الرويليفي"، والديبلومات.<br><strong>ONOUSC:</strong> المكتب الوطني للأعمال الجامعية، هو اللي مكلف بالمنحة (Bourse)، الحي الجامعي، والمطعم.'>
+            <strong>Scolarité :</strong> Gestion des inscriptions, relevés de notes, diplômes.<br>
+            <strong>ONOUSC :</strong> Gère la bourse, l'hébergement (cité), la restauration et la couverture sanitaire.
+        </div>
+
+        <h3>Tutoring & Passerelles</h3>
+        <div class="interactive-text" 
+             data-darija='<strong>Tutorat (المواكبة):</strong> فالعام الأول، كيكون عندك "توتور" كيعاونك تفهم الدروس.<br><strong>Passerelles (الجسور):</strong> يلا ماعجباتكش الشعبة، تقدر تبدل لشعبة أخرى أو مؤسسة أخرى بلا ماتضيع داكشي لي قريتي.'>
+            <strong>Tutorat :</strong> Aide à la compréhension des cours en 1ère année.<br>
+            <strong>Passerelles :</strong> Possibilité de se réorienter vers une autre filière ou établissement en conservant ses acquis.
+        </div>
+    </div>
+
+    <div class="buttons-container">
+     <a href="game2.html" class="btn btn-quiz" >PASSER LE QUIZ</a>
+        <a href="index.html" class="btn btn-back">GET BACK</a>
+    </div>
+
+</div>
+
+<script>
+    const textElements = document.querySelectorAll('.interactive-text');
+
+    textElements.forEach(element => {
+        // Stocker le HTML original
+        element.dataset.french = element.innerHTML;
+
+        element.addEventListener('click', () => {
+            if (element.classList.contains('darija-active')) {
+                // Retour au français
+                element.innerHTML = element.dataset.french;
+                element.classList.remove('darija-active');
+            } else {
+                // Passage en Darija
+                if(element.dataset.darija) {
+                    element.innerHTML = element.dataset.darija;
+                    element.classList.add('darija-active');
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
+
+

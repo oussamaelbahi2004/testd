@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - ORG VIV SYSTEM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- RESET & BODY --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-image: url("https://images.pexels.com/photos/8801154/pexels-photo-8801154.jpeg");
+            position: relative;
+            overflow-x: hidden;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* --- BACKGROUND ANIMATION (ORBS) --- */
+        .bg-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            filter: blur(40px);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .orb:nth-child(1) { width: 200px; height: 200px; top: 20%; left: 10%; animation-delay: 0s; }
+        .orb:nth-child(2) { width: 150px; height: 150px; top: 60%; right: 15%; animation-delay: 2s; }
+        .orb:nth-child(3) { width: 100px; height: 100px; top: 80%; left: 60%; animation-delay: 4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* --- QUIZ CONTAINER --- */
+        .quiz-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 40px 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            color: white;
+        }
+
+        /* --- HEADER --- */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 15px;
+        }
+
+        .question-count, .score-display {
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        /* --- QUESTION TEXT --- */
+        .question-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-align: center;
+            line-height: 1.4;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* --- OPTIONS --- */
+        .option-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-btn {
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(100%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 0.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px; 
+            padding: 20px 25px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(255, 255, 255, 0.1) inset;
+            min-height: 70px;
+            display: flex;
+            align-items: center; 
+            justify-content: flex-start;
+            color: white;
+            font-size: 1.1rem;
+            text-align: left;
+            width: 100%;
+        }
+
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px; right: -1px; bottom: -1px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 30%, transparent 50%, rgba(255,255,255,0.05) 70%, rgba(255,255,255,0.15) 100%);
+            border-radius: 21px; 
+            filter: blur(0.5px);
+            z-index: 0;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
+            border-radius: 20px 20px 32px 32px;
+            pointer-events: none;
+            opacity: 0.8;
+            z-index: 0;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-4px) scale(1.02); 
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18), 0 2px 4px rgba(255, 255, 255, 0.12) inset;
+        }
+
+        .option-btn span {
+            position: relative;
+            z-index: 2;
+            font-weight: 500;
+        }
+
+        .option-btn.correct {
+            background: rgba(99, 255, 132, 0.25) !important;
+            border-color: rgba(99, 255, 132, 0.6) !important;
+            box-shadow: 0 0 20px rgba(99, 255, 132, 0.3) !important;
+        }
+
+        .option-btn.wrong {
+            background: rgba(255, 99, 99, 0.25) !important;
+            border-color: rgba(255, 99, 99, 0.6) !important;
+            box-shadow: 0 0 20px rgba(255, 99, 99, 0.3) !important;
+        }
+
+        .disabled {
+            pointer-events: none;
+        }
+
+        /* --- BUTTONS --- */
+        .next-btn {
+            display: none;
+            width: 100%;
+            margin-top: 30px;
+            padding: 15px;
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+        .next-btn:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+
+        .end-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: 0.3s;
+            z-index: 10;
+        }
+        .end-btn:hover { background: rgba(231, 76, 60, 0.8); }
+
+        /* --- MUSIC PLAYER --- */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+        .music-player:hover { background: rgba(0, 0, 0, 0.8); }
+        .music-btn {
+            background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; width: 30px; height: 30px;
+        }
+        .music-btn:hover { color: #3498db; }
+        .playing-indicator { width: 8px; height: 8px; background-color: #2ecc71; border-radius: 50%; box-shadow: 0 0 10px #2ecc71; animation: pulse-green 1.5s infinite; }
+        .paused-indicator { width: 8px; height: 8px; background-color: #e74c3c; border-radius: 50%; }
+        @keyframes pulse-green { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* --- RESULT SCREEN --- */
+        .result-screen { text-align: center; display: none; }
+        .final-score { font-size: 4rem; font-weight: 800; margin: 20px 0; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.5); }
+        .restart-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .restart-btn:hover { background: white; color: black; }
+
+        @media (max-width: 768px) {
+            .quiz-container { padding: 20px; border-radius: 20px; }
+            .question-text { font-size: 1.3rem; }
+            .option-btn { min-height: 60px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <div class="music-player">
+        <div id="status-indicator" class="paused-indicator"></div>
+        <button class="music-btn" onclick="toggleMusic()" id="music-toggle-btn">
+            <i class="fas fa-play"></i>
+        </button>
+        <audio id="bg-music" loop autoplay>
+            <source src="https://raw.githubusercontent.com/oussamaelbahi2004/sher/main/WhatsApp%20Video%202025-12-31%20at%2010.40.16%20PM.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <a href="index.html" class="end-btn">
+        <i class="fas fa-sign-out-alt"></i> QUIT
+    </a>
+
+    <div class="quiz-container">
+        <div id="game-screen">
+            <div class="quiz-header">
+                <div class="question-count">Question <span id="q-index">1</span>/20</div>
+                <div class="score-display">Score: <span id="score">0</span></div>
+            </div>
+            <div class="question-text" id="question">Chargement...</div>
+            <div class="option-container" id="options"></div>
+            <button class="next-btn" id="next-btn" onclick="nextQuestion()">Suivant <i class="fas fa-arrow-right"></i></button>
+        </div>
+
+        <div id="result-screen" class="result-screen">
+            <h2>Quiz Terminé !</h2>
+            <p>Votre score final :</p>
+            <div class="final-score"><span id="final-score">0</span> / 20</div>
+            <p id="feedback-msg">Bravo !</p>
+            <button class="restart-btn" onclick="location.reload()">Rejouer</button>
+            <br><br>
+            <a href="menu.html" style="color: rgba(255,255,255,0.6); text-decoration: none;">Retour au Menu</a>
+        </div>
+    </div>
+
+<script>
+    // --- AUDIO LOGIC ---
+    const bgMusic = document.getElementById("bg-music");
+    const musicBtn = document.getElementById("music-toggle-btn");
+    const statusIndicator = document.getElementById("status-indicator");
+    let isPlaying = false;
+
+    bgMusic.volume = 0.5;
+
+    // Tentative de lecture automatique
+    // La plupart des navigateurs bloquent l'autoplay audio s'il n'y a pas d'interaction.
+    // On essaie quand même, et on met à jour l'UI si ça marche.
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            // Autoplay a fonctionné
+            updateMusicUI(true);
+        })
+        .catch(error => {
+            // Autoplay bloqué -> On attend le premier clic n'importe où pour lancer
+            console.log("Autoplay bloqué par le navigateur. En attente d'interaction.");
+            document.addEventListener('click', () => {
+                if(!isPlaying) {
+                    bgMusic.play();
+                    updateMusicUI(true);
+                }
+            }, { once: true });
+        });
+    }
+
+    function toggleMusic() {
+        if (isPlaying) {
+            bgMusic.pause();
+            updateMusicUI(false);
+        } else {
+            bgMusic.play();
+            updateMusicUI(true);
+        }
+    }
+
+    function updateMusicUI(playing) {
+        isPlaying = playing;
+        if (playing) {
+            musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            statusIndicator.className = 'playing-indicator';
+        } else {
+            musicBtn.innerHTML = '<i class="fas fa-play"></i>';
+            statusIndicator.className = 'paused-indicator';
+        }
+    }
+
+    // --- QUIZ LOGIC (100 QUESTIONS) ---
+    const allQuestions = [
+        { q: "Quelle fonction permet de percevoir les changements de l'environnement ?", a: "La fonction de Relation", opt: ["La fonction de Nutrition", "La fonction de Reproduction", "L'Homéostasie"] },
+        { q: "L'ensemble des réactions chimiques (Anabolisme + Catabolisme) s'appelle :", a: "Le Métabolisme", opt: ["L'Homéostasie", "La Digestion", "L'Excrétion"] },
+        { q: "L'eau représente environ quel pourcentage du corps humain ?", a: "65% à 70%", opt: ["30% à 40%", "90% à 95%", "10% à 15%"] },
+        { q: "Quel élément est un Macro-élément ?", a: "Le Calcium", opt: ["Le Fer", "L'Iode", "Le Zinc"] },
+        { q: "Quelle molécule est le support de l'information génétique ?", a: "L'ADN", opt: ["L'ARN", "Les Protéines", "Les Lipides"] },
+        { q: "Les Glucides sont principalement :", a: "Une source d'énergie", opt: ["Des matériaux de construction", "Des hormones", "Des catalyseurs"] },
+        { q: "Quelle vitamine est hydrosoluble (soluble dans l'eau) ?", a: "Vitamine C", opt: ["Vitamine A", "Vitamine D", "Vitamine K"] },
+        { q: "L'unité structurelle de tout être vivant est :", a: "La Cellule", opt: ["L'Atome", "L'Organe", "La Molécule"] },
+        { q: "Le niveau d'organisation le plus bas (non vivant) est :", a: "Le niveau chimique", opt: ["Le niveau cellulaire", "Le niveau tissulaire", "Le niveau écologique"] },
+        { q: "Un ensemble de cellules semblables accomplissant une même fonction forme :", a: "Un Tissu", opt: ["Un Organe", "Un Système", "Un Organisme"] },
+        { q: "L'ensemble des individus de la MÊME espèce vivant dans une zone est :", a: "Une Population", opt: ["Une Biocénose", "Un Écosystème", "Une Biosphère"] },
+        { q: "La Biocénose + Le Biotope forment :", a: "Un Écosystème", opt: ["Une Population", "Une Communauté", "Un Organisme"] },
+        { q: "Quel organite n'est pas autonome ?", a: "Mitochondrie", opt: ["Bactérie", "Cellule", "Amibe"] },
+        { q: "Quel niveau possède toutes les caractéristiques de la vie ?", a: "La Cellule", opt: ["L'Atome", "La Molécule", "L'Organite"] },
+        { q: "L'ensemble de tous les écosystèmes de la Terre s'appelle :", a: "La Biosphère", opt: ["La Lithosphère", "L'Atmosphère", "L'Hydrosphère"] },
+        { q: "Le cœur est un exemple de :", a: "Organe", opt: ["Tissu", "Système", "Cellule"] },
+        { q: "Quelle cavité contient le cerveau ?", a: "Cavité Crânienne", opt: ["Cavité Thoracique", "Cavité Abdominale", "Canal Vertébral"] },
+        { q: "Quel muscle sépare la cavité thoracique de la cavité abdominale ?", a: "Le Diaphragme", opt: ["Le Cœur", "L'Estomac", "Les Intercostaux"] },
+        { q: "Le système endocrinien régule le corps grâce aux :", a: "Hormones", opt: ["Nerfs", "Muscles", "Os"] },
+        { q: "Quelle fonction est vitale pour l'espèce mais pas pour l'individu ?", a: "Reproduction", opt: ["Nutrition", "Relation", "Excrétion"] },
+        { q: "Le système tégumentaire correspond à :", a: "La Peau", opt: ["Les Os", "Les Muscles", "Le Sang"] },
+        { q: "Où se trouve la moelle épinière ?", a: "Dans le canal vertébral", opt: ["Dans le crâne", "Dans le thorax", "Dans l'abdomen"] },
+        { q: "Quel système transporte les nutriments et l'oxygène ?", a: "Circulatoire", opt: ["Digestif", "Respiratoire", "Urinaire"] },
+        { q: "L'appareil urinaire sert à :", a: "Éliminer les déchets toxiques", opt: ["Digérer les aliments", "Respirer", "Produire des hormones"] },
+        { q: "La membrane plasmique est constituée d'une double couche de :", a: "Phospholipides", opt: ["Glucides", "Protéines", "Acides nucléiques"] },
+        { q: "Quel organite est la 'centrale électrique' de la cellule ?", a: "Mitochondrie", opt: ["Noyau", "Ribosome", "Golgi"] },
+        { q: "Le Réticulum Endoplasmique Rugueux (RER) porte des :", a: "Ribosomes", opt: ["Lysosomes", "Mitochondries", "Flagelles"] },
+        { q: "Quel organite sert à l'emballage et l'expédition des protéines ?", a: "Appareil de Golgi", opt: ["Noyau", "Lysosome", "REL"] },
+        { q: "Les Lysosomes contiennent des :", a: "Enzymes digestives", opt: ["Information génétique", "Pigments verts", "Réserves d'eau"] },
+        { q: "Le Chloroplaste est le siège de :", a: "La Photosynthèse", opt: ["La Respiration", "La Digestion", "La Synthèse des protéines"] },
+        { q: "Quelle structure permet le mouvement des spermatozoïdes ?", a: "Le Flagelle", opt: ["Les Cils", "Les Pili", "Le Cytosquelette"] },
+        { q: "Le Glycocalyx se trouve :", a: "Sur la face externe de la membrane", opt: ["Dans le noyau", "Dans la mitochondrie", "Sur la face interne"] },
+        { q: "Une cellule procaryote se caractérise par :", a: "L'absence de noyau vrai", opt: ["La présence de mitochondries", "Une grande taille", "La pluricellularité"] },
+        { q: "De quoi est faite la paroi des bactéries ?", a: "Peptidoglycane", opt: ["Cellulose", "Chitine", "Phospholipides"] },
+        { q: "Comment s'appelle l'ADN circulaire supplémentaire des bactéries ?", a: "Plasmide", opt: ["Chromosome", "Nucléole", "Histone"] },
+        { q: "Le mode de reproduction des bactéries est :", a: "La Scissiparité", opt: ["La Mitose", "La Méiose", "La Fécondation"] },
+        { q: "Quel élément est facultatif chez une bactérie ?", a: "La Capsule", opt: ["La Membrane plasmique", "Le Ribosome", "L'ADN"] },
+        { q: "Les bactéries de forme sphérique s'appellent des :", a: "Coques", opt: ["Bacilles", "Spirilles", "Vibrions"] },
+        { q: "Les Pili (Fimbriae) servent principalement à :", a: "L'adhésion", opt: ["La nage", "La digestion", "La respiration"] },
+        { q: "Les bactéries possèdent-elles des mitochondries ?", a: "Non, jamais", opt: ["Oui, toujours", "Seulement les bacilles", "Parfois"] },
+        { q: "Les virus sont considérés comme :", a: "Des parasites intracellulaires obligatoires", opt: ["Des cellules vivantes", "Des bactéries", "Des molécules inertes"] },
+        { q: "La coque protéique qui protège le génome viral s'appelle :", a: "La Capside", opt: ["L'Enveloppe", "La Membrane", "Le Noyau"] },
+        { q: "Un virus contient :", a: "Soit ADN, soit ARN", opt: ["ADN et ARN en même temps", "Uniquement des protéines", "Des organites"] },
+        { q: "Comment s'appelle un virus qui infecte une bactérie ?", a: "Bactériophage", opt: ["Macrophage", "Rétrovirus", "Bacille"] },
+        { q: "Quelle est la première étape du cycle viral ?", a: "L'Adsorption (Attachement)", opt: ["La Pénétration", "La Réplication", "La Libération"] },
+        { q: "Le VIH (SIDA) est un :", a: "Rétrovirus", opt: ["Bactériophage", "Virus à ADN", "Virus nu"] },
+        { q: "L'enveloppe virale provient de :", a: "La membrane de la cellule hôte", opt: ["La capside", "Le noyau du virus", "Le cytoplasme"] },
+        { q: "Les virus peuvent-ils se reproduire seuls ?", a: "Non, jamais", opt: ["Oui, dans l'eau", "Oui, dans l'air", "Oui, s'il fait chaud"] },
+        { q: "Quelle structure est spécifique à la cellule végétale ?", a: "Paroi pecto-cellulosique", opt: ["Membrane plasmique", "Noyau", "Mitochondrie"] },
+        { q: "La grande vacuole centrale se trouve chez :", a: "La cellule végétale", opt: ["La cellule animale", "La bactérie", "Le virus"] },
+        { q: "Les cellules animales stockent l'énergie sous forme de :", a: "Glycogène", opt: ["Amidon", "Cellulose", "Chitine"] },
+        { q: "La paroi des champignons (Fungi) est faite de :", a: "Chitine", opt: ["Cellulose", "Peptidoglycane", "Silice"] },
+        { q: "Quel organite est absent chez la cellule animale ?", a: "Chloroplaste", opt: ["Centrosome", "Lysosome", "Ribosome"] },
+        { q: "Les eucaryotes ont une taille comprise entre :", a: "10 et 100 µm", opt: ["1 et 10 µm", "10 et 400 nm", "1 et 10 mm"] },
+        { q: "L'ADN des eucaryotes est :", a: "Linéaire et dans un noyau", opt: ["Circulaire et libre", "Simple brin", "Dans les ribosomes"] },
+        { q: "Une amibe est un :", a: "Protiste", opt: ["Procaryote", "Champignon", "Virus"] },
+        { q: "L'unité de base du système nerveux est :", a: "Le Neurone", opt: ["Le Nerf", "La Synapse", "Le Glie"] },
+        { q: "La partie du neurone qui reçoit le message est :", a: "Les Dendrites", opt: ["L'Axone", "La Myéline", "Le Soma"] },
+        { q: "Quel est le rôle de la gaine de myéline ?", a: "Accélérer le message nerveux", opt: ["Nutrir le neurone", "Recevoir le message", "Détruire le message"] },
+        { q: "Le message nerveux qui circule le long de l'axone est :", a: "Électrique", opt: ["Chimique", "Magnétique", "Mécanique"] },
+        { q: "La zone de contact entre deux neurones s'appelle :", a: "La Synapse", opt: ["La Fente", "Le Ganglion", "Le Plexus"] },
+        { q: "Le centre des réflexes (mouvements involontaires) est :", a: "La Moelle Épinière", opt: ["Le Cerveau", "Le Cervelet", "Le Tronc cérébral"] },
+        { q: "Combien y a-t-il de paires de nerfs crâniens ?", a: "12", opt: ["31", "10", "42"] },
+        { q: "Quel neurotransmetteur est libéré dans la synapse ?", a: "Dopamine", opt: ["Insuline", "Hémoglobine", "Pepsine"] },
+        { q: "Le Cervelet sert principalement à :", a: "L'équilibre et la coordination", opt: ["La pensée", "La respiration", "La vision"] },
+        { q: "Le Système Nerveux Central (SNC) comprend :", a: "Encéphale + Moelle Épinière", opt: ["Cerveau + Nerfs", "Nerfs + Ganglions", "Moelle + Nerfs"] },
+        { q: "Où se font les échanges gazeux (Hématose) ?", a: "Dans les Alvéoles", opt: ["Dans la Trachée", "Dans les Bronches", "Dans le Pharynx"] },
+        { q: "Le muscle principal de la respiration est :", a: "Le Diaphragme", opt: ["Le Cœur", "Les Abdos", "Le Pectoral"] },
+        { q: "Lors de l'inspiration, le diaphragme :", a: "Se contracte et descend", opt: ["Se relâche et remonte", "Ne bouge pas", "Se dilate"] },
+        { q: "Combien de lobes possède le poumon droit ?", a: "3", opt: ["2", "1", "4"] },
+        { q: "La membrane qui protège les poumons s'appelle :", a: "La Plèvre", opt: ["Le Péricarde", "Le Péritoine", "La Méninge"] },
+        { q: "La fréquence respiratoire normale d'un adulte est :", a: "12-20 mvts/min", opt: ["40-45 mvts/min", "60-80 mvts/min", "5-10 mvts/min"] },
+        { q: "Le rôle des fosses nasales est de :", a: "Filtrer et réchauffer l'air", opt: ["Refroidir l'air", "Absorber l'oxygène", "Produire du son"] },
+        { q: "L'épiglotte sert à :", a: "Fermer la trachée lors de la déglutition", opt: ["Produire la voix", "Filtrer l'air", "Échanger les gaz"] },
+        { q: "Le cœur est un muscle appelé :", a: "Myocarde", opt: ["Péricarde", "Endocarde", "Diaphragme"] },
+        { q: "Quelle partie du cœur contient du sang oxygéné ?", a: "Le cœur gauche", opt: ["Le cœur droit", "Les deux", "Aucune"] },
+        { q: "Les vaisseaux qui ramènent le sang VERS le cœur sont :", a: "Les Veines", opt: ["Les Artères", "Les Capillaires", "Les Aortes"] },
+        { q: "La petite circulation (pulmonaire) va du cœur vers :", a: "Les Poumons", opt: ["Le Cerveau", "Tout le corps", "Le Foie"] },
+        { q: "Quel élément du sang transporte l'oxygène ?", a: "Globules Rouges", opt: ["Globules Blancs", "Plaquettes", "Plasma"] },
+        { q: "Les Plaquettes servent à :", a: "La Coagulation", opt: ["L'Immunité", "Le Transport d'O2", "La Digestion"] },
+        { q: "L'artère qui part du ventricule gauche s'appelle :", a: "L'Aorte", opt: ["L'Artère Pulmonaire", "La Veine Cave", "La Carotide"] },
+        { q: "Les valvules cardiaques servent à :", a: "Empêcher le reflux du sang", opt: ["Pomper le sang", "Oxygéner le sang", "Fabriquer le sang"] },
+        { q: "Où commence la digestion chimique ?", a: "Dans la Bouche (Amylase)", opt: ["Dans l'Estomac", "Dans l'Intestin", "Dans l'Œsophage"] },
+        { q: "Quel organe produit la bile ?", a: "Le Foie", opt: ["La Vésicule Biliaire", "Le Pancréas", "L'Estomac"] },
+        { q: "L'absorption des nutriments se fait principalement dans :", a: "L'Intestin Grêle", opt: ["L'Estomac", "Le Gros Intestin", "L'Œsophage"] },
+        { q: "Les replis qui augmentent la surface d'absorption sont :", a: "Les Villosités", opt: ["Les Alvéoles", "Les Cils", "Les Flagelles"] },
+        { q: "Le bol alimentaire transformé par l'estomac s'appelle :", a: "Le Chyme", opt: ["Le Chyle", "Les Fèces", "La Bile"] },
+        { q: "Le rôle du Gros Intestin est :", a: "Récupérer l'eau", opt: ["Digérer les protéines", "Absorber les graisses", "Produire la bile"] },
+        { q: "Le suc pancréatique est déversé dans :", a: "Le Duodénum (Intestin)", opt: ["L'Estomac", "Le Foie", "Le Sang"] },
+        { q: "La digestion mécanique dans l'estomac se fait par :", a: "Brassage (Contractions)", opt: ["Enzymes", "Acide", "Dents"] },
+        { q: "Quelle est la gonade masculine ?", a: "Le Testicule", opt: ["La Prostate", "Le Pénis", "L'Épididyme"] },
+        { q: "L'hormone sexuelle mâle est :", a: "La Testostérone", opt: ["L'Œstrogène", "La Progestérone", "L'Insuline"] },
+        { q: "Où a lieu la fécondation ?", a: "Dans les Trompes de Fallope", opt: ["Dans l'Utérus", "Dans le Vagin", "Dans l'Ovaire"] },
+        { q: "L'ovulation a lieu généralement au :", a: "14ème jour du cycle", opt: ["1er jour", "28ème jour", "5ème jour"] },
+        { q: "La muqueuse interne de l'utérus s'appelle :", a: "L'Endomètre", opt: ["Le Myomètre", "Le Périmétrium", "Le Col"] },
+        { q: "Le rôle de la Prostate est de :", a: "Produire le liquide séminal", opt: ["Produire les spermatozoïdes", "Produire la testostérone", "Stocker l'urine"] },
+        { q: "La cellule issue de la fécondation s'appelle :", a: "Le Zygote", opt: ["Le Gamète", "L'Embryon", "Le Fœtus"] },
+        { q: "Combien de spermatozoïdes fécondent un ovule ?", a: "Un seul", opt: ["Plusieurs", "Deux", "Des millions"] }
+    ];
+
+    let currentQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const questionText = document.getElementById("question");
+    const optionsContainer = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+    const qIndexSpan = document.getElementById("q-index");
+    const scoreSpan = document.getElementById("score");
+    const gameScreen = document.getElementById("game-screen");
+    const resultScreen = document.getElementById("result-screen");
+    const finalScoreSpan = document.getElementById("final-score");
+    const feedbackMsg = document.getElementById("feedback-msg");
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function initGame() {
+        const shuffledAll = shuffleArray([...allQuestions]);
+        currentQuestions = shuffledAll.slice(0, 20);
+        currentQuestionIndex = 0;
+        score = 0;
+        scoreSpan.innerText = score;
+        gameScreen.style.display = "block";
+        resultScreen.style.display = "none";
+        showQuestion();
+    }
+
+    function showQuestion() {
+        nextBtn.style.display = "none";
+        optionsContainer.innerHTML = "";
+        
+        const q = currentQuestions[currentQuestionIndex];
+        qIndexSpan.innerText = currentQuestionIndex + 1;
+        questionText.innerText = q.q;
+
+        let answers = [...q.opt]; 
+        shuffleArray(answers);
+        answers = answers.slice(0, 3);
+        answers.push(q.a);
+        shuffleArray(answers);
+
+        answers.forEach(ans => {
+            const btn = document.createElement("button");
+            btn.innerHTML = `<span>${ans}</span>`;
+            btn.classList.add("option-btn");
+            btn.onclick = () => checkAnswer(btn, q.a);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selectedBtn, correctAns) {
+        const buttons = optionsContainer.querySelectorAll(".option-btn");
+        buttons.forEach(btn => btn.classList.add("disabled"));
+
+        if (selectedBtn.innerText === correctAns) {
+            selectedBtn.classList.add("correct");
+            score++;
+            scoreSpan.innerText = score;
+        } else {
+            selectedBtn.classList.add("wrong");
+            buttons.forEach(btn => {
+                if (btn.innerText === correctAns) {
+                    btn.classList.add("correct");
+                }
+            });
+        }
+        nextBtn.style.display = "block";
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < currentQuestions.length) {
+            showQuestion();
+        } else {
+            endGame();
+        }
+    }
+
+    function endGame() {
+        gameScreen.style.display = "none";
+        resultScreen.style.display = "block";
+        finalScoreSpan.innerText = score;
+        if(score === 20) feedbackMsg.innerText = "INCROYABLE ! Score Parfait ! 🥇";
+        else if(score >= 15) feedbackMsg.innerText = "Excellent travail ! 🎉";
+        else if(score >= 10) feedbackMsg.innerText = "Pas mal, mais tu peux faire mieux ! 👍";
+        else feedbackMsg.innerText = "Il faut réviser encore un peu... 📚";
+    }
+
+    initGame();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Déterminants - مستقبلي.ENS</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <script src="pwa.js"></script>
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Cairo:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary: #4338ca;
+            /* Indigo 700 */
+            --secondary: #ec4899;
+            /* Pink 500 */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Animations */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slideInLeft {
+            animation: slideInLeft 0.5s ease-out forwards;
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* Arabic Text */
+        .ar {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Glass Cards */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Translatable Interaction */
+        .translatable {
+            position: relative;
+            cursor: help;
+            transition: all 0.2s;
+            border-bottom: 2px dashed #cbd5e1;
+            padding-bottom: 1px;
+        }
+
+        .translatable:hover {
+            background-color: #fff1f2;
+            color: #be123c;
+            border-bottom-color: #fb7185;
+        }
+
+        .translated {
+            font-family: 'Cairo', sans-serif;
+            color: #059669;
+            font-weight: 700;
+            direction: rtl;
+            background-color: #ecfdf5;
+            border-bottom: none;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* Sidebar Nav Item Active State */
+        .nav-item.active {
+            background-color: #e0e7ff;
+            color: #4338ca;
+            border-left: 4px solid #4338ca;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button onclick="window.location.href='index.html'"
+                    class="bg-white/10 hover:bg-white/20 p-2 rounded-full transition-colors backdrop-blur-sm">
+                    <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                </button>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-tight">Grammaire : Les Déterminants</h1>
+                    <p class="text-indigo-200 text-sm hidden md:block">Science de l'éducation / Français</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div
+                    class="bg-indigo-600 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-inner">
+                    <i data-lucide="languages" class="w-4 h-4"></i>
+                    <span class="ar text-xs md:text-sm">اضغط على النص للترجمة</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="max-w-7xl mx-auto px-4 py-8 flex-1 grid grid-cols-1 md:grid-cols-4 gap-8 w-full">
+
+        <!-- Sidebar Navigation -->
+        <aside class="md:col-span-1">
+            <div class="glass-panel rounded-2xl p-4 sticky top-24 animate-slideInLeft" style="animation-delay: 0.1s;">
+                <nav class="space-y-2">
+                    <button
+                        class="nav-item w-full text-left px-4 py-3 rounded-lg text-slate-600 font-medium hover:bg-slate-50 transition-all flex items-center gap-3 active"
+                        onclick="loadSection('def')">
+                        <span
+                            class="bg-indigo-100 text-indigo-700 w-6 h-6 rounded flex items-center justify-center text-xs font-bold">1</span>
+                        Définition
+                    </button>
+                    <button
+                        class="nav-item w-full text-left px-4 py-3 rounded-lg text-slate-600 font-medium hover:bg-slate-50 transition-all flex items-center gap-3"
+                        onclick="loadSection('articles')">
+                        <span
+                            class="bg-indigo-100 text-indigo-700 w-6 h-6 rounded flex items-center justify-center text-xs font-bold">2</span>
+                        Les Articles
+                    </button>
+                    <button
+                        class="nav-item w-full text-left px-4 py-3 rounded-lg text-slate-600 font-medium hover:bg-slate-50 transition-all flex items-center gap-3"
+                        onclick="loadSection('adjectifs')">
+                        <span
+                            class="bg-indigo-100 text-indigo-700 w-6 h-6 rounded flex items-center justify-center text-xs font-bold">3</span>
+                        Adjectifs
+                    </button>
+                    <button
+                        class="nav-item w-full text-left px-4 py-3 rounded-lg text-slate-600 font-medium hover:bg-slate-50 transition-all flex items-center gap-3"
+                        onclick="loadSection('pronoms')">
+                        <span
+                            class="bg-indigo-100 text-indigo-700 w-6 h-6 rounded flex items-center justify-center text-xs font-bold">4</span>
+                        Pronoms
+                    </button>
+                    <div class="h-px bg-slate-200 my-2"></div>
+                    <button
+                        class="nav-item w-full text-left px-4 py-3 rounded-lg text-amber-700 font-bold bg-amber-50 border border-amber-200 hover:bg-amber-100 transition-all flex items-center gap-3"
+                        onclick="loadSection('astuces')">
+                        <i data-lucide="lightbulb" class="w-5 h-5"></i>
+                        ASTUCES (Tips)
+                    </button>
+                    <button
+                        class="nav-item w-full text-left px-4 py-3 rounded-lg text-slate-600 font-medium hover:bg-slate-50 transition-all flex items-center gap-3"
+                        onclick="loadSection('resume')">
+                        <i data-lucide="file-text" class="w-5 h-5 text-slate-400"></i>
+                        Résumé
+                    </button>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="md:col-span-3">
+            <div id="content" class="glass-panel rounded-3xl p-8 min-h-[600px] animate-fadeIn"
+                style="animation-delay: 0.2s;">
+                <!-- Content injected here via JS -->
+            </div>
+
+            <!-- Floating Action Button for Quiz -->
+            <a href="FRDETERMINONTGAME.html"
+                class="fixed bottom-8 right-8 md:relative md:bottom-auto md:right-auto md:mt-8 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-8 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center justify-center gap-3 text-lg z-50 group">
+                <span>Commencer les exercices</span>
+                <i data-lucide="arrow-right" class="group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </main>
+
+    </div>
+
+    <script>
+        const contentData = {
+            def: `
+            <h2>Définition des Déterminants</h2>
+            <p class="translatable" data-ar="المحدد هو كلمة تأتي قبل الاسم.">Le déterminant est un mot qui se place avant le nom.</p>
+            <p class="translatable" data-ar="يسمح بتحديد جنس الاسم (مذكر أو مؤنث) وعدده (مفرد أو جمع).">Il permet de connaître le genre (masculin/féminin) et le nombre (singulier/pluriel) du nom.</p>
+            <p class="translatable" data-ar="يشكل مع الاسم ما يسمى بـ 'المجموعة الاسمية'.">Il forme avec le nom ce qu'on appelle le « Groupe Nominal ».</p>
+            
+            <div class="example-box">
+                <strong>Exemples :</strong><br>
+                <span class="translatable" data-ar="القط (محدد + اسم)">- <b>Le</b> chat</span><br>
+                <span class="translatable" data-ar="منزلي (محدد ملكية + اسم)">- <b>Ma</b> maison</span><br>
+                <span class="translatable" data-ar="هؤلاء الأطفال (محدد إشارة + اسم)">- <b>Ces</b> enfants</span>
+            </div>
+        `,
+            articles: `
+            <h2>Les Articles</h2>
+            
+            <h3>1. Les Articles Définis</h3>
+            <p class="translatable" data-ar="تستعمل للإشارة إلى شيء أو شخص محدد ومعروف.">Utilisés pour désigner une chose ou une personne précise et connue.</p>
+            <table>
+                <tr>
+                    <th>Article</th>
+                    <th>Usage</th>
+                    <th>Exemple</th>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="لـ (للمفرد المذكر)">Le</td>
+                    <td class="translatable" data-ar="Singulier Masculin">Singulier Masculin</td>
+                    <td class="translatable" data-ar="الكتاب">Le livre</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="لـ (للمفرد المؤنث)">La</td>
+                    <td class="translatable" data-ar="Singulier Féminin">Singulier Féminin</td>
+                    <td class="translatable" data-ar="الطاولة">La table</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="لـ (أمام حرف علة)">L'</td>
+                    <td class="translatable" data-ar="أمام حرف علة (a,e,i,o,u,y,h)">Devant une voyelle</td>
+                    <td class="translatable" data-ar="المدرسة">L'école</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="لـ (للجمع)">Les</td>
+                    <td class="translatable" data-ar="للجمع (بنوعيه)">Pluriel</td>
+                    <td class="translatable" data-ar="الأولاد">Les garçons</td>
+                </tr>
+            </table>
+
+            <h3>2. Les Articles Indéfinis</h3>
+            <p class="translatable" data-ar="تستعمل للإشارة إلى شيء غير محدد أو مذكور لأول مرة.">Utilisés pour désigner une chose non précise ou mentionnée pour la première fois.</p>
+            <table>
+                <tr>
+                    <th>Article</th>
+                    <th>Usage</th>
+                    <th>Exemple</th>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="أداة نكرة (للمذكر)">Un</td>
+                    <td class="translatable" data-ar="Singulier Masculin">Singulier Masculin</td>
+                    <td class="translatable" data-ar="قط (نكرة)">Un chat</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="أداة نكرة (للمؤنث)">Une</td>
+                    <td class="translatable" data-ar="Singulier Féminin">Singulier Féminin</td>
+                    <td class="translatable" data-ar="تفاحة (نكرة)">Une pomme</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="أداة نكرة (للجمع)">Des</td>
+                    <td class="translatable" data-ar="Pluriel">Pluriel</td>
+                    <td class="translatable" data-ar="كتب (نكرة)">Des livres</td>
+                </tr>
+            </table>
+
+            <h3>3. Les Articles Partitifs</h3>
+            <p class="translatable" data-ar="تستعمل أمام الكميات غير القابلة للعد (مثل السوائل، الطعام..).">Utilisés devant des quantités indénombrables (liquides, nourriture...).</p>
+            <table>
+                <tr>
+                    <th>Article</th>
+                    <th>Usage</th>
+                    <th>Exemple</th>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="بعض (للمذكر)">Du</td>
+                    <td class="translatable" data-ar="Masc. Sing (Indénombrable)">Masc. Sing (Indénombrable)</td>
+                    <td class="translatable" data-ar="أريد بعض الخبز">Je veux <b>du</b> pain</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="بعض (للمؤنث)">De la</td>
+                    <td class="translatable" data-ar="Fém. Sing (Indénombrable)">Fém. Sing (Indénombrable)</td>
+                    <td class="translatable" data-ar="هي تأكل بعض اللحم">Elle mange <b>de la</b> viande</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="بعض (أمام حرف علة)">De l'</td>
+                    <td class="translatable" data-ar="أمام حرف علة">Devant voyelle</td>
+                    <td class="translatable" data-ar="أشرب الماء">Je bois <b>de l'</b>eau</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="بعض (للجمع)">Des</td>
+                    <td class="translatable" data-ar="Pluriel (Indénombrable)">Pluriel (Indénombrable)</td>
+                    <td class="translatable" data-ar="أريد معكرونة">Je veux <b>des</b> pâtes</td>
+                </tr>
+            </table>
+
+            <h3>4. Les Articles Contractés</h3>
+            <p class="translatable" data-ar="هي دمج بين حرف الجر (à أو de) وأداة التعريف (le أو les).">C'est la fusion entre une préposition (à / de) et un article défini (le / les).</p>
+            <table>
+                <tr>
+                    <th>Combinaison</th>
+                    <th>Résultat</th>
+                    <th>Exemple</th>
+                </tr>
+                <tr>
+                    <td>À + Le</td>
+                    <td class="translatable" data-ar="إلى الـ (Au)">Au</td>
+                    <td class="translatable" data-ar="أذهب إلى السوق">Je vais <b>au</b> marché</td>
+                </tr>
+                <tr>
+                    <td>À + Les</td>
+                    <td class="translatable" data-ar="إلى الـ (للجمع Aux)">Aux</td>
+                    <td class="translatable" data-ar="أتحدث إلى الجيران">Je parle <b>aux</b> voisins</td>
+                </tr>
+                <tr>
+                    <td>De + Le</td>
+                    <td class="translatable" data-ar="من الـ / لـ (Du)">Du</td>
+                    <td class="translatable" data-ar="سيارة الأب (مضاف إليه)">La voiture <b>du</b> père</td>
+                </tr>
+                <tr>
+                    <td>De + Les</td>
+                    <td class="translatable" data-ar="من الـ / لـ (للجمع Des)">Des</td>
+                    <td class="translatable" data-ar="عودة الأطفال">Le retour <b>des</b> enfants</td>
+                </tr>
+            </table>
+        `,
+            adjectifs: `
+            <h2>Adjectifs Possessifs et Démonstratifs</h2>
+            
+            <h3>1. Les Adjectifs Possessifs</h3>
+            <p class="translatable" data-ar="تشير إلى المالك (لمن ينتمي الشيء).">Ils indiquent le possesseur (à qui appartient l'objet).</p>
+            <table>
+                <tr>
+                    <th>Possesseur</th>
+                    <th>Masc. Sing</th>
+                    <th>Fem. Sing</th>
+                    <th>Pluriel</th>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="أنا (Je)">Je</td>
+                    <td class="translatable" data-ar="Mon (أبي)">Mon père</td>
+                    <td class="translatable" data-ar="Ma (أمي)">Ma mère</td>
+                    <td class="translatable" data-ar="Mes (أصدقائي)">Mes amis</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="أنت (Tu)">Tu</td>
+                    <td class="translatable" data-ar="Ton (كتابك)">Ton livre</td>
+                    <td class="translatable" data-ar="Ta (أختك)">Ta sœur</td>
+                    <td class="translatable" data-ar="Tes (أغراضك)">Tes affaires</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="هو/هي (Il/Elle)">Il / Elle</td>
+                    <td class="translatable" data-ar="Son (أخوه)">Son frère</td>
+                    <td class="translatable" data-ar="Sa (منزله)">Sa maison</td>
+                    <td class="translatable" data-ar="Ses (مفاتيحه)">Ses clés</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="نحن (Nous)">Nous</td>
+                    <td class="translatable" data-ar="Notre (قسمنا)">Notre classe</td>
+                    <td class="translatable" data-ar="Notre (قسمنا)">Notre classe</td>
+                    <td class="translatable" data-ar="Nos (أساتذتنا)">Nos profs</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="أنتم (Vous)">Vous</td>
+                    <td class="translatable" data-ar="Votre (مشروعكم)">Votre projet</td>
+                    <td class="translatable" data-ar="Votre (مشروعكم)">Votre projet</td>
+                    <td class="translatable" data-ar="Vos (أوراقكم)">Vos papiers</td>
+                </tr>
+                 <tr>
+                    <td class="translatable" data-ar="هم (Ils)">Ils</td>
+                    <td class="translatable" data-ar="Leur (أبوهم)">Leur père</td>
+                    <td class="translatable" data-ar="Leur (أمهم)">Leur mère</td>
+                    <td class="translatable" data-ar="Leurs (أصدقاؤهم)">Leurs amis</td>
+                </tr>
+            </table>
+
+            <h3>2. Les Adjectifs Démonstratifs</h3>
+            <p class="translatable" data-ar="تستعمل للإشارة إلى شيء أو شخص (هذا، هذه، هؤلاء).">Utilisés pour montrer ou désigner quelqu'un ou quelque chose.</p>
+            <table>
+                <tr>
+                    <th>Adjectif</th>
+                    <th>Usage</th>
+                    <th>Exemple</th>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="هذا (Ce)">Ce</td>
+                    <td class="translatable" data-ar="Masc. Sing. (Consonne)">Masc. Sing. (Consonne)</td>
+                    <td class="translatable" data-ar="هذا الولد"><b>Ce</b> garçon</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="هذا (Cet)">Cet</td>
+                    <td class="translatable" data-ar="Masc. Sing. (Voyelle)">Masc. Sing. (Voyelle)</td>
+                    <td class="translatable" data-ar="هذا الرجل"><b>Cet</b> homme</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="هذه (Cette)">Cette</td>
+                    <td class="translatable" data-ar="Féminin Singulier">Féminin Singulier</td>
+                    <td class="translatable" data-ar="هذه الفتاة"><b>Cette</b> fille</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="هؤلاء (Ces)">Ces</td>
+                    <td class="translatable" data-ar="Pluriel (Masc/Fem)">Pluriel (Masc/Fem)</td>
+                    <td class="translatable" data-ar="هؤلاء الناس"><b>Ces</b> gens</td>
+                </tr>
+            </table>
+        `,
+            pronoms: `
+            <h2>Les Pronoms Possessifs</h2>
+            <div class="example-box">
+                <p class="translatable" data-ar="انتبه: الضمير يحل محل الاسم، بينما المحدد يرافق الاسم.">⚠️ <b>Attention :</b> Le pronom remplace le nom, alors que le déterminant accompagne le nom.</p>
+            </div>
+            
+            <p class="translatable" data-ar="مثال: هذه سيارتي (محدد) -> هذه ملكي (ضمير).">Exemple : C'est <b>ma</b> voiture (Adj) -> C'est <b>la mienne</b> (Pronom).</p>
+
+            <table>
+                <tr>
+                    <th>Possesseur</th>
+                    <th>Masculin Singulier</th>
+                    <th>Féminin Singulier</th>
+                    <th>Pluriel</th>
+                </tr>
+                <tr>
+                    <td>Je</td>
+                    <td class="translatable" data-ar="خاصتي/ملكي (Le mien)">Le mien</td>
+                    <td class="translatable" data-ar="خاصتي (La mienne)">La mienne</td>
+                    <td class="translatable" data-ar="Les miens / Les miennes">Les miens / miennes</td>
+                </tr>
+                <tr>
+                    <td>Tu</td>
+                    <td class="translatable" data-ar="خاصتك (Le tien)">Le tien</td>
+                    <td class="translatable" data-ar="خاصتك (La tienne)">La tienne</td>
+                    <td class="translatable" data-ar="Les tiens / Les tiennes">Les tiens / tiennes</td>
+                </tr>
+                <tr>
+                    <td>Il / Elle</td>
+                    <td class="translatable" data-ar="خاصته (Le sien)">Le sien</td>
+                    <td class="translatable" data-ar="خاصتها (La sienne)">La sienne</td>
+                    <td class="translatable" data-ar="Les siens / Les siennes">Les siens / siennes</td>
+                </tr>
+                 <tr>
+                    <td>Nous</td>
+                    <td class="translatable" data-ar="ملكنا (Le nôtre)">Le nôtre</td>
+                    <td class="translatable" data-ar="ملكنا (La nôtre)">La nôtre</td>
+                    <td class="translatable" data-ar="Les nôtres">Les nôtres</td>
+                </tr>
+                <tr>
+                    <td>Vous</td>
+                    <td class="translatable" data-ar="ملككم (Le vôtre)">Le vôtre</td>
+                    <td class="translatable" data-ar="ملككم (La vôtre)">La vôtre</td>
+                    <td class="translatable" data-ar="Les vôtres">Les vôtres</td>
+                </tr>
+                <tr>
+                    <td>Ils / Elles</td>
+                    <td class="translatable" data-ar="ملكهم (Le leur)">Le leur</td>
+                    <td class="translatable" data-ar="ملكهم (La leur)">La leur</td>
+                    <td class="translatable" data-ar="Les leurs">Les leurs</td>
+                </tr>
+            </table>
+        `,
+            astuces: `
+            <h2>💡 Comment faire la différence ?</h2>
+            <p class="translatable" data-ar="يوجد تشابه كبير بين Du (تجزئة) و Du (إدغام). إليك الحيلة:">Il y a une confusion entre <b>Du</b> (Partitif) et <b>Du</b> (Contracté). Voici l'astuce :</p>
+
+            <h3>1. DU : Partitif vs Contracté</h3>
+            <div class="trick-box">
+                <p><b>L'Astuce :</b> <span class="translatable" data-ar="استبدل 'Du' بعبارة 'Un peu de'.">Remplacez <b>« Du »</b> par <b>« Un peu de »</b>.</span></p>
+                <ul>
+                    <li class="translatable" data-ar="إذا كانت الجملة صحيحة المعنى -> إنه Partitif (تجزئة).">Si ça marche -> C'est un <b>Partitif</b>.</li>
+                    <li class="translatable" data-ar="إذا كانت الجملة ليس لها معنى -> إنه Contracté (إدغام).">Si ça ne marche pas -> C'est un <b>Contracté</b> (De + Le).</li>
+                </ul>
+            </div>
+
+            <table>
+                <tr>
+                    <th>Phrase</th>
+                    <th>Test : "Un peu de"</th>
+                    <th>Résultat</th>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="آكل الأرز">Je mange <b>du</b> riz.</td>
+                    <td class="translatable" data-ar="آكل القليل من الأرز (صحيحة)">Je mange <span class="success-text">un peu de</span> riz.</td>
+                    <td class="translatable" data-ar="✅ صحيح! إنه Partitif">✅ Ça marche !<br><b>= Partitif</b></td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="سيارة الجار">La voiture <b>du</b> voisin.</td>
+                    <td class="translatable" data-ar="سيارة القليل من الجار (خطأ)">La voiture <span class="error-text">un peu de</span> voisin.</td>
+                    <td class="translatable" data-ar="❌ مستحيل! إنه Contracté">❌ Impossible !<br><b>= Contracté</b></td>
+                </tr>
+            </table>
+
+            <h3>2. DES : Indéfini vs Contracté</h3>
+            <div class="trick-box">
+                <p><b>L'Astuce :</b> <span class="translatable" data-ar="استبدل 'Des' بـ 'Un' أو 'Une'.">Remplacez <b>« Des »</b> par <b>« Un »</b> ou <b>« Une »</b>.</span></p>
+                <ul>
+                    <li class="translatable" data-ar="إذا صلحت الجملة -> إنه Indéfini (جمع نكرة).">Si ça marche -> C'est un <b>Indéfini</b> (Pluriel).</li>
+                    <li class="translatable" data-ar="إذا لم تصلح -> إنه Contracté (De + Les).">Si ça ne marche pas -> C'est un <b>Contracté</b>.</li>
+                </ul>
+            </div>
+
+            <table>
+                <tr>
+                    <th>Phrase</th>
+                    <th>Test : "Un/Une"</th>
+                    <th>Résultat</th>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="عندي قطط">J'ai <b>des</b> chats.</td>
+                    <td class="translatable" data-ar="عندي قط (صحيحة)">J'ai <span class="success-text">un</span> chat.</td>
+                    <td class="translatable" data-ar="✅ صحيح! إنه Indéfini">✅ Ça marche !<br><b>= Indéfini</b></td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="الخوف من الكلاب">La peur <b>des</b> chiens.</td>
+                    <td class="translatable" data-ar="الخوف كلب (خطأ)">La peur <span class="error-text">un</span> chien.</td>
+                    <td class="translatable" data-ar="❌ مستحيل! إنه Contracté">❌ Impossible !<br><b>= Contracté</b></td>
+                </tr>
+            </table>
+        `,
+            resume: `
+            <h2>Résumé Général</h2>
+            <p class="translatable" data-ar="إليك جدول يلخص متى نستخدم كل نوع:">Voici un tableau récapitulatif pour savoir quand utiliser chaque type :</p>
+
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Rôle</th>
+                    <th>Exemples</th>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="أدوات التعريف">Article Défini</td>
+                    <td class="translatable" data-ar="شيء معروف">Connu / Précis</td>
+                    <td>Le, La, Les</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="أدوات النكرة">Article Indéfini</td>
+                    <td class="translatable" data-ar="شيء غير محدد">Inconnu / Imprécis</td>
+                    <td>Un, Une, Des</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="أدوات التجزئة">Article Partitif</td>
+                    <td class="translatable" data-ar="كمية (غير معدودة)">Quantité indénombrable</td>
+                    <td>Du, De la, Des</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="أدوات الإدغام">Article Contracté</td>
+                    <td class="translatable" data-ar="دمج حرف جر وأداة">Préposition + Article</td>
+                    <td>Au, Aux, Du, Des</td>
+                </tr>
+                <tr>
+                    <td class="translatable" data-ar="صفات الملكية">Adjectif Possessif</td>
+                    <td class="translatable" data-ar="الملكية">Possession</td>
+                    <td>Mon, Ton, Son...</td>
+                </tr>
+                 <tr>
+                    <td class="translatable" data-ar="صفات الإشارة">Adjectif Démonstratif</td>
+                    <td class="translatable" data-ar="الإشارة (هذا، هذه)">Désignation</td>
+                    <td>Ce, Cette, Ces</td>
+                </tr>
+                 <tr>
+                    <td class="translatable" data-ar="ضمائر الملكية">Pronom Possessif</td>
+                    <td class="translatable" data-ar="تعويض الاسم المملوك">Remplace le nom possédé</td>
+                    <td>Le mien, Le tien...</td>
+                </tr>
+            </table>
+        `
+        };
+
+        function loadSection(sectionId) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = contentData[sectionId];
+
+            // Setup Translation Click Events
+            document.querySelectorAll('.translatable').forEach(item => {
+                item.setAttribute('data-original', item.innerHTML); // Store original French
+
+                item.addEventListener('click', function () {
+                    if (this.classList.contains('translated')) {
+                        // Revert to French
+                        this.innerHTML = this.getAttribute('data-original');
+                        this.classList.remove('translated');
+                    } else {
+                        // Translate to Arabic
+                        const arText = this.getAttribute('data-ar');
+                        if (arText) {
+                            this.innerHTML = arText;
+                            this.classList.add('translated');
+                        }
+                    }
+                });
+            });
+
+            // Update Nav Buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            // Find the button that called this function based on the onclick attribute
+            const buttons = document.querySelectorAll('.nav-btn');
+            for (let btn of buttons) {
+                if (btn.getAttribute('onclick').includes(sectionId)) {
+                    btn.classList.add('active');
+                    break;
+                }
+            }
+        }
+
+        // Initial Load
+        window.onload = function () {
+            loadSection('def');
+        };
+    </script>
+
+</body>
+
+</html>

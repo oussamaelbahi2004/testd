@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 2: أقسام الفعل (الزمن + البنية)</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #818cf8;
+            --accent: #f59e0b;
+            --text: #1f2937;
+            --bg: #f9fafb;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-link {
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-link:hover { background: white; color: var(--primary); transform: translateY(-2px); }
+
+        h1 { margin: 0; font-size: 1.8rem; }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 10px; margin-top: 30px; }
+
+        .content { padding: 30px; }
+
+        /* الشرح والأمثلة */
+        .info-card {
+            background: #eef2ff;
+            border-right: 5px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .example-box {
+            background: #fffbeb;
+            border: 1px dashed var(--accent);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #b45309;
+        }
+
+        /* تنسيق الجدول (الخلاصة) */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+        .summary-table th, .summary-table td {
+            border: 1px solid #d1d5db;
+            padding: 12px;
+            text-align: right;
+        }
+        .summary-table th {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+        }
+        .summary-table tr:nth-child(even) {
+            background-color: #f3f4f6;
+        }
+
+        /* تنسيق الكويز */
+        .game-area {
+            background: #1f2937; color: white; padding: 25px;
+            border-radius: 10px; text-align: center; margin-top: 40px;
+        }
+        .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 15px; }
+        .btn-game {
+            background: #374151; border: 2px solid #4b5563; color: white;
+            padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; transition: 0.3s;
+        }
+        .btn-game:hover { background: #4b5563; }
+        .btn-game.correct { background: var(--success); border-color: var(--success); }
+        .btn-game.wrong { background: var(--error); border-color: var(--error); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>الدرس 2: أقسام الفعل</h1>
+        <p>الزمن (ماضي، مضارع، أمر) + التجرد والزيادة</p>
+        
+        <div class="nav-buttons">
+            <a href="index.html" class="btn-link">الرئيسية</a>
+            <a href="gamea1.html" class="btn-link">الكويز (Game)</a>
+        </div>
+    </header>
+
+    <div class="content">
+        
+        <section>
+            <h2>1. الفعل من حيث الزمن</h2>
+            <p>ينقسم الفعل بحسب زمن وقوعه إلى ثلاثة أقسام:</p>
+            
+            <div class="info-card">
+                <h3>أ. الفعل الماضي</h3>
+                <p>ما دل على حدث وقع وانقطع قبل زمن التكلم.</p>
+                <ul>
+                    <li><strong>علامته:</strong> يقبل تاء التأنيث الساكنة (كَتَبَتْ) أو تاء الفاعل المتحركة (كَتَبْتُ).</li>
+                </ul>
+                <div class="example-box">مثال: خَرَجَ، سَمِعَ، اسْتَغْفَرَ.</div>
+            </div>
+
+            <div class="info-card">
+                <h3>ب. الفعل المضارع</h3>
+                <p>ما دل على حدث يقع في الحال أو الاستقبال.</p>
+                <ul>
+                    <li><strong>علامته:</strong> يبدأ بحروف "أنيت"، ويقبل "السين/سوف" (سَيَكْتُبُ) وأدوات الجزم "لم" (لَمْ يَكْتُبْ).</li>
+                </ul>
+                <div class="example-box">مثال: يَخْرُجُ، نَسْمَعُ، أَسْتَغْفِرُ.</div>
+            </div>
+
+            <div class="info-card">
+                <h3>ج. فعل الأمر</h3>
+                <p>ما دل على طلب وقوع الفعل بعد زمن التكلم.</p>
+                <ul>
+                    <li><strong>علامته:</strong> الدلالة على الطلب وقبول ياء المخاطبة (اُكْتُبِي).</li>
+                </ul>
+                <div class="example-box">مثال: اُخْرُجْ، اسْمَعْ، اسْتَغْفِرْ.</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. الفعل من حيث التجرد والزيادة</h2>
+            
+            <div class="info-card">
+                <h3>أ. الفعل المجرد </h3>
+                <p>هو ما كانت جميع حروفه أصلية، ولا يسقط منها حرف في تصاريف الفعل إلا لعلة تصريفية.</p>
+                <ul>
+                    <li><strong>مجرد ثلاثي:</strong> (3 حروف) مثل: كَتَبَ، عَلِمَ.</li>
+                    <li><strong>مجرد رباعي:</strong> (4 حروف) مثل: دَحْرَجَ، زَلْزَلَ.</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>ب. الفعل المزيد </h3>
+                <p>ما زيد على حروفه الأصلية حرف أو أكثر (أقصى عدد للحروف هو 6).</p>
+                <ul>
+                    <li><strong>مزيد الثلاثي:</strong> بحرف (أَكْرَمَ)، بحرفين (انْطَلَقَ)، بثلاثة (اسْتَخْرَجَ).</li>
+                    <li><strong>مزيد الرباعي:</strong> بحرف (تَدَحْرَجَ)، بحرفين (اقْشَعَرَّ).</li>
+                </ul>
+                <div class="example-box">تنبيه: حروف المضارعة (أنيت) والضمائر لا تعتبر حروف زيادة.</div>
+            </div>
+        </section>
+
+        <div class="game-area">
+            <h3> تمرين تطبيقي</h3>
+            <div id="quiz-content">
+                <div class="game-question" id="q-text">...</div>
+                <div class="options" id="q-options"></div>
+                <div id="feedback" style="margin-top:15px; font-weight:bold;"></div>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px;">
+            <h3>خلاصة الدرس (جدول)</h3>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>القسم</th>
+                        <th>النوع</th>
+                        <th>التعريف / العلامة</th>
+                        <th>أمثلة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="3"><strong>من حيث الزمن</strong></td>
+                        <td>الماضي</td>
+                        <td>وقع وانتهى. يقبل تاء الفاعل.</td>
+                        <td>كَتَبَ، قَرَأَ</td>
+                    </tr>
+                    <tr>
+                        <td>المضارع</td>
+                        <td>يحدث الآن/مستقبلاً. يقبل "السين" و"لم".</td>
+                        <td>يَكْتُبُ، سَيَذْهَبُ</td>
+                    </tr>
+                    <tr>
+                        <td>الأمر</td>
+                        <td>طلب الفعل. يقبل ياء المخاطبة.</td>
+                        <td>اُكْتُبْ، اِجْلِسِي</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"><strong>من حيث البنية</strong></td>
+                        <td>المجرد</td>
+                        <td>حروفه كلها أصلية (3 أو 4).</td>
+                        <td>خَرَجَ، طَمْأَنَ</td>
+                    </tr>
+                    <tr>
+                        <td>المزيد</td>
+                        <td>زيد عليه حرف أو أكثر.</td>
+                        <td>أَخْرَجَ (مزيد بـ أ)، اسْتَخْرَجَ (مزيد بـ استـ)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            text: "الفعل 'سَيَنْجَحُ' فعل مضارع لأنه:",
+            options: ["يقبل تاء التأنيث", "يقبل السين (للمستقبل)", "يدل على الطلب"],
+            correct: 1,
+            explanation: "صحيح! السين وسوف من علامات المضارع الخاصة."
+        },
+        {
+            text: "الفعل 'انْتَصَرَ' (أصله نَصَرَ) هو فعل:",
+            options: ["مجرد", "مزيد بحرف", "مزيد بحرفين"],
+            correct: 2,
+            explanation: "ممتاز! الأصل 'نصر'، الزيادة هي الألف والتاء (افتعل)."
+        },
+        {
+            text: "أي من هذه الأفعال 'مجرد'؟",
+            options: ["تَعَلَّمَ", "دَحْرَجَ", "أَكْرَمَ"],
+            correct: 1,
+            explanation: "صحيح! دحرج حروفه الأربعة كلها أصلية."
+        },
+        {
+            text: "الفعل 'يَكْتُبُونَ' هل هو مزيد؟",
+            options: ["نعم، بالواو والنون", "لا، هو مجرد", "نعم، بالياء"],
+            correct: 1,
+            explanation: "لا! لأن الياء للمضارعة والواو ضمير، الأصل 'كتب' وهو مجرد."
+        },
+        {
+            text: "علامة فعل الأمر هي:",
+            options: ["قبول 'لم'", "قبول 'قد'", "الدلالة على الطلب"],
+            correct: 2,
+            explanation: "صحيح! الأمر يدل على طلب القيام بالشيء."
+        }
+    ];
+
+    let currentQ = 0;
+    const qText = document.getElementById("q-text");
+    const qOptions = document.getElementById("q-options");
+    const feedback = document.getElementById("feedback");
+
+    function loadQuestion() {
+        const q = questions[currentQ];
+        qText.textContent = q.text;
+        qOptions.innerHTML = "";
+        feedback.textContent = "";
+
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement("button");
+            btn.className = "btn-game";
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(index, btn);
+            qOptions.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(idx, btn) {
+        const q = questions[currentQ];
+        const buttons = qOptions.children;
+        for(let b of buttons) b.disabled = true;
+
+        if (idx === q.correct) {
+            btn.classList.add("correct");
+            feedback.style.color = "#4ade80";
+            feedback.innerHTML = q.explanation + " <br> <span style='cursor:pointer; text-decoration:underline' onclick='nextQ()'>التالي ⬅️</span>";
+        } else {
+            btn.classList.add("wrong");
+            buttons[q.correct].classList.add("correct");
+            feedback.style.color = "#f87171";
+            feedback.innerHTML = "خطأ. الجواب الصحيح هو: " + q.options[q.correct] + " <br> <span style='cursor:pointer; text-decoration:underline' onclick='nextQ()'>التالي ⬅️</span>";
+        }
+    }
+
+    function nextQ() {
+        currentQ++;
+        if (currentQ < questions.length) loadQuestion();
+        else document.querySelector(".game-area").innerHTML = "<h3>🎉 ساليتي التمرين! تبارك الله عليك.</h3><button class='btn-game' onclick='location.reload()'>عاود</button>";
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>

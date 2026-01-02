@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ULTIMATE CONJUGAISON QUIZ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* RANKS COLORS */
+            --bronze: #cd7f32;
+            --silver: #bdc3c7;
+            --gold: #f1c40f;
+            --platinum: #00cec9;
+            --diamond: #9b59b6;
+            --heroic: #e74c3c;
+            --grandmaster: #2d3436; /* Noir & Doré */
+            
+            --current-color: var(--bronze); /* Change dynamiquement */
+            --bg-body: #f5f6fa;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: background 0.5s;
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-bar {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .btn-rojo3 {
+            text-decoration: none;
+            background: #2d3436;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        /* --- GAME CONTAINER --- */
+        .game-container {
+            margin-top: 40px;
+            background: white;
+            width: 90%;
+            max-width: 700px;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            text-align: center;
+            border-top: 10px solid var(--current-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* RANK BADGE */
+        .rank-badge {
+            background: var(--current-color);
+            color: white;
+            display: inline-block;
+            padding: 5px 20px;
+            border-radius: 0 0 15px 15px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: background 0.3s;
+        }
+
+        /* PROGRESS BAR */
+        .progress-container {
+            width: 100%;
+            background-color: #eee;
+            border-radius: 10px;
+            margin: 40px 0 20px 0;
+            height: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%; /* JS update */
+            background-color: var(--current-color);
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        /* QUESTION */
+        .q-context {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .q-verb {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+        .q-tense {
+            display: inline-block;
+            background: #dfe6e9;
+            color: #2d3436;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* INPUT AREA */
+        input[type="text"] {
+            width: 80%;
+            padding: 15px;
+            font-size: 1.3rem;
+            text-align: center;
+            border: 3px solid #eee;
+            border-radius: 50px;
+            margin: 30px 0;
+            outline: none;
+            transition: border 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+        input[type="text"]:focus {
+            border-color: var(--current-color);
+        }
+
+        .btn-validate {
+            background: var(--current-color);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .btn-validate:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        /* FEEDBACK */
+        .feedback {
+            height: 30px;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .correct { color: #27ae60; }
+        .wrong { color: #e74c3c; }
+
+        /* END SCREEN */
+        .end-screen {
+            display: none;
+        }
+        .end-title {
+            font-size: 3rem;
+            color: var(--current-color);
+        }
+
+        @media (max-width: 600px) {
+            .game-container { padding: 20px; width: 95%; }
+            .q-verb { font-size: 2rem; }
+            input[type="text"] { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-bar">
+    <a href="index.html" class="btn-rojo3">Rojo3</a> </div>
+
+<div class="game-container">
+    <div class="rank-badge" id="rank-display">BRONZE I</div>
+    
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div id="play-area">
+        <div class="q-context" id="q-pronoun">Je ...</div>
+        <div class="q-verb" id="q-verb">Manger</div>
+        <div class="q-tense" id="q-tense">Présent</div>
+
+        <br>
+        <input type="text" id="user-input" placeholder="Ta réponse..." autocomplete="off">
+        <br>
+        <button class="btn-validate" onclick="checkAnswer()">VALIDER</button>
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div id="end-area" class="end-screen">
+        <h1 class="end-title">FÉLICITATIONS !</h1>
+        <p>Tu es un vrai Maître de la Conjugaison.</p>
+        <p>Score Final : <span id="final-score"></span> / 50</p>
+        <button class="btn-validate" onclick="location.reload()">REJOUER</button>
+    </div>
+</div>
+
+<script>
+    /* =========================================
+       1. DATABASE (50 QUESTIONS / MIXED TENSES)
+       Structure: [Verbe, Pronom, Temps, Réponse]
+    ========================================= */
+    const questions = [
+        // --- 🟫 BRONZE (1-7) : Présent & Futur Simple (Easy) ---
+        { v: "Parler", p: "Je", t: "Présent", a: "parle" },
+        { v: "Finir", p: "Tu", t: "Présent", a: "finis" },
+        { v: "Avoir", p: "Il", t: "Présent", a: "a" },
+        { v: "Être", p: "Nous", t: "Présent", a: "sommes" },
+        { v: "Manger", p: "Demain, je", t: "Futur Simple", a: "mangerai" },
+        { v: "Aller", p: "Demain, tu", t: "Futur Simple", a: "iras" },
+        { v: "Faire", p: "Demain, vous", t: "Futur Simple", a: "ferez" },
+
+        // --- ⬜ SILVER (8-14) : Imparfait & Passé Composé (Easy) ---
+        { v: "Prendre", p: "Autrefois, je", t: "Imparfait", a: "prenais" },
+        { v: "Être", p: "Autrefois, tu", t: "Imparfait", a: "étais" },
+        { v: "Manger", p: "Autrefois, nous", t: "Imparfait", a: "mangions" },
+        { v: "Chanter", p: "Hier, j'", t: "Passé Composé", a: "ai chanté" },
+        { v: "Finir", p: "Hier, tu", t: "Passé Composé", a: "as fini" },
+        { v: "Aller", p: "Hier, je (masc)", t: "Passé Composé", a: "suis allé" },
+        { v: "Venir", p: "Hier, nous", t: "Passé Composé", a: "sommes venus" },
+
+        // --- 🟨 GOLD (15-21) : Subjonctif Présent ---
+        { v: "Faire", p: "Il faut que je", t: "Subjonctif", a: "fasse" },
+        { v: "Savoir", p: "Il faut que tu", t: "Subjonctif", a: "saches" },
+        { v: "Pouvoir", p: "Il faut qu'il", t: "Subjonctif", a: "puisse" },
+        { v: "Aller", p: "Il faut que nous", t: "Subjonctif", a: "allions" },
+        { v: "Être", p: "Il faut que vous", t: "Subjonctif", a: "soyez" },
+        { v: "Avoir", p: "Il faut qu'ils", t: "Subjonctif", a: "aient" },
+        { v: "Boire", p: "Il faut que je", t: "Subjonctif", a: "boive" },
+
+        // --- 🟦 PLATINUM (22-29) : Plus-que-parfait & Futur Antérieur ---
+        { v: "Manger", p: "J'", t: "Plus-que-parfait", a: "avais mangé" },
+        { v: "Partir", p: "J'", t: "Plus-que-parfait", a: "étais parti" },
+        { v: "Voir", p: "Tu", t: "Plus-que-parfait", a: "avais vu" },
+        { v: "Finir", p: "Quand j'", t: "Futur Antérieur", a: "aurai fini" },
+        { v: "Arriver", p: "Quand tu", t: "Futur Antérieur", a: "seras arrivé" },
+        { v: "Dire", p: "Quand il", t: "Futur Antérieur", a: "aura dit" },
+        { v: "Vendre", p: "Dès que nous", t: "Futur Antérieur", a: "aurons vendu" },
+        { v: "Naître", p: "Il", t: "Plus-que-parfait", a: "était né" },
+
+        // --- 💎 DIAMOND (30-37) : Passé Simple (Famille A & I) ---
+        { v: "Parler", p: "Soudain, il", t: "Passé Simple", a: "parla" },
+        { v: "Manger", p: "Soudain, ils", t: "Passé Simple", a: "mangèrent" },
+        { v: "Finir", p: "Soudain, je", t: "Passé Simple", a: "finis" },
+        { v: "Prendre", p: "Soudain, il", t: "Passé Simple", a: "prit" },
+        { v: "Faire", p: "Soudain, ils", t: "Passé Simple", a: "firent" },
+        { v: "Voir", p: "Soudain, je", t: "Passé Simple", a: "vis" },
+        { v: "Dire", p: "Soudain, elle", t: "Passé Simple", a: "dit" },
+        { v: "Aller", p: "Soudain, il", t: "Passé Simple", a: "alla" },
+
+        // --- 👹 HEROIC (38-44) : Passé Simple (Famille U & IN) & Passé Antérieur ---
+        { v: "Être", p: "Soudain, je", t: "Passé Simple", a: "fus" },
+        { v: "Avoir", p: "Soudain, ils", t: "Passé Simple", a: "eurent" },
+        { v: "Courir", p: "Soudain, il", t: "Passé Simple", a: "courut" },
+        { v: "Venir", p: "Soudain, il", t: "Passé Simple", a: "vint" },
+        { v: "Mourir", p: "Soudain, ils", t: "Passé Simple", a: "moururent" },
+        { v: "Manger", p: "Dès qu'il", t: "Passé Antérieur", a: "eut mangé" },
+        { v: "Partir", p: "Dès qu'il", t: "Passé Antérieur", a: "fut parti" },
+
+        // --- 🏆 GRAND MASTER (45-50) : Pièges & Irréguliers Ultimes ---
+        { v: "Falloir", p: "Il (Imparfait)", t: "Imparfait", a: "fallait" },
+        { v: "Pleuvoir", p: "Il (Futur)", t: "Futur Simple", a: "pleuvra" },
+        { v: "Peindre", p: "Nous (Présent)", t: "Présent", a: "peignons" },
+        { v: "Coudre", p: "Nous (Présent)", t: "Présent", a: "cousons" },
+        { v: "Valoir", p: "Il faut qu'il", t: "Subjonctif", a: "vaille" },
+        { v: "Acquérir", p: "J' (Futur)", t: "Futur Simple", a: "acquerrai" } // Double R!
+    ];
+
+    /* =========================================
+       2. VARIABLES D'ÉTAT
+    ========================================= */
+    let currentQIndex = 0;
+    let score = 0;
+    const root = document.documentElement;
+
+    /* =========================================
+       3. LOGIQUE "NO ACCENT"
+    ========================================= */
+    function clean(str) {
+        // Enlève les accents, met en minuscule, enlève les espaces autour
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+    }
+
+    /* =========================================
+       4. GESTION DES RANGS
+    ========================================= */
+    function updateRank() {
+        const i = currentQIndex;
+        let rankName = "BRONZE";
+        let color = "#cd7f32";
+
+        if (i >= 7) { rankName = "SILVER"; color = "#bdc3c7"; }
+        if (i >= 14) { rankName = "GOLD"; color = "#f1c40f"; }
+        if (i >= 21) { rankName = "PLATINUM"; color = "#00cec9"; }
+        if (i >= 29) { rankName = "DIAMOND"; color = "#9b59b6"; }
+        if (i >= 37) { rankName = "HEROIC"; color = "#e74c3c"; }
+        if (i >= 44) { rankName = "GRAND MASTER"; color = "#2d3436"; }
+
+        // Mise à jour de l'interface
+        document.getElementById('rank-display').innerText = rankName;
+        root.style.setProperty('--current-color', color);
+        
+        // Progress bar
+        const percent = ((i) / questions.length) * 100;
+        document.getElementById('progress-bar').style.width = percent + "%";
+    }
+
+    /* =========================================
+       5. JEU
+    ========================================= */
+    function loadQuestion() {
+        if (currentQIndex >= questions.length) {
+            endGame();
+            return;
+        }
+
+        updateRank();
+        const q = questions[currentQIndex];
+        
+        document.getElementById('q-pronoun').innerText = q.p;
+        document.getElementById('q-verb').innerText = q.v;
+        document.getElementById('q-tense').innerText = q.t;
+        
+        const input = document.getElementById('user-input');
+        input.value = "";
+        input.focus();
+        document.getElementById('feedback').innerText = "";
+    }
+
+    function checkAnswer() {
+        const userRaw = document.getElementById('user-input').value;
+        const correctRaw = questions[currentQIndex].a;
+        const fb = document.getElementById('feedback');
+
+        // Comparaison souple (sans accent)
+        if (clean(userRaw) === clean(correctRaw)) {
+            score++;
+            fb.innerHTML = `<span class="correct">Correct ! (${correctRaw})</span>`;
+            fb.style.color = "var(--current-color)"; // Feedback coloré
+            setTimeout(() => {
+                currentQIndex++;
+                loadQuestion();
+            }, 1000);
+        } else {
+            fb.innerHTML = `<span class="wrong">Faux ! C'était : ${correctRaw}</span>`;
+            setTimeout(() => {
+                currentQIndex++;
+                loadQuestion();
+            }, 2500); // Plus de temps pour lire la correction
+        }
+    }
+
+    function endGame() {
+        document.getElementById('play-area').style.display = 'none';
+        document.getElementById('rank-display').style.display = 'none';
+        document.getElementById('end-area').style.display = 'block';
+        document.getElementById('final-score').innerText = score;
+        document.getElementById('progress-bar').style.width = "100%";
+        
+        // Couleur finale
+        root.style.setProperty('--current-color', '#2d3436');
+    }
+
+    // Gestion de la touche Entrée
+    document.getElementById('user-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            checkAnswer();
+        }
+    });
+
+    // Démarrage
+    loadQuestion();
+
+</script>
+
+</body>
+</html>

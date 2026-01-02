@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 5: أقسام الاسم</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #818cf8;
+            --accent: #f59e0b;
+            --text: #1f2937;
+            --bg: #f9fafb;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        /* Nav Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-link {
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-link:hover { background: white; color: var(--primary); transform: translateY(-2px); }
+
+        h1 { margin: 0; font-size: 2rem; }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 10px; margin-top: 40px; }
+        
+        .content { padding: 40px; }
+
+        /* Rule Cards */
+        .rule-card {
+            background: #f8fafc;
+            border-right: 5px solid var(--accent);
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .alert-box {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: bold;
+            border: 1px solid #fca5a5;
+        }
+
+        .example-box {
+            background: #fffbeb;
+            border: 1px dashed var(--accent);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #b45309;
+            text-align: center;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block; padding: 2px 8px; border-radius: 12px;
+            font-size: 0.9em; color: white; margin: 0 2px;
+        }
+        .tag-sahih { background: #4b5563; }
+        .tag-maqsur { background: #059669; }
+        .tag-manqus { background: #2563eb; }
+        .tag-mamdud { background: #d97706; }
+
+        /* Summary Table */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            font-size: 0.95rem;
+        }
+        .summary-table th, .summary-table td {
+            border: 1px solid #cbd5e1;
+            padding: 12px;
+            text-align: right;
+        }
+        .summary-table th { background-color: var(--primary); color: white; text-align: center; }
+        .summary-table tr:nth-child(even) { background-color: #f1f5f9; }
+
+        /* Quiz */
+        .game-area {
+            background: #1e293b; color: white; padding: 30px;
+            border-radius: 12px; text-align: center; margin-top: 50px;
+        }
+        .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 20px; }
+        .btn-game {
+            background: #334155; border: 2px solid #475569; color: white;
+            padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; transition: 0.3s;
+        }
+        .btn-game:hover { background: #475569; }
+        .btn-game.correct { background: var(--success); border-color: var(--success); }
+        .btn-game.wrong { background: var(--error); border-color: var(--error); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>الدرس 5: أقسام الاسم</h1>
+        <p>الصحيح • المقصور • المنقوص • الممدود</p>
+        
+        <div class="nav-buttons">
+            <a href="index.html" class="btn-link">الرئيسية</a>
+            <a href="gamea1.html" class="btn-link">الكويز (Game)</a>
+        </div>
+    </header>
+
+    <div class="content">
+        
+        <section>
+            <h2>1. الاسم الصحيح</h2>
+            <div class="rule-card" style="border-color: #4b5563;">
+                <p>هو الاسم الذي ليس مقصوراً، ولا منقوصاً، ولا ممدوداً، ويكون آخره حرفاً صحيحاً.</p>
+                <div class="example-box">
+                    أمثلة: <span class="tag tag-sahih">رَجُل</span>، <span class="tag tag-sahih">كِتَاب</span>، <span class="tag tag-sahih">قَلَم</span>.
+                </div>
+                <ul>
+                    <li><strong>حكمه الإعرابي:</strong> تظهر عليه جميع الحركات (الضمة، الفتحة، الكسرة) بوضوح.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. الاسم المقصور</h2>
+            <div class="rule-card">
+                <p>هو اسم معرب آخره <strong>ألف لازمة</strong> (مفتوح ما قبلها).</p>
+                <div class="example-box">
+                    أمثلة: <span class="tag tag-maqsur">الفتَى</span>، <span class="tag tag-maqsur">العصَا</span>، <span class="tag tag-maqsur">الهدَى</span>.
+                </div>
+                <ul>
+                    <li><strong>حكمه الإعرابي:</strong> تقدر عليه جميع الحركات (الضمة، الفتحة، الكسرة) <strong>للتعذر</strong> (استحالة النطق).</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>3. الاسم المنقوص</h2>
+            <div class="rule-card" style="border-color: var(--primary);">
+                <p>هو اسم معرب آخره <strong>ياء لازمة</strong> (مكسور ما قبلها).</p>
+                <div class="example-box">
+                    أمثلة: <span class="tag tag-manqus">القاضِي</span>، <span class="tag tag-manqus">الداعِي</span>، <span class="tag tag-manqus">الراعِي</span>.
+                </div>
+                
+                <div class="alert-box">
+                    ⚠️ <strong>قاعدة حذف الياء:</strong><br>
+                    تحذف ياؤه إذا كان <strong>نكرة</strong> في حالتي الرفع والجر (جاء <strong>قاضٍ</strong> / مررت بـ<strong>قاضٍ</strong>).<br>
+                    وتبقى في حالة النصب (رأيت <strong>قاضياً</strong>) أو إذا كان معرفاً (القاضي).
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>4. الاسم الممدود</h2>
+            <div class="rule-card" style="border-color: #ef4444;">
+                <p>هو اسم معرب آخره <strong>همزة</strong> قبلها <strong>ألف زائدة</strong>.</p>
+                <div class="example-box">
+                    أمثلة: <span class="tag tag-mamdud">سَمَاء</span>، <span class="tag tag-mamdud">صَحْرَاء</span>، <span class="tag tag-mamdud">بِنَاء</span>.
+                </div>
+                <ul>
+                    <li><strong>حكمه:</strong> تظهر عليه الحركات كلها (ضمة، فتحة، كسرة) مثل الصحيح.</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="game-area">
+            <h3>تمرين سريع</h3>
+            <div id="quiz-content">
+                <div class="game-question" id="q-text">...</div>
+                <div class="options" id="q-options"></div>
+                <div id="feedback" style="margin-top:15px; font-weight:bold;"></div>
+            </div>
+        </div>
+
+        <div style="margin-top: 50px;">
+            <h3>الخلاصة الشاملة (للحفظ)</h3>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>النوع</th>
+                        <th>التعريف</th>
+                        <th>مثال</th>
+                        <th>الإعراب</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>الصحيح</strong></td>
+                        <td>آخره حرف صحيح.</td>
+                        <td>رَجُل، كِتَاب</td>
+                        <td>تظهر عليه الحركات كاملة.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>المقصور</strong></td>
+                        <td>آخره ألف (ى / ا).</td>
+                        <td>الفَتَى، العَصَا</td>
+                        <td>تقدر عليه الحركات (للتعذر).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>المنقوص</strong></td>
+                        <td>آخره ياء (ـِي).</td>
+                        <td>القَاضِي</td>
+                        <td>تقدر الضمة والكسرة (للثقل)، وتظهر الفتحة.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>الممدود</strong></td>
+                        <td>آخره همزة بعد ألف (ـاء).</td>
+                        <td>صَحْرَاء</td>
+                        <td>تظهر عليه الحركات كاملة.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            text: "كلمة 'المُصْطَفَى' هي اسم:",
+            options: ["مقصور", "منقوص", "ممدود"],
+            correct: 0,
+            explanation: "صحيح! آخره ألف لازمة مفتوح ما قبلها."
+        },
+        {
+            text: "الاسم الصحيح هو ما تظهر عليه الحركات:",
+            options: ["جميعها", "بعضها", "لا تظهر"],
+            correct: 0,
+            explanation: "صحيح! تظهر عليه الضمة والفتحة والكسرة."
+        },
+        {
+            text: "عندما يكون الاسم المنقوص نكرة مرفوعة (مثل: جاء ...)، نقول:",
+            options: ["جاء القاضي", "جاء قاضي", "جاء قاضٍ"],
+            correct: 2,
+            explanation: "ممتاز! تحذف الياء في الرفع والجر إذا كان نكرة."
+        },
+        {
+            text: "كلمة 'سَمَاء' هي اسم:",
+            options: ["صحيح", "ممدود", "مقصور"],
+            correct: 1,
+            explanation: "صحيح! آخره همزة قبلها ألف زائدة."
+        },
+        {
+            text: "الاسم المنقوص في حالة النصب (رأيت ...):",
+            options: ["رأيت قاضياً", "رأيت قاضٍ", "رأيت قاضِي"],
+            correct: 0,
+            explanation: "صحيح! الفتحة خفيفة فتظهر على الياء (قاضياً)."
+        }
+    ];
+
+    let currentQ = 0;
+    const qText = document.getElementById("q-text");
+    const qOptions = document.getElementById("q-options");
+    const feedback = document.getElementById("feedback");
+
+    function loadQuestion() {
+        const q = questions[currentQ];
+        qText.textContent = q.text;
+        qOptions.innerHTML = "";
+        feedback.textContent = "";
+
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement("button");
+            btn.className = "btn-game";
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(index, btn);
+            qOptions.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(idx, btn) {
+        const q = questions[currentQ];
+        const buttons = qOptions.children;
+        for(let b of buttons) b.disabled = true;
+
+        if (idx === q.correct) {
+            btn.classList.add("correct");
+            feedback.style.color = "#4ade80";
+            feedback.innerHTML = q.explanation + " <br> <span style='cursor:pointer; text-decoration:underline' onclick='nextQ()'>السؤال التالي ⬅️</span>";
+        } else {
+            btn.classList.add("wrong");
+            buttons[q.correct].classList.add("correct");
+            feedback.style.color = "#f87171";
+            feedback.innerHTML = "خطأ. الجواب الصحيح هو: " + q.options[q.correct] + " <br> <span style='cursor:pointer; text-decoration:underline' onclick='nextQ()'>السؤال التالي ⬅️</span>";
+        }
+    }
+
+    function nextQ() {
+        currentQ++;
+        if (currentQ < questions.length) loadQuestion();
+        else document.querySelector(".game-area").innerHTML = "<h3>🎉 ساليتي الدرس 5! ناضي.</h3><button class='btn-game' onclick='location.reload()'>عاود</button>";
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
